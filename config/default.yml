@@ -1,0 +1,18 @@
+server:
+  port: 3000
+
+db:
+  type: 'mariadb'
+  port: 3631
+  database: 'geisa'
+  host: '128.199.148.246'
+  username: 'geisa'
+  password: 'GEISAjaya55'
+  synchronize: false
+
+jwt:
+  expiresIn: 86400
+  secret: '$d3wRm2VXk2ePaZ'
+
+mailer:
+  smtp: 'smtp://noreply.opstore@gmail.com:4iDT00Vh@smtp.gmail.com'
