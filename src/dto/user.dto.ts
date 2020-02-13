@@ -3,6 +3,6 @@ export class UserDto {
   nama: string
   username: string
   peran: number
-  kabKotaList?: string[]
+  kodeWilayah?: string
   tingkat?: number
 }

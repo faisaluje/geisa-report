@@ -44,7 +44,7 @@ export class RefAnggotaDinas extends BaseEntity {
   idWilayah: number | null;
 
   @Column("text", { name: "kabupaten_kota_id_list", nullable: true })
-  kabupatenKotaIdList: string[] | null;
+  kabupatenKotaIdList: string | null;
 
   @Column("text", { name: "tingkat_list", nullable: true })
   tingkatList: string | null;

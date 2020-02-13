@@ -22,7 +22,8 @@ export class AuthService {
 
     const payload: JwtPayload = {
       name: user.nama,
-      username: user.username
+      username: user.username,
+      peran: user.peran
     }
 
     return this.jwtService.sign(payload)
@@ -37,7 +38,7 @@ export class AuthService {
         id: userSekolah.penggunaId,
         nama: userSekolah.nama,
         username: userSekolah.username,
-        peran: 1
+        peran: 1  // sekolah
       }
     } else {
       const userDinas = await RefAnggotaDinas.findOne({ userIdDinas: username })
@@ -46,8 +47,8 @@ export class AuthService {
           id: userDinas.idAnggotaDinas.toString(),
           nama: userDinas.namaAnggotaDinas,
           username: userDinas.userIdDinas,
-          peran: 2,
-          kabKotaList: userDinas.kabupatenKotaIdList
+          peran: 2, // dinas
+          kodeWilayah: userDinas.kabupatenKotaIdList
         }
       } else {
         return null

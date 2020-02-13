@@ -35,7 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         nama: userDinas.namaAnggotaDinas,
         username: userDinas.userIdDinas,
         peran: 2,
-        kabKotaList: userDinas.kabupatenKotaIdList
+        kodeWilayah: userDinas.kabupatenKotaIdList
       }
     } else {
       userDto = {
