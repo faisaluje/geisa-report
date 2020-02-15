@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, RequestTimeoutException, ForbiddenException } from '@nestjs/common';
 import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity';
-import { JwtPayload } from 'src/auth/jwt-payload.interface';
-import { Pengguna } from 'src/entities/pengguna.entity';
-import { Sekolah } from 'src/entities/sekolah.entity';
-import { RefAnggotaDinas } from 'src/entities/refAnggotaDinas.entity';
-import { getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from 'src/dto/user.dto';
 
 @Injectable()
 export class DurasiService {
 
-  async getPengaturanDurasi(user: JwtPayload): Promise<PengaturanDurasi[]> {
-    const kodeWilayah = await this.getKodeWilayah(user)
+  constructor (
+    @InjectRepository(PengaturanDurasi)
+    private readonly pengaturanDurasiRepo: Repository<PengaturanDurasi>
+  ) {}
+
+  async getPengaturanDurasi(user: UserDto): Promise<PengaturanDurasi[]> {
+    const { kodeWilayah } = user 
     if (!kodeWilayah) return null
     
     const pengaturanDurasi = await PengaturanDurasi.find({ kodeWilayah })
@@ -36,55 +39,31 @@ export class DurasiService {
       rows.push(data)
     }
 
-    if (await getConnection().manager.save(rows)) {
-      return rows
-    } else {
-      return null
+    try {
+      if (await getConnection().manager.save(rows)) {
+        return rows
+      } else {
+        return null
+      }
+    } catch (e) {
+      throw new RequestTimeoutException('Request time out')
     }
   }
 
-  async getKodeWilayah(user: JwtPayload): Promise<string> {
-    switch (user.peran) {
-      case 1:
-        return this.getKodeWilayahBySekolah(user.username)
-      case 2:
-        return this.getKodeWilayahByDinas(user.username)
-    }
+  async setPengaturanDurasi(data: PengaturanDurasi[], user: UserDto): Promise<PengaturanDurasi[]> {
+    if (!data) return null
     
-    return null
-  }
-
-  async getKodeWilayahBySekolah(username: string): Promise<string> {
-    const user = await Pengguna.findOne({ username })
-    if (!user) return null
-
-    const userSekolah = await Sekolah.findOne(user.sekolahId)
-    if (!userSekolah) return null
-
-    if ([1,5,6].includes(userSekolah.bentukPendidikanId)) {
-      return userSekolah.kodeWilayahKabupatenKota
-    } else if([7,8,13,14,15,29].includes(userSekolah.bentukPendidikanId)) {
-      return userSekolah.kodeWilayahProvinsi
-    } else {
-      return null
+    data.forEach(async val => {
+      val.updatedBy = user.username
+      val.lastUpdate = new Date()
+      delete val.createDate
+    })
+      
+    try {
+      return await this.pengaturanDurasiRepo.save(data)
+    } catch (e) {
+      console.error(e)
+      throw new ForbiddenException()
     }
-  }
-
-  async getKodeWilayahByDinas(username: string): Promise<string> {
-    const user = await RefAnggotaDinas.findOne({ userIdDinas: username })
-    if (!user) return null
-
-    let kodeWilayah = user.kabupatenKotaIdList
-    if (kodeWilayah) {
-      kodeWilayah = JSON.parse(kodeWilayah)
-    } else { return null}
-
-    kodeWilayah = typeof kodeWilayah === 'object' ? kodeWilayah[0] : kodeWilayah
-
-    if (kodeWilayah.length === 5) {
-      kodeWilayah = `0${kodeWilayah}`
-    }
-
-    return kodeWilayah
   }
 }

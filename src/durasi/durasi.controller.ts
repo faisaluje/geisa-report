@@ -1,6 +1,7 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards, Post, Body, NotFoundException, NotAcceptableException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { DurasiService } from './durasi.service';
+import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity';
 
 @UseGuards(AuthGuard())
 @Controller('durasi')
@@ -10,7 +11,15 @@ export class DurasiController {
   @Get('/')
   getPengaturanDurasi(
     @Req() req: any
-  ): any {
+  ): Promise<PengaturanDurasi[]> {
     return this.durasiService.getPengaturanDurasi(req.user)
+  }
+
+  @Post('/')
+  async setPengaturanDurasi(
+    @Body() body: PengaturanDurasi[],
+    @Req() req: any
+  ): Promise<PengaturanDurasi[]> {
+    return await this.durasiService.setPengaturanDurasi(body, req.user)
   }
 }

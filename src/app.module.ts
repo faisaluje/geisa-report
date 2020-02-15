@@ -5,6 +5,8 @@ import { PenggunaModule } from './pengguna/pengguna.module';
 import { AuthModule } from './auth/auth.module';
 import { DurasiModule } from './durasi/durasi.module';
 import { ReportDurasiModule } from './report-durasi/report-durasi.module';
+import { RowsModule } from './rows/rows.module';
+import { SekolahModule } from './sekolah/sekolah.module';
 
 @Module({
   imports: [
@@ -12,7 +14,9 @@ import { ReportDurasiModule } from './report-durasi/report-durasi.module';
     PenggunaModule,
     AuthModule,
     DurasiModule,
-    ReportDurasiModule
+    ReportDurasiModule,
+    RowsModule,
+    SekolahModule
   ]
 })
 export class AppModule {}

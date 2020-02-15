@@ -2,7 +2,6 @@ import * as config from 'config';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { JwtPayload } from './jwt-payload.interface';
 import { Pengguna } from 'src/entities/pengguna.entity';
 import { UserDto } from 'src/dto/user.dto';
 import { RefAnggotaDinas } from 'src/entities/refAnggotaDinas.entity';
@@ -18,10 +17,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: JwtPayload): Promise<UserDto> {
+  async validate(payload: UserDto): Promise<UserDto> {
     const { username } = payload
     const userSekolah = await Pengguna.findOne({ username })
-    let userDto: UserDto
 
     if (!userSekolah) {
       const userDinas = await RefAnggotaDinas.findOne({ userIdDinas: username })
@@ -29,23 +27,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       if (!userDinas) {
         throw new UnauthorizedException()
       }
-
-      userDto = {
-        id: userDinas.idAnggotaDinas.toString(),
-        nama: userDinas.namaAnggotaDinas,
-        username: userDinas.userIdDinas,
-        peran: 2,
-        kodeWilayah: userDinas.kabupatenKotaIdList
-      }
-    } else {
-      userDto = {
-        id: userSekolah.penggunaId,
-        nama: userSekolah.nama,
-        username: userSekolah.username,
-        peran: 1
-      }
     }
 
-    return userDto
+    return payload
   }
 }

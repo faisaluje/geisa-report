@@ -3,6 +3,5 @@ export class UserDto {
   nama: string
   username: string
   peran: number
-  kodeWilayah?: string
-  tingkat?: number
+  kodeWilayah: string
 }
