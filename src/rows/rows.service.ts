@@ -1,10 +1,9 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { SelectQueryBuilder } from 'typeorm';
-import { PagingDto } from 'src/dto/Paging.dto';
+import { Injectable, Inject } from '@nestjs/common'
+import { SelectQueryBuilder } from 'typeorm'
+import { PagingDto } from 'src/dto/Paging.dto'
 
 @Injectable()
 export class RowsService {
-
   private limit: number
   private offset: number
   private page: number
@@ -48,12 +47,12 @@ export class RowsService {
 
   async getResult(): Promise<PagingDto> {
     const result = new PagingDto()
-    
+
     result.totalCount = await this.getTotalRowsCount()
     result.limit = this.getLimit()
     result.page = this.page
-    result.totalPage = Math.ceil(result.totalCount/result.limit)
-    this.offset = result.limit * (result.page-1)
+    result.totalPage = Math.ceil(result.totalCount / result.limit)
+    this.offset = result.limit * (result.page - 1)
     result.rows = await this.getRowsData()
 
     return result

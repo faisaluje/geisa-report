@@ -1,21 +1,22 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { AuthUserDto } from 'src/dto/auth-user.dto';
-import { UserDto } from 'src/dto/user.dto';
-import { Pengguna } from 'src/entities/pengguna.entity';
-import { validatePasswordMd5, validatePasswordSha1 } from 'src/security/processPassword';
-import { RefAnggotaDinas } from 'src/entities/refAnggotaDinas.entity';
-import { Sekolah } from 'src/entities/sekolah.entity';
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { AuthUserDto } from 'src/dto/auth-user.dto'
+import { UserDto } from 'src/dto/user.dto'
+import { Pengguna } from 'src/entities/pengguna.entity'
+import {
+  validatePasswordMd5,
+  validatePasswordSha1,
+} from 'src/security/processPassword'
+import { RefAnggotaDinas } from 'src/entities/refAnggotaDinas.entity'
+import { Sekolah } from 'src/entities/sekolah.entity'
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private jwtService: JwtService
-  ) {}
+  constructor(private jwtService: JwtService) {}
 
   async signIn(authUserDto: AuthUserDto): Promise<string> {
     const user = await this.validateUserPassword(authUserDto)
-    
+
     if (!user) {
       throw new UnauthorizedException('Bad Credentials')
     }
@@ -27,23 +28,26 @@ export class AuthService {
     const { username, password } = authUserDto
     const userSekolah = await Pengguna.findOne({ username })
 
-    if (userSekolah && validatePasswordMd5(userSekolah.password, password)){
+    if (userSekolah && validatePasswordMd5(userSekolah.password, password)) {
       return {
         id: userSekolah.penggunaId,
         nama: userSekolah.nama,
         username: userSekolah.username,
-        peran: 1,  // sekolah
-        kodeWilayah: await this.getKodeWilayahBySekolah(userSekolah.username)
+        peran: 1, // sekolah
+        kodeWilayah: await this.getKodeWilayahBySekolah(userSekolah.username),
       }
     } else {
       const userDinas = await RefAnggotaDinas.findOne({ userIdDinas: username })
-      if (userDinas && validatePasswordSha1(userDinas.passwordDinas, password)) {
+      if (
+        userDinas &&
+        validatePasswordSha1(userDinas.passwordDinas, password)
+      ) {
         return {
           id: userDinas.idAnggotaDinas.toString(),
           nama: userDinas.namaAnggotaDinas,
           username: userDinas.userIdDinas,
-          peran: userDinas.roleId,  // Dinas Kabkota / Provinsi
-          kodeWilayah: await this.getKodeWilayahByDinas(userDinas.userIdDinas)
+          peran: userDinas.roleId, // Dinas Kabkota / Provinsi
+          kodeWilayah: await this.getKodeWilayahByDinas(userDinas.userIdDinas),
         }
       } else {
         return null
@@ -53,14 +57,20 @@ export class AuthService {
 
   async getKodeWilayahBySekolah(username: string): Promise<string> {
     const user = await Pengguna.findOne({ username })
-    if (!user) return null
+    if (!user) {
+      return null
+    }
 
     const userSekolah = await Sekolah.findOne(user.sekolahId)
-    if (!userSekolah) return null
+    if (!userSekolah) {
+      return null
+    }
 
-    if ([1,5,6].includes(userSekolah.bentukPendidikanId)) {
+    if ([1, 5, 6].includes(userSekolah.bentukPendidikanId)) {
       return userSekolah.kodeWilayahKabupatenKota
-    } else if([7,8,13,14,15,29].includes(userSekolah.bentukPendidikanId)) {
+    } else if (
+      [7, 8, 13, 14, 15, 29].includes(userSekolah.bentukPendidikanId)
+    ) {
       return userSekolah.kodeWilayahProvinsi
     } else {
       return null
@@ -69,12 +79,16 @@ export class AuthService {
 
   async getKodeWilayahByDinas(username: string): Promise<string> {
     const user = await RefAnggotaDinas.findOne({ userIdDinas: username })
-    if (!user) return null
+    if (!user) {
+      return null
+    }
 
     let kodeWilayah = user.kabupatenKotaIdList
     if (kodeWilayah) {
       kodeWilayah = JSON.parse(kodeWilayah)
-    } else { return null}
+    } else {
+      return null
+    }
 
     kodeWilayah = typeof kodeWilayah === 'object' ? kodeWilayah[0] : kodeWilayah
 

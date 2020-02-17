@@ -1,17 +1,17 @@
-import { Module } from '@nestjs/common';
-import { DurasiService } from './durasi.service';
-import { DurasiController } from './durasi.controller';
-import { PassportModule } from '@nestjs/passport';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity';
+import { Module } from '@nestjs/common'
+import { DurasiService } from './durasi.service'
+import { DurasiController } from './durasi.controller'
+import { PassportModule } from '@nestjs/passport'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity'
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([ PengaturanDurasi ])
+    TypeOrmModule.forFeature([PengaturanDurasi]),
   ],
   providers: [DurasiService],
   controllers: [DurasiController],
-  exports: [DurasiService]
+  exports: [DurasiService],
 })
 export class DurasiModule {}

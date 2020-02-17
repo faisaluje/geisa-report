@@ -1,4 +1,4 @@
-import { md5, sha1 } from "locutus/php/strings"
+import { md5, sha1 } from 'locutus/php/strings'
 
 export const validatePasswordMd5 = (encryptedPassword: string, plainPassword: string): boolean => {
   return encryptedPassword === md5(plainPassword)

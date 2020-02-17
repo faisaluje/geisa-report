@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Sekolah } from 'src/entities/sekolah.entity';
-import { Repository } from 'typeorm';
-import { RowsService } from 'src/rows/rows.service';
-import { PagingDto } from 'src/dto/Paging.dto';
-import { UserDto } from 'src/dto/user.dto';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Sekolah } from 'src/entities/sekolah.entity'
+import { Repository } from 'typeorm'
+import { RowsService } from 'src/rows/rows.service'
+import { PagingDto } from 'src/dto/Paging.dto'
+import { UserDto } from 'src/dto/user.dto'
 
 @Injectable()
 export class SekolahService {
@@ -16,8 +16,8 @@ export class SekolahService {
 
   async getSekolah(user: UserDto, query: any): Promise<PagingDto> {
     const { kodeWilayah, peran } = user
-    const bentukPendidikanId = peran == 3 ? [7,8,13,14,15,29] : [5,6]
-    
+    const bentukPendidikanId = peran === 3 ? [7, 8, 13, 14, 15, 29] : [5, 6]
+
     const sekolah = this.sekolahRepo.createQueryBuilder('sekolah')
       .select('sekolah.sekolah_id', 'sekolahId')
       .addSelect('sekolah.nama', 'nama')
@@ -32,9 +32,9 @@ export class SekolahService {
       .addSelect('sekolah.kode_wilayah_kecamatan', 'kodeWilayahKecamatan')
       .addSelect('sekolah.kode_wilayah_kecamatan_str', 'namaKecamatan')
       .where('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', { bentukPendidikanId })
-    
+
     switch (peran) {
-      case 2: 
+      case 2:
         sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kabKotaId', { kabKotaId: kodeWilayah })
         break
       case 3:
@@ -53,5 +53,4 @@ export class SekolahService {
 
     return await rows.getResult()
   }
-
 }

@@ -4,14 +4,14 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 const dbConfig = config.get('db')
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-	type: dbConfig.type,
-	host: process.env.DB_HOST || dbConfig.host,
-	port: process.env.DB_PORT || dbConfig.port,
-	username: process.env.DB_USERNAME || dbConfig.username,
-	password: process.env.DB_PASSWORD || dbConfig.password,
-	database: process.env.DB_DATABASE || dbConfig.database,
-	// entities: [__dirname + '/../**/*.entity.{js,ts}'],
-	entities: [__dirname + '/../entities/*.entity.{js,ts}'],
-	synchronize: dbConfig.synchronize,
-	logging: false
+  type: dbConfig.type,
+  host: process.env.DB_HOST || dbConfig.host,
+  port: process.env.DB_PORT || dbConfig.port,
+  username: process.env.DB_USERNAME || dbConfig.username,
+  password: process.env.DB_PASSWORD || dbConfig.password,
+  database: process.env.DB_DATABASE || dbConfig.database,
+  // entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  entities: [__dirname + '/../entities/*.entity.{js,ts}'],
+  synchronize: dbConfig.synchronize,
+  logging: false,
 }

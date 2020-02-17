@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { SekolahService } from './sekolah.service';
-import { SekolahController } from './sekolah.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Sekolah } from 'src/entities/sekolah.entity';
-import { RowsModule } from 'src/rows/rows.module';
-import { PassportModule } from '@nestjs/passport';
+import { Module } from '@nestjs/common'
+import { SekolahService } from './sekolah.service'
+import { SekolahController } from './sekolah.controller'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { Sekolah } from 'src/entities/sekolah.entity'
+import { RowsModule } from 'src/rows/rows.module'
+import { PassportModule } from '@nestjs/passport'
 
 @Module({
   imports: [
@@ -13,6 +13,6 @@ import { PassportModule } from '@nestjs/passport';
     RowsModule,
   ],
   providers: [SekolahService],
-  controllers: [SekolahController]
+  controllers: [SekolahController],
 })
 export class SekolahModule {}
