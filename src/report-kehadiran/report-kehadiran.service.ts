@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { LogMesin } from '../entities/logMesin.entity'
 import { Repository } from 'typeorm'
-import { PagingDto } from '../dto/Paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { RowsService } from '../rows/rows.service'
 
 @Injectable()

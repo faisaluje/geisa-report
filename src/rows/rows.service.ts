@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common'
 import { SelectQueryBuilder } from 'typeorm'
-import { PagingDto } from '../dto/Paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 
 @Injectable()
 export class RowsService {

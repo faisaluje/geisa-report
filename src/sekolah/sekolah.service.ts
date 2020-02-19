@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Sekolah } from '../entities/sekolah.entity'
 import { Repository } from 'typeorm'
 import { RowsService } from '../rows/rows.service'
-import { PagingDto } from '../dto/Paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from '../dto/user.dto'
 
 @Injectable()

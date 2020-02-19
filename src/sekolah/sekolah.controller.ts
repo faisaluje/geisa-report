@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common'
 import { SekolahService } from './sekolah.service'
-import { PagingDto } from '../dto/Paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 
 @UseGuards(AuthGuard())
