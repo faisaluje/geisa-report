@@ -6,13 +6,13 @@ import { PagingDto } from 'src/dto/Paging.dto'
 import { RowsService } from 'src/rows/rows.service'
 
 @Injectable()
-export class ReportDurasiService {
+export class ReportKehadiranService {
   constructor(
     @InjectRepository(LogMesin)
     private readonly logMesinRepo: Repository<LogMesin>,
   ) {}
 
-  async getReportDurasi(sekolahId: string, query: any): Promise<PagingDto> {
+  async getReportKehadiran(sekolahId: string, query: any): Promise<PagingDto> {
     const tanggal = query.tanggal ? new Date(query.tanggal) : new Date()
 
     tanggal.setHours(0, 0, 0, 0)
@@ -33,7 +33,7 @@ export class ReportDurasiService {
       .addSelect('log.tanggal_lahir', 'tanggalLahir')
       .addSelect('log.date_time', 'dateTime')
       .addSelect('log.date_insert', 'dateInsert')
-      .addSelect('log.update_from', 'updateFrokm')
+      .addSelect('log.update_from', 'updateFrom')
       .addSelect('log.kirim_dhgtk', 'kirimDhgtk')
       .leftJoin('dataguru', 'gtk', 'gtk.id_dapodik = log.id_pada_dapodik')
       .where('log.sekolah_id = :sekolahId', { sekolahId })

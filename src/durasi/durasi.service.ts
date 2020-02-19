@@ -72,6 +72,7 @@ export class DurasiService {
     data.forEach(async val => {
       val.updatedBy = user.username
       val.lastUpdate = new Date()
+      val.kodeWilayah = user.kodeWilayah
       delete val.createDate
     })
 
