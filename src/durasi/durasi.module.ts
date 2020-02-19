@@ -3,7 +3,7 @@ import { DurasiService } from './durasi.service'
 import { DurasiController } from './durasi.controller'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity'
+import { PengaturanDurasi } from '../entities/pengaturanDurasi.entity'
 
 @Module({
   imports: [

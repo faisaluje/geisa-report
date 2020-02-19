@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Sekolah } from 'src/entities/sekolah.entity'
+import { Sekolah } from '../entities/sekolah.entity'
 import { Repository } from 'typeorm'
-import { RowsService } from 'src/rows/rows.service'
-import { PagingDto } from 'src/dto/Paging.dto'
-import { UserDto } from 'src/dto/user.dto'
+import { RowsService } from '../rows/rows.service'
+import { PagingDto } from '../dto/Paging.dto'
+import { UserDto } from '../dto/user.dto'
 
 @Injectable()
 export class SekolahService {
-
   constructor(
     @InjectRepository(Sekolah)
     private readonly sekolahRepo: Repository<Sekolah>,
@@ -18,7 +17,8 @@ export class SekolahService {
     const { kodeWilayah, peran } = user
     const bentukPendidikanId = peran === 3 ? [7, 8, 13, 14, 15, 29] : [5, 6]
 
-    const sekolah = this.sekolahRepo.createQueryBuilder('sekolah')
+    const sekolah = this.sekolahRepo
+      .createQueryBuilder('sekolah')
       .select('sekolah.sekolah_id', 'sekolahId')
       .addSelect('sekolah.nama', 'nama')
       .addSelect('sekolah.npsn', 'npsn')
@@ -31,21 +31,29 @@ export class SekolahService {
       .addSelect('sekolah.kode_wilayah_kabupaten_kota_str', 'namaKabKota')
       .addSelect('sekolah.kode_wilayah_kecamatan', 'kodeWilayahKecamatan')
       .addSelect('sekolah.kode_wilayah_kecamatan_str', 'namaKecamatan')
-      .where('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', { bentukPendidikanId })
+      .where('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', {
+        bentukPendidikanId,
+      })
 
     switch (peran) {
       case 2:
-        sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kabKotaId', { kabKotaId: kodeWilayah })
+        sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kabKotaId', {
+          kabKotaId: kodeWilayah,
+        })
         break
       case 3:
-        sekolah.andWhere('sekolah.kode_wilayah_provinsi=:provId', { provId: kodeWilayah })
+        sekolah.andWhere('sekolah.kode_wilayah_provinsi=:provId', {
+          provId: kodeWilayah,
+        })
         break
       default:
         return null
     }
 
     if (query.search) {
-      sekolah.andWhere('sekolah.nama like :search', { search: `%${query.search}%` })
+      sekolah.andWhere('sekolah.nama like :search', {
+        search: `%${query.search}%`,
+      })
     }
     sekolah.orderBy('sekolah.nama', 'ASC')
 

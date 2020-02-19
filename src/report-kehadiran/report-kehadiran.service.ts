@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { LogMesin } from 'src/entities/logMesin.entity'
+import { LogMesin } from '../entities/logMesin.entity'
 import { Repository } from 'typeorm'
-import { PagingDto } from 'src/dto/Paging.dto'
-import { RowsService } from 'src/rows/rows.service'
+import { PagingDto } from '../dto/Paging.dto'
+import { RowsService } from '../rows/rows.service'
 
 @Injectable()
 export class ReportKehadiranService {

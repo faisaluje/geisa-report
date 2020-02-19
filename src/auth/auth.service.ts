@@ -1,14 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthUserDto } from 'src/dto/auth-user.dto'
-import { UserDto } from 'src/dto/user.dto'
-import { Pengguna } from 'src/entities/pengguna.entity'
+import { UserDto } from '../dto/user.dto'
+import { Pengguna } from '../entities/pengguna.entity'
 import {
   validatePasswordMd5,
   validatePasswordSha1,
-} from 'src/security/processPassword'
-import { RefAnggotaDinas } from 'src/entities/refAnggotaDinas.entity'
-import { Sekolah } from 'src/entities/sekolah.entity'
+} from '../security/processPassword'
+import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
+import { Sekolah } from '../entities/sekolah.entity'
 
 @Injectable()
 export class AuthService {

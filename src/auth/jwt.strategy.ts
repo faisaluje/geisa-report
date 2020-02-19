@@ -2,9 +2,9 @@ import * as config from 'config'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
-import { Pengguna } from 'src/entities/pengguna.entity'
-import { UserDto } from 'src/dto/user.dto'
-import { RefAnggotaDinas } from 'src/entities/refAnggotaDinas.entity'
+import { Pengguna } from '../entities/pengguna.entity'
+import { UserDto } from '../dto/user.dto'
+import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
 
 const jwtConfig = config.get('jwt')
 

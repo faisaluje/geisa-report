@@ -4,10 +4,10 @@ import {
   ForbiddenException,
   Logger,
 } from '@nestjs/common'
-import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity'
+import { PengaturanDurasi } from '../entities/pengaturanDurasi.entity'
 import { getConnection, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { UserDto } from 'src/dto/user.dto'
+import { UserDto } from '../dto/user.dto'
 
 const logger = new Logger('durasi-service')
 

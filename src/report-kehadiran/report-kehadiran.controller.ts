@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards, Param, Query } from '@nestjs/common'
-import { PagingDto } from 'src/dto/Paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { ReportKehadiranService } from './report-kehadiran.service'
 import { AuthGuard } from '@nestjs/passport'
 

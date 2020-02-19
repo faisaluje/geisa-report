@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards, Post, Body } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { DurasiService } from './durasi.service'
-import { PengaturanDurasi } from 'src/entities/pengaturanDurasi.entity'
+import { PengaturanDurasi } from '../entities/pengaturanDurasi.entity'
 
 @UseGuards(AuthGuard())
 @Controller('durasi')
