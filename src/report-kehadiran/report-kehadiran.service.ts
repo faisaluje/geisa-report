@@ -13,7 +13,7 @@ export class ReportKehadiranService {
   ) {}
 
   async getReportKehadiran(sekolahId: string, query: any): Promise<PagingDto> {
-    let tanggal = query.tanggal ? query.tanggal : new Date().getTime()
+    let tanggal: number = query.tanggal ? query.tanggal : new Date().getTime()
 
     const logs = this.logMesinRepo
       .createQueryBuilder('log')
@@ -39,7 +39,7 @@ export class ReportKehadiranService {
         tglFirst: tanggal,
       })
 
-    tanggal += 86400000
+    tanggal = +tanggal + +86400000
     logs.andWhere('(UNIX_TIMESTAMP(log.date_time)*1000) < :tglLast', {
       tglLast: tanggal,
     })
