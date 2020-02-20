@@ -13,7 +13,10 @@ export class ReportKehadiranService {
   ) {}
 
   async getReportKehadiran(sekolahId: string, query: any): Promise<PagingDto> {
-    let tanggal: number = query.tanggal ? query.tanggal : new Date().getTime()
+    const tanggal = query.tanggal
+      ? // tslint:disable-next-line: radix
+        new Date(parseInt(query.tanggal))
+      : new Date()
 
     const logs = this.logMesinRepo
       .createQueryBuilder('log')
@@ -35,13 +38,13 @@ export class ReportKehadiranService {
       .addSelect('log.kirim_dhgtk', 'kirimDhgtk')
       .leftJoin('dataguru', 'gtk', 'gtk.id_dapodik = log.id_pada_dapodik')
       .where('log.sekolah_id = :sekolahId', { sekolahId })
-      .andWhere('(UNIX_TIMESTAMP(log.date_time)*1000) >= :tglFirst', {
-        tglFirst: tanggal,
+      .andWhere('log.date_time >= :tglFirst', {
+        tglFirst: tanggal.toISOString(),
       })
 
-    tanggal = +tanggal + +86400000
-    logs.andWhere('(UNIX_TIMESTAMP(log.date_time)*1000) < :tglLast', {
-      tglLast: tanggal,
+    tanggal.setDate(tanggal.getDate() + 1)
+    logs.andWhere('log.date_time < :tglLast', {
+      tglLast: tanggal.toISOString(),
     })
     logs.orderBy('log.nama_pada_dapodik', 'ASC')
 
