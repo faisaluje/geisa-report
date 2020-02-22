@@ -44,8 +44,11 @@ export class DurasiService {
       data.hari = idx
       data.jamMasuk = '07:00:00'
       data.jamPulang = '14:00:00'
+      data.jamIstirahatMulai = '12:00:00'
+      data.jamIstirahatSelesai = '12:30:00'
       data.createDate = new Date()
       data.updatedBy = username
+      data.isLibur = idx === 0
 
       rows.push(data)
     }

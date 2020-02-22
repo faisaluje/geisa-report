@@ -8,11 +8,20 @@ export class PengaturanDurasi extends BaseEntity {
   @Column('smallint', { primary: true, name: 'hari' })
   hari: number
 
-  @Column('time', { name: 'jam_masuk', nullable: true })
-  jamMasuk: string | null
+  @Column('time', { name: 'jam_masuk' })
+  jamMasuk: string
 
-  @Column('time', { name: 'jam_pulang', nullable: true })
-  jamPulang: string | null
+  @Column('time', { name: 'jam_pulang' })
+  jamPulang: string
+
+  @Column('time', { name: 'jam_istirahat_mulai', nullable: true })
+  jamIstirahatMulai: string | null
+
+  @Column('time', { name: 'jam_istirahat_selesai', nullable: true })
+  jamIstirahatSelesai: string | null
+
+  @Column('tinyint', { name: 'is_libur' })
+  isLibur: boolean
 
   @Column('datetime', { name: 'last_update', nullable: true })
   lastUpdate: Date | null
