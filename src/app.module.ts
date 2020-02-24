@@ -7,6 +7,7 @@ import { DurasiModule } from './durasi/durasi.module'
 import { ReportKehadiranModule } from './report-kehadiran/report-kehadiran.module'
 import { RowsModule } from './rows/rows.module'
 import { SekolahModule } from './sekolah/sekolah.module'
+import { PengaturanLiburModule } from './pengaturan-libur/pengaturan-libur.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { SekolahModule } from './sekolah/sekolah.module'
     ReportKehadiranModule,
     RowsModule,
     SekolahModule,
+    PengaturanLiburModule,
   ],
 })
 export class AppModule {}
