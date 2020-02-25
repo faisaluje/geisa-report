@@ -8,6 +8,8 @@ import { ReportKehadiranModule } from './report-kehadiran/report-kehadiran.modul
 import { RowsModule } from './rows/rows.module'
 import { SekolahModule } from './sekolah/sekolah.module'
 import { PengaturanLiburModule } from './pengaturan-libur/pengaturan-libur.module';
+import { KoreksiStatusKehadiranModule } from './koreksi-status-kehadiran/koreksi-status-kehadiran.module';
+import { DokumenPendukungModule } from './dokumen-pendukung/dokumen-pendukung.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { PengaturanLiburModule } from './pengaturan-libur/pengaturan-libur.modul
     RowsModule,
     SekolahModule,
     PengaturanLiburModule,
+    KoreksiStatusKehadiranModule,
+    DokumenPendukungModule,
   ],
 })
 export class AppModule {}
