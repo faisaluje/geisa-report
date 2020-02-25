@@ -1,4 +1,13 @@
-import { Controller, Get, Req, UseGuards, Post, Body } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Req,
+  UseGuards,
+  Post,
+  Body,
+  Delete,
+  Param,
+} from '@nestjs/common'
 import { PengaturanLiburService } from './pengaturan-libur.service'
 import { PengaturanLibur } from 'src/entities/pengaturanLibur.entity'
 import { AuthGuard } from '@nestjs/passport'
@@ -24,5 +33,10 @@ export class PengaturanLiburController {
       pengaturanLibur,
       req.user,
     )
+  }
+
+  @Delete('/libur/:id')
+  async deletePengaturanLibur(@Param('id') id: string): Promise<boolean> {
+    return await this.pengaturanLiburService.deletePengaturanLibur(id)
   }
 }

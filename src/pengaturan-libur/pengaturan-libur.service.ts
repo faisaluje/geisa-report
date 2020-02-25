@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, Logger } from '@nestjs/common'
+import {
+  Injectable,
+  BadRequestException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PengaturanLibur } from 'src/entities/pengaturanLibur.entity'
 import { Repository } from 'typeorm'
@@ -52,7 +57,7 @@ export class PengaturanLiburService {
         data.id = id.toUpperCase()
       }
 
-      data.jenjang = data.jenjang
+      data.jenjang = JSON.stringify(data.jenjang)
       data.jenisLiburId = user.peran
       data.kodeWilayah = user.kodeWilayah
       data.updatedBy = user.username
@@ -60,6 +65,20 @@ export class PengaturanLiburService {
     } catch (e) {
       logger.error(e.toString())
       throw new BadRequestException()
+    }
+  }
+
+  async deletePengaturanLibur(id: string): Promise<boolean> {
+    try {
+      const record = await this.pengaturanLiburRepo.delete({ id })
+      if (record) {
+        return true
+      } else {
+        throw new NotFoundException()
+      }
+    } catch (e) {
+      logger.error(e.toString())
+      throw new NotFoundException()
     }
   }
 }

@@ -33,7 +33,7 @@ export class AuthService {
         id: userSekolah.penggunaId,
         nama: userSekolah.nama,
         username: userSekolah.username,
-        peran: 1, // sekolah
+        peran: 99, // sekolah
         kodeWilayah: await this.getKodeWilayahBySekolah(userSekolah.username),
       }
     } else {
