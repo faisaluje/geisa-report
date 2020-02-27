@@ -6,6 +6,9 @@ export class DokumenPendukung {
   @Column('varchar', { primary: true, name: 'nama_file', length: 128 })
   namaFile: string
 
+  @Column('varchar', { name: 'name_original', length: 255 })
+  nameOriginal: string
+
   @Column('int', { name: 'koreksi_status_id' })
   koreksiStatusId: number
 

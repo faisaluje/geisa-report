@@ -7,9 +7,12 @@ import { DurasiModule } from './durasi/durasi.module'
 import { ReportKehadiranModule } from './report-kehadiran/report-kehadiran.module'
 import { RowsModule } from './rows/rows.module'
 import { SekolahModule } from './sekolah/sekolah.module'
-import { PengaturanLiburModule } from './pengaturan-libur/pengaturan-libur.module';
-import { KoreksiStatusKehadiranModule } from './koreksi-status-kehadiran/koreksi-status-kehadiran.module';
-import { DokumenPendukungModule } from './dokumen-pendukung/dokumen-pendukung.module';
+import { PengaturanLiburModule } from './pengaturan-libur/pengaturan-libur.module'
+import { KoreksiStatusKehadiranModule } from './koreksi-status-kehadiran/koreksi-status-kehadiran.module'
+import { DokumenPendukungModule } from './dokumen-pendukung/dokumen-pendukung.module'
+import { DataGuruModule } from './data-guru/data-guru.module'
+import { StatusKehadiranModule } from './status-kehadiran/status-kehadiran.module'
+import { AlasanPenolakanModule } from './alasan-penolakan/alasan-penolakan.module'
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import { DokumenPendukungModule } from './dokumen-pendukung/dokumen-pendukung.mo
     PengaturanLiburModule,
     KoreksiStatusKehadiranModule,
     DokumenPendukungModule,
+    DataGuruModule,
+    StatusKehadiranModule,
+    AlasanPenolakanModule,
   ],
 })
 export class AppModule {}

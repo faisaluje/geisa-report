@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 @Entity('koreksi_status_kehadiran', { schema: 'geisa' })
 export class KoreksiStatusKehadiran {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'koreksi_status_id' })
-  koreksiStatusId: string
+  koreksiStatusId: number
 
   @Column('varchar', {
     name: 'no_koreksi',
@@ -35,13 +35,13 @@ export class KoreksiStatusKehadiran {
   statusKehadiranKoreksi: number | null
 
   @Column('date', { name: 'tgl_kehadiran_dari', nullable: true })
-  tglKehadiranDari: string | null
+  tglKehadiranDari: Date | null
 
   @Column('date', { name: 'tgl_kehadiran_sampai', nullable: true })
-  tglKehadiranSampai: string | null
+  tglKehadiranSampai: Date | null
 
   @Column('date', { name: 'tgl_pengajuan' })
-  tglPengajuan: string
+  tglPengajuan: Date
 
   @Column('time', { name: 'waktu_datang_awal', nullable: true })
   waktuDatangAwal: string | null
@@ -68,7 +68,7 @@ export class KoreksiStatusKehadiran {
   userIdPemeriksa: number | null
 
   @Column('date', { name: 'tgl_diperiksa', nullable: true })
-  tglDiperiksa: string | null
+  tglDiperiksa: Date | null
 
   @Column('varchar', {
     name: 'catatan_dari_pengusul',

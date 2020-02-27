@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
 import { Repository } from 'typeorm'
@@ -6,6 +11,11 @@ import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
+import { FileDto } from 'src/dto/file.dto'
+import * as moment from 'moment'
+import { DokumenPendukungService } from 'src/dokumen-pendukung/dokumen-pendukung.service'
+import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
+import { Dataguru } from 'src/entities/dataguru.entity'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -16,6 +26,9 @@ export class KoreksiStatusKehadiranService {
     private readonly koreksiStatusKehadiranRepo: Repository<
       KoreksiStatusKehadiran
     >,
+    @InjectRepository(Dataguru)
+    private readonly dataGuruRepo: Repository<Dataguru>,
+    private readonly dokumenPendukungService: DokumenPendukungService,
   ) {}
 
   async getKoreksiStatusKehadiran(
@@ -95,5 +108,68 @@ export class KoreksiStatusKehadiranService {
     }
 
     return await rows.getResult()
+  }
+
+  async upsertKoreksiStatusKehadiran(
+    user: UserDto,
+    data: KoreksiStatusKehadiran,
+    files: FileDto[],
+  ): Promise<KoreksiStatusDto> {
+    logger.log(data)
+    try {
+      let koreksiStatus: KoreksiStatusKehadiran
+      if (data.koreksiStatusId) {
+        koreksiStatus = await this.koreksiStatusKehadiranRepo.findOne()
+      }
+
+      if (!koreksiStatus || !data.koreksiStatusId) {
+        koreksiStatus = new KoreksiStatusKehadiran()
+        koreksiStatus.noKoreksi = await this.generateNoKoreksi()
+        koreksiStatus.userIdPengusul = user.id
+        koreksiStatus.tglPengajuan = new Date()
+        koreksiStatus.statusPengajuan = 1
+      } else {
+        koreksiStatus.lastUpdate = new Date()
+        // tslint:disable-next-line: radix
+        koreksiStatus.userIdPemeriksa = parseInt(user.id)
+        koreksiStatus.tglDiperiksa = new Date()
+      }
+
+      const result = await this.koreksiStatusKehadiranRepo.save(koreksiStatus)
+      if (result) {
+        const resultFiles = await this.dokumenPendukungService.insertDokumenPendukungs(
+          files,
+          user,
+          result.koreksiStatusId,
+        )
+        logger.log(resultFiles)
+
+        return {
+          koreksiStatusId: result.koreksiStatusId,
+          gtkSelected: await this.dataGuruRepo.findOne(result.idDapodik),
+          tglKehadiranDari: result.tglKehadiranDari.getTime(),
+          jenisKoreksi: result.jenisKoreksi,
+          statusPengajuan: result.statusPengajuan,
+        }
+      }
+    } catch (e) {
+      logger.error(e.toString())
+      this.dokumenPendukungService.deleteFile(files.map(val => val.filename))
+      throw new BadRequestException()
+    }
+  }
+
+  async generateNoKoreksi(): Promise<string> {
+    let noUrut: number
+    try {
+      noUrut = await this.koreksiStatusKehadiranRepo.count()
+    } catch (e) {
+      logger.warn(e.toString())
+      noUrut = 0
+    }
+
+    const dateFormat = moment().format('YYYYMM')
+
+    return `${dateFormat}${noUrut.toString().padStart(6, '0')}`
   }
 }

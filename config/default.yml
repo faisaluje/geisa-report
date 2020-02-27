@@ -16,3 +16,6 @@ jwt:
 
 mailer:
   smtp: 'smtp://noreply.opstore@gmail.com:4iDT00Vh@smtp.gmail.com'
+
+upload:
+  path: 'uploads/'
