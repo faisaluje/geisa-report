@@ -6,15 +6,11 @@ import {
   UseGuards,
   Post,
   Body,
-  UseInterceptors,
-  UploadedFiles,
+  Param,
 } from '@nestjs/common'
 import { KoreksiStatusKehadiranService } from './koreksi-status-kehadiran.service'
 import { PagingDto } from 'src/dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
-import { FilesInterceptor } from '@nestjs/platform-express/multer'
-import { FileDto } from 'src/dto/file.dto'
-import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
 import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
 
 @UseGuards(AuthGuard())
@@ -24,8 +20,22 @@ export class KoreksiStatusKehadiranController {
     private readonly koreksiStatusKehadiranService: KoreksiStatusKehadiranService,
   ) {}
 
+  @Get('/no-urut')
+  async getNoUrut(): Promise<string> {
+    return await this.koreksiStatusKehadiranService.generateNoKoreksi()
+  }
+
+  @Get('/:id')
+  async getKoreksiStatusKehadiranOne(
+    @Param('id') id: number,
+  ): Promise<KoreksiStatusDto> {
+    return await this.koreksiStatusKehadiranService.getKoreksiStatusKehadiranOne(
+      id,
+    )
+  }
+
   @Get('/')
-  async getKoreksuStatusKehadiran(
+  async getKoreksiStatusKehadiran(
     @Query() query: any,
     @Req() req: any,
   ): Promise<PagingDto> {
@@ -36,16 +46,13 @@ export class KoreksiStatusKehadiranController {
   }
 
   @Post('/')
-  @UseInterceptors(FilesInterceptor('files'))
   async upsertKoreksiStatusKehadiran(
-    @UploadedFiles() files: FileDto[],
-    @Body() data: any,
+    @Body() data: KoreksiStatusDto,
     @Req() req: any,
   ): Promise<KoreksiStatusDto> {
     return await this.koreksiStatusKehadiranService.upsertKoreksiStatusKehadiran(
       req.user,
       data,
-      files,
     )
   }
 }

@@ -21,7 +21,7 @@ export class DataGuruService {
       .createQueryBuilder('gtk')
       .select('gtk.id', 'id')
       .addSelect('gtk.id_dapodik', 'idDapodik')
-      .addSelect('gtk.nama_dapodik', 'nama')
+      .addSelect('gtk.nama_dapodik', 'namaDapodik')
       .addSelect('gtk.tanggal_lahir', 'tglLahir')
       .addSelect('gtk.nuptk', 'nuptk')
       .addSelect('gtk.nip', 'nip')

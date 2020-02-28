@@ -1,7 +1,7 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, BaseEntity } from 'typeorm'
 
 @Entity('ref_status_pengajuan', { schema: 'geisa' })
-export class RefStatusPengajuan {
+export class RefStatusPengajuan extends BaseEntity {
   @Column('int', { primary: true, name: 'status_id' })
   statusId: number
 

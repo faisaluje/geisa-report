@@ -6,16 +6,18 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
-import { Repository } from 'typeorm'
+import { Repository, Between } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
-import { FileDto } from 'src/dto/file.dto'
 import * as moment from 'moment'
 import { DokumenPendukungService } from 'src/dokumen-pendukung/dokumen-pendukung.service'
 import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
 import { Dataguru } from 'src/entities/dataguru.entity'
+import { Sekolah } from 'src/entities/sekolah.entity'
+import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
+import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -110,16 +112,71 @@ export class KoreksiStatusKehadiranService {
     return await rows.getResult()
   }
 
+  async getKoreksiStatusKehadiranOne(id: number): Promise<KoreksiStatusDto> {
+    try {
+      const row = await this.koreksiStatusKehadiranRepo.findOneOrFail(id)
+      const gtk = await this.dataGuruRepo.findOneOrFail({
+        idDapodik: row.idDapodik,
+      })
+      const sekolah = await Sekolah.findOneOrFail(row.sekolahId)
+
+      return {
+        koreksiStatusId: row.koreksiStatusId,
+        noKoreksi: row.noKoreksi,
+        gtkSelected: gtk,
+        sekolah,
+        tglKehadiranDari: new Date(row.tglKehadiranDari).getTime(),
+        tglKehadiranSampai: row.tglKehadiranSampai
+          ? new Date(row.tglKehadiranSampai).getTime()
+          : null,
+        jenisKoreksi: row.jenisKoreksi,
+        statusKehadiranAwal: await RefStatusKehadiran.findOne(
+          row.statusKehadiranAwal,
+        ),
+        statusKehadiranKoreksi: await RefStatusKehadiran.findOne(
+          row.statusKehadiranKoreksi,
+        ),
+        waktuDatangAwal: row.waktuDatangAwal
+          ? new Date(`2020-02-02 ${row.waktuDatangAwal}`).getTime()
+          : null,
+        waktuDatangKoreksi: row.waktuDatangKoreksi
+          ? new Date(`2020-02-02 ${row.waktuDatangKoreksi}`).getTime()
+          : null,
+        waktuPulangAwal: row.waktuPulangAwal
+          ? new Date(`2020-02-02 ${row.waktuPulangAwal}`).getTime()
+          : null,
+        waktuPulangKoreksi: row.waktuPulangKoreksi
+          ? new Date(`2020-02-02 ${row.waktuPulangKoreksi}`).getTime()
+          : null,
+        jenisIzin: row.jenisIzin ? row.jenisIzin : null,
+        statusPengajuan: row.statusPengajuan,
+        catatanDariPengusul: row.catatanDariPengusul,
+        catatanDariPemeriksa: row.catatanDariPemeriksa,
+        alasanPenolakan: await RefAlasanPenolakan.findOne(
+          row.alasanPenolakanId,
+        ),
+        dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
+          row.koreksiStatusId,
+        ),
+      }
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
+  }
+
   async upsertKoreksiStatusKehadiran(
     user: UserDto,
-    data: KoreksiStatusKehadiran,
-    files: FileDto[],
+    data: KoreksiStatusDto,
   ): Promise<KoreksiStatusDto> {
     logger.log(data)
     try {
+      const sekolah = await Sekolah.findOne(data.gtkSelected.sekolahId)
       let koreksiStatus: KoreksiStatusKehadiran
       if (data.koreksiStatusId) {
-        koreksiStatus = await this.koreksiStatusKehadiranRepo.findOne()
+        koreksiStatus = await this.koreksiStatusKehadiranRepo.findOne(
+          data.koreksiStatusId,
+        )
       }
 
       if (!koreksiStatus || !data.koreksiStatusId) {
@@ -130,31 +187,87 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.statusPengajuan = 1
       } else {
         koreksiStatus.lastUpdate = new Date()
-        // tslint:disable-next-line: radix
-        koreksiStatus.userIdPemeriksa = parseInt(user.id)
-        koreksiStatus.tglDiperiksa = new Date()
+        if (data.statusPengajuan !== 1) {
+          // tslint:disable-next-line: radix
+          koreksiStatus.userIdPemeriksa = parseInt(user.id)
+          koreksiStatus.tglDiperiksa = new Date()
+          koreksiStatus.statusPengajuan = data.statusPengajuan
+        }
       }
+
+      koreksiStatus.idDapodik = data.gtkSelected.idDapodik
+      koreksiStatus.nama = data.gtkSelected.namaDapodik
+      koreksiStatus.namaSekolah = sekolah.nama
+      koreksiStatus.sekolahId = sekolah.sekolahId
+      koreksiStatus.jenisKoreksi = data.jenisKoreksi
+      koreksiStatus.statusKehadiranAwal = data.statusKehadiranAwal
+        ? data.statusKehadiranAwal.statusKehadiranId
+        : null
+      koreksiStatus.statusKehadiranKoreksi = data.statusKehadiranKoreksi
+        ? data.statusKehadiranKoreksi.statusKehadiranId
+        : null
+      koreksiStatus.tglKehadiranDari = new Date(data.tglKehadiranDari)
+      koreksiStatus.tglKehadiranSampai = data.tglKehadiranSampai
+        ? new Date(data.tglKehadiranSampai)
+        : null
+      koreksiStatus.waktuDatangAwal = data.waktuDatangAwal
+        ? moment(data.waktuDatangAwal).format('HH:mm:ss')
+        : null
+      koreksiStatus.waktuDatangKoreksi = data.waktuDatangKoreksi
+        ? moment(data.waktuDatangKoreksi).format('HH:mm:ss')
+        : null
+      koreksiStatus.waktuPulangAwal = data.waktuPulangAwal
+        ? moment(data.waktuPulangAwal).format('HH:mm:ss')
+        : null
+      koreksiStatus.waktuPulangKoreksi = data.waktuPulangKoreksi
+        ? moment(data.waktuPulangKoreksi).format('HH:mm:ss')
+        : null
+      koreksiStatus.jenisIzin = data.jenisIzin ? data.jenisIzin : null
+      koreksiStatus.catatanDariPengusul = data.catatanDariPengusul
+      koreksiStatus.catatanDariPemeriksa = data.catatanDariPemeriksa
+      koreksiStatus.alasanPenolakanId = data.alasanPenolakan
+        ? data.alasanPenolakan.alasanPenolakanId
+        : null
+      koreksiStatus.updatedBy = user.username
 
       const result = await this.koreksiStatusKehadiranRepo.save(koreksiStatus)
       if (result) {
-        const resultFiles = await this.dokumenPendukungService.insertDokumenPendukungs(
-          files,
-          user,
-          result.koreksiStatusId,
-        )
-        logger.log(resultFiles)
-
         return {
           koreksiStatusId: result.koreksiStatusId,
-          gtkSelected: await this.dataGuruRepo.findOne(result.idDapodik),
+          noKoreksi: result.noKoreksi,
+          gtkSelected: data.gtkSelected,
+          sekolah,
           tglKehadiranDari: result.tglKehadiranDari.getTime(),
+          tglKehadiranSampai: result.tglKehadiranSampai
+            ? result.tglKehadiranSampai.getTime()
+            : null,
           jenisKoreksi: result.jenisKoreksi,
+          statusKehadiranAwal: data.statusKehadiranAwal
+            ? data.statusKehadiranAwal
+            : null,
+          statusKehadiranKoreksi: data.statusKehadiranKoreksi
+            ? data.statusKehadiranKoreksi
+            : null,
+          waktuDatangAwal: data.waktuDatangAwal ? data.waktuDatangAwal : null,
+          waktuDatangKoreksi: data.waktuDatangKoreksi
+            ? data.waktuDatangKoreksi
+            : null,
+          waktuPulangAwal: data.waktuPulangAwal ? data.waktuPulangAwal : null,
+          waktuPulangKoreksi: data.waktuPulangKoreksi
+            ? data.waktuPulangKoreksi
+            : null,
+          jenisIzin: result.jenisIzin ? result.jenisIzin : null,
           statusPengajuan: result.statusPengajuan,
+          catatanDariPengusul: result.catatanDariPengusul,
+          catatanDariPemeriksa: result.catatanDariPemeriksa,
+          alasanPenolakan: data.alasanPenolakan ? data.alasanPenolakan : null,
+          dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
+            result.koreksiStatusId,
+          ),
         }
       }
     } catch (e) {
       logger.error(e.toString())
-      this.dokumenPendukungService.deleteFile(files.map(val => val.filename))
       throw new BadRequestException()
     }
   }
@@ -162,12 +275,18 @@ export class KoreksiStatusKehadiranService {
   async generateNoKoreksi(): Promise<string> {
     let noUrut: number
     try {
-      noUrut = await this.koreksiStatusKehadiranRepo.count()
+      noUrut = await this.koreksiStatusKehadiranRepo.count({
+        tglPengajuan: Between(
+          moment().format('YYYY-MM-01'),
+          moment().format(`YYYY-MM-31`),
+        ),
+      })
     } catch (e) {
       logger.warn(e.toString())
       noUrut = 0
     }
 
+    noUrut += 1
     const dateFormat = moment().format('YYYYMM')
 
     return `${dateFormat}${noUrut.toString().padStart(6, '0')}`

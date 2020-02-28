@@ -1,6 +1,6 @@
 export class FileDto {
   fieldName: string
-  originalName: string
+  originalname: string
   encoding: string
   mimetype: string
   destination: string

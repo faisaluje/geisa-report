@@ -13,6 +13,8 @@ import { DokumenPendukungModule } from './dokumen-pendukung/dokumen-pendukung.mo
 import { DataGuruModule } from './data-guru/data-guru.module'
 import { StatusKehadiranModule } from './status-kehadiran/status-kehadiran.module'
 import { AlasanPenolakanModule } from './alasan-penolakan/alasan-penolakan.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 
 @Module({
   imports: [
@@ -29,6 +31,9 @@ import { AlasanPenolakanModule } from './alasan-penolakan/alasan-penolakan.modul
     DataGuruModule,
     StatusKehadiranModule,
     AlasanPenolakanModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+    }),
   ],
 })
 export class AppModule {}

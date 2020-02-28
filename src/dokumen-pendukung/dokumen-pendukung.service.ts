@@ -33,7 +33,7 @@ export class DokumenPendukungService {
     }
   }
 
-  async insertDokumenPendukungs(
+  async addDokumenPendukungs(
     files: FileDto[],
     user: UserDto,
     koreksiStatusId: number,
@@ -41,7 +41,7 @@ export class DokumenPendukungService {
     try {
       const rows = files.map(file => ({
         namaFile: file.filename,
-        nameOriginal: file.originalName,
+        nameOriginal: file.originalname,
         koreksiStatusId,
         updatedBy: user.username,
       }))

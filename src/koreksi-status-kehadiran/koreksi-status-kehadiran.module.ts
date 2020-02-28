@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
 import { PassportModule } from '@nestjs/passport'
 import { RowsModule } from 'src/rows/rows.module'
-import { MulterModule } from '@nestjs/platform-express/multer'
 import * as config from 'config'
 import { DokumenPendukungModule } from 'src/dokumen-pendukung/dokumen-pendukung.module'
 import { Dataguru } from 'src/entities/dataguru.entity'
@@ -16,7 +15,6 @@ const uploadConfig = config.get('upload')
   imports: [
     RowsModule,
     DokumenPendukungModule,
-    MulterModule.register({ dest: uploadConfig.path }),
     TypeOrmModule.forFeature([KoreksiStatusKehadiran, Dataguru]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
