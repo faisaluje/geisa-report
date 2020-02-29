@@ -43,6 +43,7 @@ export class DokumenPendukungService {
         namaFile: file.filename,
         nameOriginal: file.originalname,
         koreksiStatusId,
+        mimetype: file.mimetype,
         updatedBy: user.username,
       }))
 

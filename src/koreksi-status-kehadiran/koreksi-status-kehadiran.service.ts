@@ -100,7 +100,7 @@ export class KoreksiStatusKehadiranService {
       })
     }
 
-    query.orderBy('koreksi.tgl_pengajuan', 'DESC')
+    query.orderBy('koreksi.no_koreksi', 'DESC')
 
     const rows = new RowsService(query)
 
@@ -191,13 +191,20 @@ export class KoreksiStatusKehadiranService {
       } else {
         koreksiStatus.lastUpdate = new Date()
         if (data.statusPengajuan !== 1) {
-          // tslint:disable-next-line: radix
-          koreksiStatus.userIdPemeriksa = parseInt(user.id)
-          koreksiStatus.tglDiperiksa = new Date()
-          koreksiStatus.statusPengajuan = data.statusPengajuan
-          koreksiStatus.alasanPenolakanId = data.alasanPenolakan
-            ? data.alasanPenolakan.alasanPenolakanId
-            : null
+          if (user.peran === 99) {
+            koreksiStatus.userIdPengusul = user.id
+            koreksiStatus.tglPengajuan = new Date()
+            koreksiStatus.statusPengajuan = 1
+            koreksiStatus.alasanPenolakanId = null
+          } else {
+            // tslint:disable-next-line: radix
+            koreksiStatus.userIdPemeriksa = parseInt(user.id)
+            koreksiStatus.tglDiperiksa = new Date()
+            koreksiStatus.statusPengajuan = data.statusPengajuan
+            koreksiStatus.alasanPenolakanId = data.alasanPenolakan
+              ? data.alasanPenolakan.alasanPenolakanId
+              : null
+          }
         }
       }
 

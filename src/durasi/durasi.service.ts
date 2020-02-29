@@ -83,8 +83,13 @@ export class DurasiService {
       }))
 
       logger.log(rows)
-
-      return await this.pengaturanDurasiRepo.save(rows)
+      const result = await this.pengaturanDurasiRepo.save(rows)
+      if (result) {
+        await getConnection().query(
+          `call p_update_libur_mingguan('${user.kodeWilayah}', ${user.peran})`,
+        )
+      }
+      return result
     } catch (e) {
       logger.error(e)
       throw new ForbiddenException()

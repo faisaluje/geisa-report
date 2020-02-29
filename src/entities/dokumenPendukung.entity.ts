@@ -12,6 +12,9 @@ export class DokumenPendukung {
   @Column('int', { name: 'koreksi_status_id' })
   koreksiStatusId: number
 
+  @Column('varchar', { name: 'mimetype' })
+  mimetype: string
+
   @Column('datetime', { name: 'last_update', nullable: true })
   lastUpdate: Date | null
 

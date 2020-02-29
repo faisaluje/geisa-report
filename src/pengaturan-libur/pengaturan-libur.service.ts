@@ -6,9 +6,10 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PengaturanLibur } from 'src/entities/pengaturanLibur.entity'
-import { Repository } from 'typeorm'
+import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { v4 as uuid } from 'uuid'
+import moment = require('moment')
 
 const logger = new Logger('pengaturan-libur-service')
 
@@ -61,7 +62,15 @@ export class PengaturanLiburService {
       data.jenisLiburId = user.peran
       data.kodeWilayah = user.kodeWilayah
       data.updatedBy = user.username
-      return await this.pengaturanLiburRepo.save(data)
+      data.tanggal = moment(data.tanggal).format('YYYY-MM-DD')
+
+      const result = await this.pengaturanLiburRepo.save(data)
+      if (result) {
+        await getConnection().query(
+          `call p_update_liburdaerah('${user.kodeWilayah}', ${user.peran})`,
+        )
+      }
+      return result
     } catch (e) {
       logger.error(e.toString())
       throw new BadRequestException()
