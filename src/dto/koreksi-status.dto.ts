@@ -9,6 +9,7 @@ export class KoreksiStatusDto {
   noKoreksi?: string
   gtkSelected: Dataguru
   sekolah?: Sekolah
+  tglPengajuan?: number
   tglKehadiranDari: number
   tglKehadiranSampai?: number
   jenisKoreksi: number

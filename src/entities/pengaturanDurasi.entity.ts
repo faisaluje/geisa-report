@@ -1,7 +1,7 @@
-import { Column, Entity, BaseEntity } from 'typeorm'
+import { Column, Entity } from 'typeorm'
 
 @Entity('pengaturan_durasi', { schema: 'geisa' })
-export class PengaturanDurasi extends BaseEntity {
+export class PengaturanDurasi {
   @Column('varchar', { primary: true, name: 'kode_wilayah', length: 8 })
   kodeWilayah: string
 

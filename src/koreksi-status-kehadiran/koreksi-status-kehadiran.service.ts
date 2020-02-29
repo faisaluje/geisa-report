@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
-import { Repository, Between } from 'typeorm'
+import { Repository, Between, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { PagingDto } from 'src/dto/paging.dto'
@@ -125,6 +125,9 @@ export class KoreksiStatusKehadiranService {
         noKoreksi: row.noKoreksi,
         gtkSelected: gtk,
         sekolah,
+        tglPengajuan: row.tglPengajuan
+          ? new Date(row.tglPengajuan).getTime()
+          : null,
         tglKehadiranDari: new Date(row.tglKehadiranDari).getTime(),
         tglKehadiranSampai: row.tglKehadiranSampai
           ? new Date(row.tglKehadiranSampai).getTime()
@@ -192,6 +195,9 @@ export class KoreksiStatusKehadiranService {
           koreksiStatus.userIdPemeriksa = parseInt(user.id)
           koreksiStatus.tglDiperiksa = new Date()
           koreksiStatus.statusPengajuan = data.statusPengajuan
+          koreksiStatus.alasanPenolakanId = data.alasanPenolakan
+            ? data.alasanPenolakan.alasanPenolakanId
+            : null
         }
       }
 
@@ -232,11 +238,19 @@ export class KoreksiStatusKehadiranService {
 
       const result = await this.koreksiStatusKehadiranRepo.save(koreksiStatus)
       if (result) {
+        if (result.statusPengajuan === 2) {
+          await getConnection().query(
+            `call p_koreksi_kehadiran(${result.koreksiStatusId})`,
+          )
+        }
         return {
           koreksiStatusId: result.koreksiStatusId,
           noKoreksi: result.noKoreksi,
           gtkSelected: data.gtkSelected,
           sekolah,
+          tglPengajuan: result.tglPengajuan
+            ? new Date(result.tglPengajuan).getTime()
+            : null,
           tglKehadiranDari: result.tglKehadiranDari.getTime(),
           tglKehadiranSampai: result.tglKehadiranSampai
             ? result.tglKehadiranSampai.getTime()

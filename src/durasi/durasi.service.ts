@@ -24,7 +24,9 @@ export class DurasiService {
       return null
     }
 
-    const pengaturanDurasi = await PengaturanDurasi.find({ kodeWilayah })
+    const pengaturanDurasi = await this.pengaturanDurasiRepo.find({
+      kodeWilayah,
+    })
     if (pengaturanDurasi.length === 0) {
       return this.initPengaturanDurasi(kodeWilayah, user.username)
     } else {
@@ -72,15 +74,17 @@ export class DurasiService {
       return null
     }
 
-    data.forEach(async val => {
-      val.updatedBy = user.username
-      val.lastUpdate = new Date()
-      val.kodeWilayah = user.kodeWilayah
-      delete val.createDate
-    })
-
     try {
-      return await this.pengaturanDurasiRepo.save(data)
+      const rows: PengaturanDurasi[] = data.map(val => ({
+        ...val,
+        updatedBy: user.username,
+        lastUpdate: new Date(),
+        kodeWilayah: user.kodeWilayah,
+      }))
+
+      logger.log(rows)
+
+      return await this.pengaturanDurasiRepo.save(rows)
     } catch (e) {
       logger.error(e)
       throw new ForbiddenException()
