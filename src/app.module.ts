@@ -15,6 +15,7 @@ import { StatusKehadiranModule } from './status-kehadiran/status-kehadiran.modul
 import { AlasanPenolakanModule } from './alasan-penolakan/alasan-penolakan.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { join } from 'path'
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
     }),
+    RekapHarianModule,
   ],
 })
 export class AppModule {}

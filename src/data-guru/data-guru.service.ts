@@ -52,15 +52,31 @@ export class DataGuruService {
   }
 
   async getDataGuru(user: UserDto, request: any): Promise<PagingDto> {
-    const { id } = user
+    const { id, peran, kodeWilayah } = user
 
     try {
-      const pengguna = await Pengguna.findOneOrFail(id)
+      const query = this.getDataGuruQuery()
 
-      const query = this.getDataGuruQuery().where(
-        'gtk.sekolah_id = :sekolahId',
-        { sekolahId: pengguna.sekolahId },
-      )
+      switch (peran) {
+        case 2:
+          query.where('sekolah.kode_wilayah_kabupaten_kota = :kodeWilayah', {
+            kodeWilayah,
+          })
+          break
+        case 3:
+          query.where('sekolah.kode_wilayah_provinsi = :kodeWilayah', {
+            kodeWilayah,
+          })
+          break
+        case 99:
+          const pengguna = await Pengguna.findOneOrFail(id)
+          query.where('gtk.sekolah_id = :sekolahId', {
+            sekolahId: pengguna.sekolahId,
+          })
+          break
+        default:
+          query.where('gtk.sekolah_id IS NOT NULL')
+      }
 
       if (request.nip) {
         query.andWhere('gtk.nip = :nip', { nip: request.nip })
