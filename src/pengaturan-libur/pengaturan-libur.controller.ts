@@ -36,7 +36,10 @@ export class PengaturanLiburController {
   }
 
   @Delete('/libur/:id')
-  async deletePengaturanLibur(@Param('id') id: string): Promise<boolean> {
-    return await this.pengaturanLiburService.deletePengaturanLibur(id)
+  async deletePengaturanLibur(
+    @Param('id') id: string,
+    @Req() req: any,
+  ): Promise<boolean> {
+    return await this.pengaturanLiburService.deletePengaturanLibur(req.user, id)
   }
 }

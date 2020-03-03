@@ -77,10 +77,13 @@ export class PengaturanLiburService {
     }
   }
 
-  async deletePengaturanLibur(id: string): Promise<boolean> {
+  async deletePengaturanLibur(user: UserDto, id: string): Promise<boolean> {
     try {
       const record = await this.pengaturanLiburRepo.delete({ id })
       if (record) {
+        await getConnection().query(
+          `call p_update_liburdaerah('${user.kodeWilayah}', ${user.peran})`,
+        )
         return true
       } else {
         throw new NotFoundException()
