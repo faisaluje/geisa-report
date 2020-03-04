@@ -5,7 +5,7 @@ export class RefStatusKehadiran extends BaseEntity {
   @Column('int', {
     primary: true,
     name: 'status_kehadiran_id',
-    default: () => '0',
+    default: () => 0,
   })
   statusKehadiranId: number
 
@@ -39,7 +39,13 @@ export class RefStatusKehadiran extends BaseEntity {
   @Column('tinyint', {
     name: 'status_koreksi',
     nullable: true,
-    default: () => '0',
+    default: () => 0,
   })
   statusKoreksi: number | null
+
+  @Column('tinyint', { name: 'absensi_manual', nullable: true })
+  absensiManual: number | null
+
+  @Column('int', { name: 'maksimal_hari', nullable: true })
+  maksimalHari: number | null
 }
