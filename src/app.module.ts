@@ -16,6 +16,7 @@ import { AlasanPenolakanModule } from './alasan-penolakan/alasan-penolakan.modul
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
+import { LogMesinModule } from './log-mesin/log-mesin.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
       rootPath: join(__dirname, '..', 'uploads'),
     }),
     RekapHarianModule,
+    LogMesinModule,
   ],
 })
 export class AppModule {}
