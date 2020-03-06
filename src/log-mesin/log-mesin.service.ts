@@ -31,7 +31,11 @@ export class LogMesinService {
       queryLogs.where('sekolah.npsn = :npsn', { npsn: query.npsn })
     }
 
-    queryLogs.orderBy('date_insert', 'DESC')
+    queryLogs.orderBy({
+      'log.date_insert': 'DESC',
+      'log.date_time': 'DESC',
+      'log.nama_pada_dapodik': 'ASC',
+    })
 
     try {
       const rows = new RowsService(queryLogs)
