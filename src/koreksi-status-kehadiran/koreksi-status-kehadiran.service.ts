@@ -42,7 +42,7 @@ export class KoreksiStatusKehadiranService {
       return null
     }
 
-    const query = this.koreksiStatusKehadiranRepo
+    let query = this.koreksiStatusKehadiranRepo
       .createQueryBuilder('koreksi')
       .select('koreksi.koreksi_status_id', 'id')
       .addSelect('koreksi.no_koreksi', 'noKoreksi')
@@ -63,36 +63,7 @@ export class KoreksiStatusKehadiranService {
         'koreksi.status_pengajuan = status_pengajuan.status_id',
       )
 
-    if (peran === 2) {
-      // Dinas Kab/kota
-      query.where('sekolah.kode_wilayah_kabupaten_kota = :kodeWilayah', {
-        kodeWilayah,
-      })
-      query.andWhere('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', {
-        bentukPendidikanId: [1, 2, 3, 4, 5, 6],
-      })
-    } else if (peran === 3) {
-      // Dinas Provinsi
-      query.where('sekolah.kode_wilayah_provinsi = :kodeWilayah', {
-        kodeWilayah,
-      })
-      if (kodeWilayah !== '010000') {
-        query.andWhere('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', {
-          bentukPendidikanId: [7, 8, 13, 14, 15, 29],
-        })
-      }
-    } else if (peran === 99) {
-      // Sekolah
-      try {
-        const pengguna = await Pengguna.findOne(user.id)
-        query.where('koreksi.sekolah_id = :sekolahId', {
-          sekolahId: pengguna.sekolahId,
-        })
-      } catch (e) {
-        logger.error(e.toString())
-        throw new NotFoundException()
-      }
-    }
+    query = await RowsService.addLimitByPeran(query, user, 'koreksi')
 
     if (request.noKoreksi) {
       query.andWhere('koreksi.no_koreksi = :noKoreksi', {

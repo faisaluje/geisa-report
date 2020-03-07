@@ -17,6 +17,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
 import { LogMesinModule } from './log-mesin/log-mesin.module';
+import { AbsensiManualModule } from './absensi-manual/absensi-manual.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { LogMesinModule } from './log-mesin/log-mesin.module';
     }),
     RekapHarianModule,
     LogMesinModule,
+    AbsensiManualModule,
   ],
 })
 export class AppModule {}
