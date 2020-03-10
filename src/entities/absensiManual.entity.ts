@@ -16,7 +16,7 @@ export class AbsensiManual {
   sekolahId: string
 
   @Column('date', { name: 'tanggal' })
-  tanggal: string
+  tanggal: Date
 
   @Column('varchar', { name: 'serial_number', nullable: true, length: 32 })
   serialNumber: string | null

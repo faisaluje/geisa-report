@@ -1,17 +1,10 @@
-import {
-  Injectable,
-  NotFoundException,
-  Logger,
-  BadRequestException,
-} from '@nestjs/common'
+import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { AbsensiManualDetail } from 'src/entities/absensiManualDetail.entity'
 import { Repository } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { Dataguru } from 'src/entities/dataguru.entity'
-import { RowsService } from 'src/rows/rows.service'
-import { PagingDto } from 'src/dto/paging.dto'
 
 const logger = new Logger('absensi-manual-detail-service')
 
