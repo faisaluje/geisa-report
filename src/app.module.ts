@@ -18,6 +18,7 @@ import { join } from 'path'
 import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
 import { LogMesinModule } from './log-mesin/log-mesin.module';
 import { AbsensiManualModule } from './absensi-manual/absensi-manual.module';
+import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manual-detail.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AbsensiManualModule } from './absensi-manual/absensi-manual.module';
     RekapHarianModule,
     LogMesinModule,
     AbsensiManualModule,
+    AbsensiManualDetailModule,
   ],
 })
 export class AppModule {}

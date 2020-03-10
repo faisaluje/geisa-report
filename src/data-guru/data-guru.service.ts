@@ -51,7 +51,7 @@ export class DataGuruService {
     return await query.getRawOne()
   }
 
-  async getDataGuru(user: UserDto, request: any): Promise<PagingDto> {
+  async getDataGuru(user: UserDto, request?: any): Promise<PagingDto> {
     const { id, peran, kodeWilayah } = user
 
     try {
@@ -78,23 +78,26 @@ export class DataGuruService {
           query.where('gtk.sekolah_id IS NOT NULL')
       }
 
-      if (request.nip) {
-        query.andWhere('gtk.nip = :nip', { nip: request.nip })
-      }
+      if (request) {
+        if (request.nip) {
+          query.andWhere('gtk.nip = :nip', { nip: request.nip })
+        }
 
-      if (request.nuptk) {
-        query.andWhere('gtk.nuptk = :nuptk', { nuptk: request.nuptk })
-      }
+        if (request.nuptk) {
+          query.andWhere('gtk.nuptk = :nuptk', { nuptk: request.nuptk })
+        }
 
-      if (request.nama) {
-        query.andWhere('gtk.nama_dapodik like :nama', {
-          nama: `%${request.nama}%`,
-        })
+        if (request.nama) {
+          query.andWhere('gtk.nama_dapodik like :nama', {
+            nama: `%${request.nama}%`,
+          })
+        }
       }
 
       const rows = new RowsService(query)
+      rows.setLimit(250)
 
-      if (request.page) {
+      if (request && request.page) {
         rows.setPage(request.page)
       }
 

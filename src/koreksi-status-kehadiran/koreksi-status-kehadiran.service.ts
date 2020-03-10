@@ -17,11 +17,8 @@ import { Dataguru } from 'src/entities/dataguru.entity'
 import { Sekolah } from 'src/entities/sekolah.entity'
 import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
 import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
-import {
-  JENIS_USULAN_ABSENSI_MANUAL,
-  JENIS_USULAN_KOREKSI_STATUS,
-} from 'src/constants/jenis-usulan.constant'
 import { generateNoUrut } from 'src/utils/nourut.utils'
+import { JENIS_USULAN_KOREKSI_STATUS } from 'src/constants/jenis-usulan.constant'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -43,7 +40,7 @@ export class KoreksiStatusKehadiranService {
   ): Promise<PagingDto> {
     const { kodeWilayah, peran } = user
     if (!kodeWilayah || !peran) {
-      return null
+      throw new NotFoundException()
     }
 
     let query = this.koreksiStatusKehadiranRepo
@@ -135,7 +132,7 @@ export class KoreksiStatusKehadiranService {
         ),
         dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
           row.koreksiStatusId,
-          JENIS_USULAN_ABSENSI_MANUAL,
+          JENIS_USULAN_KOREKSI_STATUS,
         ),
       }
     } catch (e) {
@@ -161,7 +158,7 @@ export class KoreksiStatusKehadiranService {
       if (!koreksiStatus || !data.koreksiStatusId) {
         koreksiStatus = new KoreksiStatusKehadiran()
         koreksiStatus.noKoreksi = await generateNoUrut(
-          JENIS_USULAN_ABSENSI_MANUAL,
+          JENIS_USULAN_KOREKSI_STATUS,
         )
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
@@ -262,7 +259,7 @@ export class KoreksiStatusKehadiranService {
           alasanPenolakan: data.alasanPenolakan ? data.alasanPenolakan : null,
           dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
             result.koreksiStatusId,
-            JENIS_USULAN_ABSENSI_MANUAL,
+            JENIS_USULAN_KOREKSI_STATUS,
           ),
         }
       }

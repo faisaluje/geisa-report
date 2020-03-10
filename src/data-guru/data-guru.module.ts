@@ -14,5 +14,6 @@ import { PassportModule } from '@nestjs/passport'
   ],
   providers: [DataGuruService],
   controllers: [DataGuruController],
+  exports: [DataGuruService],
 })
 export class DataGuruModule {}

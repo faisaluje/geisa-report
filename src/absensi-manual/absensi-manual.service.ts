@@ -15,6 +15,8 @@ export class AbsensiManualService {
     private readonly absensiManualRepo: Repository<AbsensiManual>,
   ) {}
 
+  async getAbsensiManualOne(id: number) {}
+
   async getAbasensiManual(user: UserDto, query: any): Promise<PagingDto> {
     const { kodeWilayah, peran } = user
     if (!kodeWilayah || !peran) {
