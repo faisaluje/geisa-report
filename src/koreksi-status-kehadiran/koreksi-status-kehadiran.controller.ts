@@ -12,6 +12,8 @@ import { KoreksiStatusKehadiranService } from './koreksi-status-kehadiran.servic
 import { PagingDto } from 'src/dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
+import { JENIS_USULAN_KOREKSI_STATUS } from 'src/constants/jenis-usulan.constant'
+import { generateNoUrut } from 'src/utils/nourut.utils'
 
 @UseGuards(AuthGuard())
 @Controller('koreksi-status-kehadiran')
@@ -21,8 +23,10 @@ export class KoreksiStatusKehadiranController {
   ) {}
 
   @Get('/no-urut')
-  async getNoUrut(): Promise<string> {
-    return await this.koreksiStatusKehadiranService.generateNoKoreksi()
+  async getNoUrut(@Query() query: any): Promise<string> {
+    // tslint:disable-next-line: radix
+    const jenisUsulan = parseInt(query.jenisUsulan) || 1
+    return await generateNoUrut(jenisUsulan)
   }
 
   @Get('/:id')

@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
 import { Repository, Between, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
-import { Pengguna } from 'src/entities/pengguna.entity'
 import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
 import * as moment from 'moment'
@@ -18,6 +17,11 @@ import { Dataguru } from 'src/entities/dataguru.entity'
 import { Sekolah } from 'src/entities/sekolah.entity'
 import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
 import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
+import {
+  JENIS_USULAN_ABSENSI_MANUAL,
+  JENIS_USULAN_KOREKSI_STATUS,
+} from 'src/constants/jenis-usulan.constant'
+import { generateNoUrut } from 'src/utils/nourut.utils'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -131,6 +135,7 @@ export class KoreksiStatusKehadiranService {
         ),
         dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
           row.koreksiStatusId,
+          JENIS_USULAN_ABSENSI_MANUAL,
         ),
       }
     } catch (e) {
@@ -155,7 +160,9 @@ export class KoreksiStatusKehadiranService {
 
       if (!koreksiStatus || !data.koreksiStatusId) {
         koreksiStatus = new KoreksiStatusKehadiran()
-        koreksiStatus.noKoreksi = await this.generateNoKoreksi()
+        koreksiStatus.noKoreksi = await generateNoUrut(
+          JENIS_USULAN_ABSENSI_MANUAL,
+        )
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
         koreksiStatus.statusPengajuan = 1
@@ -255,6 +262,7 @@ export class KoreksiStatusKehadiranService {
           alasanPenolakan: data.alasanPenolakan ? data.alasanPenolakan : null,
           dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
             result.koreksiStatusId,
+            JENIS_USULAN_ABSENSI_MANUAL,
           ),
         }
       }
@@ -262,25 +270,5 @@ export class KoreksiStatusKehadiranService {
       logger.error(e.toString())
       throw new BadRequestException()
     }
-  }
-
-  async generateNoKoreksi(): Promise<string> {
-    let noUrut: number
-    try {
-      noUrut = await this.koreksiStatusKehadiranRepo.count({
-        tglPengajuan: Between(
-          moment().format('YYYY-MM-01'),
-          moment().format(`YYYY-MM-31`),
-        ),
-      })
-    } catch (e) {
-      logger.warn(e.toString())
-      noUrut = 0
-    }
-
-    noUrut += 1
-    const dateFormat = moment().format('YYYYMM')
-
-    return `${dateFormat}${noUrut.toString().padStart(6, '0')}`
   }
 }

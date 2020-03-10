@@ -8,12 +8,17 @@ import {
   UploadedFiles,
   Body,
   Req,
+  Logger,
+  BadRequestException,
+  Query,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { DokumenPendukungService } from './dokumen-pendukung.service'
 import { DokumenPendukung } from 'src/entities/dokumenPendukung.entity'
 import { FilesInterceptor } from '@nestjs/platform-express/multer'
 import { FileDto } from 'src/dto/file.dto'
+
+const logger = new Logger('dokumen-pendukung-controller')
 
 @UseGuards(AuthGuard())
 @Controller('dokumen-pendukung')
@@ -22,18 +27,25 @@ export class DokumenPendukungController {
     private readonly dokumenPendukungService: DokumenPendukungService,
   ) {}
 
-  @Post('/:koreksiStatusId')
+  @Post('/:parentId')
   @UseInterceptors(FilesInterceptor('files'))
   async addDokumenPendukung(
     @UploadedFiles() files: FileDto[],
-    @Param('koreksiStatusId') koreksiStatusId: number,
+    @Param('parentId') parentId: number,
     @Req() req: any,
+    @Query() query: any,
   ): Promise<DokumenPendukung[]> {
-    return this.dokumenPendukungService.addDokumenPendukungs(
-      files,
-      req.user,
-      koreksiStatusId,
-    )
+    try {
+      return this.dokumenPendukungService.addDokumenPendukungs(
+        files,
+        req.user,
+        parentId,
+        query.jenisUsulan,
+      )
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
   }
 
   @Delete('/:fileName')

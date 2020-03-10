@@ -23,10 +23,11 @@ export class DokumenPendukungService {
   ) {}
 
   async getDokumenPendukung(
-    koreksiStatusId: number,
+    parentId: number,
+    jenisUsulan: number,
   ): Promise<DokumenPendukung[]> {
     try {
-      return await this.dokumenPendukungRepo.find({ koreksiStatusId })
+      return await this.dokumenPendukungRepo.find({ parentId, jenisUsulan })
     } catch (e) {
       logger.error(e.toString())
       throw new BadRequestException()
@@ -36,13 +37,15 @@ export class DokumenPendukungService {
   async addDokumenPendukungs(
     files: FileDto[],
     user: UserDto,
-    koreksiStatusId: number,
+    parentId: number,
+    jenisUsulan: number,
   ): Promise<DokumenPendukung[]> {
     try {
       const rows = files.map(file => ({
         namaFile: file.filename,
         nameOriginal: file.originalname,
-        koreksiStatusId,
+        parentId,
+        jenisUsulan,
         mimetype: file.mimetype,
         updatedBy: user.username,
       }))

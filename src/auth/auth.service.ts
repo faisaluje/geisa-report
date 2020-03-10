@@ -6,7 +6,7 @@ import { Pengguna } from '../entities/pengguna.entity'
 import {
   validatePasswordMd5,
   validatePasswordSha1,
-} from '../security/processPassword'
+} from '../security/process-password.security'
 import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
 import { Sekolah } from '../entities/sekolah.entity'
 
