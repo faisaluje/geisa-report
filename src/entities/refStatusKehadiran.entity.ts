@@ -48,4 +48,11 @@ export class RefStatusKehadiran extends BaseEntity {
 
   @Column('int', { name: 'maksimal_hari', nullable: true })
   maksimalHari: number | null
+
+  @Column('varchar', {
+    name: 'catatan_ditampilkan',
+    nullable: true,
+    length: 128,
+  })
+  catatanDitampilkan: string | null
 }

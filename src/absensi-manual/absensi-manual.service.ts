@@ -66,9 +66,10 @@ export class AbsensiManualService {
         catatanDariPemeriksa: absensiManual
           ? absensiManual.catatanDariPemeriksa
           : '',
-        alasanPenolakan: absensiManual
-          ? await RefAlasanPenolakan.findOne(absensiManual.alasanPenolakanId)
-          : null,
+        alasanPenolakan:
+          absensiManual && absensiManual.alasanPenolakanId
+            ? await RefAlasanPenolakan.findOne(absensiManual.alasanPenolakanId)
+            : null,
         dokumenPendukung: absensiManual
           ? await this.dokumenPendukungService.getDokumenPendukung(
               absensiManual.absensiManualId,

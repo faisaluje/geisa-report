@@ -170,21 +170,20 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.statusPengajuan = 1
       } else {
         koreksiStatus.lastUpdate = new Date()
-        if (data.statusPengajuan !== 1) {
-          if (user.peran === 99) {
-            koreksiStatus.userIdPengusul = user.id
-            koreksiStatus.tglPengajuan = new Date()
-            koreksiStatus.statusPengajuan = 1
-          } else {
-            // tslint:disable-next-line: radix
-            koreksiStatus.userIdPemeriksa = parseInt(user.id)
-            koreksiStatus.tglDiperiksa = new Date()
-            koreksiStatus.statusPengajuan = data.statusPengajuan
-            koreksiStatus.alasanPenolakanId = data.alasanPenolakan
-              ? data.alasanPenolakan.alasanPenolakanId
-              : null
-          }
-        }
+      }
+
+      if (user.peran === 99) {
+        koreksiStatus.userIdPengusul = user.id
+        koreksiStatus.tglPengajuan = new Date()
+        koreksiStatus.statusPengajuan = 1
+      } else {
+        // tslint:disable-next-line: radix
+        koreksiStatus.userIdPemeriksa = parseInt(user.id)
+        koreksiStatus.tglDiperiksa = new Date()
+        koreksiStatus.statusPengajuan = data.statusPengajuan
+        koreksiStatus.alasanPenolakanId = data.alasanPenolakan
+          ? data.alasanPenolakan.alasanPenolakanId
+          : null
       }
 
       koreksiStatus.idDapodik = data.gtkSelected.idDapodik
