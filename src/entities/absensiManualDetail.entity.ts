@@ -14,7 +14,7 @@ export class AbsensiManualDetail {
   ptkId: string
 
   @Column('tinyint', { name: 'status_kehadiran', nullable: true })
-  statusKehadiran: number | null
+  statusKehadiran: boolean | null
 
   @Column('time', { name: 'waktu_datang', nullable: true })
   waktuDatang: string | null

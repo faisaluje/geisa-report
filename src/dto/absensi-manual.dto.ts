@@ -11,7 +11,7 @@ export class AbsensiManualDto {
   serialNumber?: string
   merk?: string
   jenisAbsensiManual: RefStatusKehadiran
-  tanggal: Date
+  tanggal: string
   detail: any[]
   statusPengajuan: number
   catatanDariPengusul?: string

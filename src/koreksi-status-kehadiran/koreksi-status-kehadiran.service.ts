@@ -145,7 +145,6 @@ export class KoreksiStatusKehadiranService {
     user: UserDto,
     data: KoreksiStatusDto,
   ): Promise<KoreksiStatusDto> {
-    logger.log(data)
     try {
       const sekolah = await Sekolah.findOne(data.gtkSelected.sekolahId)
       let koreksiStatus: KoreksiStatusKehadiran
@@ -170,7 +169,6 @@ export class KoreksiStatusKehadiranService {
             koreksiStatus.userIdPengusul = user.id
             koreksiStatus.tglPengajuan = new Date()
             koreksiStatus.statusPengajuan = 1
-            koreksiStatus.alasanPenolakanId = null
           } else {
             // tslint:disable-next-line: radix
             koreksiStatus.userIdPemeriksa = parseInt(user.id)

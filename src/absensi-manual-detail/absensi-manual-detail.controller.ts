@@ -1,4 +1,12 @@
-import { Controller, UseGuards, Get, Req, Param, Query } from '@nestjs/common'
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Req,
+  Param,
+  Query,
+  Post,
+} from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { AbsensiManualDetailService } from './absensi-manual-detail.service'
 import { PagingDto } from 'src/dto/paging.dto'
@@ -9,6 +17,15 @@ export class AbsensiManualDetailController {
   constructor(
     private readonly absensiManualDetailService: AbsensiManualDetailService,
   ) {}
+
+  @Post('/')
+  async upsertAbsensiManualDetail(): Promise<boolean> {
+    return this.absensiManualDetailService.upsertAbsensiManualId(
+      null,
+      null,
+      100,
+    )
+  }
 
   @Get('/')
   async getAbsensiManualDetail(

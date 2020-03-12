@@ -1,8 +1,8 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('absensi_manual', { schema: 'geisa' })
 export class AbsensiManual {
-  @Column('int', { primary: true, name: 'absensi_manual_id' })
+  @PrimaryGeneratedColumn({ type: 'bigint', name: 'absensi_manual_id' })
   absensiManualId: number
 
   @Column('varchar', {
@@ -16,7 +16,7 @@ export class AbsensiManual {
   sekolahId: string
 
   @Column('date', { name: 'tanggal' })
-  tanggal: Date
+  tanggal: string
 
   @Column('varchar', { name: 'serial_number', nullable: true, length: 32 })
   serialNumber: string | null
@@ -46,7 +46,7 @@ export class AbsensiManual {
   userIdPemeriksa: string | null
 
   @Column('date', { name: 'tgl_diperiksa', nullable: true })
-  tglDiperiksa: string | null
+  tglDiperiksa: Date | null
 
   @Column('varchar', {
     name: 'catatan_dari_pengusul',

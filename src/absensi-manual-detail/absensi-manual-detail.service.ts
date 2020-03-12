@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { AbsensiManualDetail } from 'src/entities/absensiManualDetail.entity'
 import { Repository } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
-import { Pengguna } from 'src/entities/pengguna.entity'
 import { Dataguru } from 'src/entities/dataguru.entity'
+import moment = require('moment')
 
 const logger = new Logger('absensi-manual-detail-service')
 
@@ -17,14 +17,15 @@ export class AbsensiManualDetailService {
     private readonly dataGuruRepo: Repository<Dataguru>,
   ) {}
 
-  async getAbsensiManualDetail(user: UserDto, id: number = 0): Promise<any[]> {
+  async getAbsensiManualDetail(
+    sekolahId: string,
+    id: number = 0,
+  ): Promise<any[]> {
     try {
-      const sekolahId = await this.getSekolahIdFromPengguna(user.id)
-
       const query = this.dataGuruRepo
         .createQueryBuilder('gtk')
         .select('detail.absensi_manual_id', 'absensiManualId')
-        .addSelect('detail.ptk_id', 'ptkId')
+        .addSelect('gtk.id_dapodik', 'ptkId')
         .addSelect('gtk.nip', 'nip')
         .addSelect('gtk.nama_dapodik', 'nama')
         .addSelect('gtk.jenis_guru', 'jabatan')
@@ -49,12 +50,50 @@ export class AbsensiManualDetailService {
     }
   }
 
-  async getSekolahIdFromPengguna(penggunaId: string): Promise<string> {
-    const pengguna = await Pengguna.findOne(penggunaId)
-    if (pengguna) {
-      return pengguna.sekolahId
-    } else {
-      return null
+  async upsertAbsensiManualId(
+    data: AbsensiManualDetail[],
+    user: UserDto,
+    absensiManualId: number,
+  ): Promise<boolean> {
+    try {
+      const dataEksisting = await this.absensiManualDetailRepo.find({
+        absensiManualId,
+      })
+
+      const newData = data.map(gtk => {
+        let row: AbsensiManualDetail = dataEksisting.find(
+          val => val.ptkId === gtk.ptkId,
+        )
+        if (!row) {
+          row = new AbsensiManualDetail()
+          row.absensiManualId = absensiManualId
+          row.ptkId = gtk.ptkId
+          row.createdDate = new Date()
+        } else {
+          row.lastUpdated = new Date()
+        }
+
+        row.statusKehadiran = gtk.statusKehadiran
+        row.waktuDatang = gtk.waktuDatang
+          ? moment(gtk.waktuDatang).format('HH:mm:ss')
+          : null
+        row.waktuPulang = gtk.waktuPulang
+          ? moment(gtk.waktuPulang).format('HH:mm:ss')
+          : null
+        row.keterangan = gtk.keterangan
+        row.updatedBy = user.username
+
+        return row
+      })
+
+      if (await this.absensiManualDetailRepo.save(newData)) {
+        return true
+      }
+
+      throw new BadRequestException()
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
     }
   }
 }

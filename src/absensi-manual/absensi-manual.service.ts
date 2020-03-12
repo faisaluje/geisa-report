@@ -1,7 +1,12 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { AbsensiManual } from 'src/entities/absensiManual.entity'
-import { Repository } from 'typeorm'
+import { Repository, getConnection } from 'typeorm'
 import { PagingDto } from 'src/dto/paging.dto'
 import { UserDto } from 'src/dto/user.dto'
 import { RowsService } from 'src/rows/rows.service'
@@ -12,6 +17,9 @@ import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
 import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
 import { DokumenPendukungService } from 'src/dokumen-pendukung/dokumen-pendukung.service'
 import { JENIS_USULAN_ABSENSI_MANUAL } from 'src/constants/jenis-usulan.constant'
+import { generateNoUrut } from 'src/utils/nourut.utils'
+import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
+import moment = require('moment')
 
 const logger = new Logger('absensi-manual-service')
 
@@ -29,20 +37,22 @@ export class AbsensiManualService {
     id: number,
   ): Promise<AbsensiManualDto> {
     try {
-      const absensiManualDetail = await this.absensiManualDetailService.getAbsensiManualDetail(
-        user,
-        id,
-      )
       const absensiManual = await this.absensiManualRepo.findOne(id)
       const sekolah = absensiManual
         ? await Sekolah.findOneOrFail(absensiManual.sekolahId)
-        : null
+        : await Sekolah.findOne(await getSekolahIdFromPenggunaId(user.id))
+      const absensiManualDetail = await this.absensiManualDetailService.getAbsensiManualDetail(
+        sekolah.sekolahId,
+        id,
+      )
 
       return {
         absensiManualId: absensiManual ? absensiManual.absensiManualId : 0,
         noAbsensiManual: absensiManual ? absensiManual.noAbsensiManual : '',
-        sekolah,
-        tanggal: absensiManual ? absensiManual.tanggal : new Date(),
+        sekolah: sekolah || null,
+        tanggal: absensiManual
+          ? absensiManual.tanggal
+          : moment().format('YYYY-MM-DD'),
         jenisAbsensiManual: absensiManual
           ? await RefStatusKehadiran.findOneOrFail(
               absensiManual.jenisAbsensiManualId,
@@ -130,5 +140,70 @@ export class AbsensiManualService {
     }
 
     return await rows.getResult()
+  }
+
+  async upsertAbsensiManual(
+    user: UserDto,
+    data: AbsensiManualDto,
+  ): Promise<boolean> {
+    try {
+      let absensiManual: AbsensiManual
+      if (data.absensiManualId) {
+        absensiManual = await this.absensiManualRepo.findOne(
+          data.absensiManualId,
+        )
+      }
+
+      if (!absensiManual || !data.absensiManualId) {
+        absensiManual = new AbsensiManual()
+        absensiManual.noAbsensiManual = await generateNoUrut(
+          JENIS_USULAN_ABSENSI_MANUAL,
+        )
+      } else {
+        absensiManual.lastUpdate = new Date()
+      }
+
+      if (user.peran === 99) {
+        absensiManual.userIdPengusul = user.id
+        absensiManual.statusPengajuan = 1
+      } else {
+        absensiManual.userIdPemeriksa = user.id
+        absensiManual.tglDiperiksa = new Date()
+        absensiManual.statusPengajuan = data.statusPengajuan
+        absensiManual.alasanPenolakanId = data.alasanPenolakan
+          ? data.alasanPenolakan.alasanPenolakanId
+          : null
+      }
+
+      absensiManual.sekolahId = data.sekolah.sekolahId
+      absensiManual.tanggal = data.tanggal
+      absensiManual.jenisAbsensiManualId = data.jenisAbsensiManual
+        ? data.jenisAbsensiManual.statusKehadiranId
+        : 0
+      absensiManual.catatanDariPengusul = data.catatanDariPengusul
+      absensiManual.catatanDariPemeriksa = data.catatanDariPemeriksa
+      absensiManual.updateBy = user.username
+
+      const result = await this.absensiManualRepo.save(absensiManual)
+      if (result) {
+        const absensiManualDetail = await this.absensiManualDetailService.upsertAbsensiManualId(
+          data.detail,
+          user,
+          result.absensiManualId,
+        )
+        if (absensiManualDetail && result.statusPengajuan === 2) {
+          await getConnection().query(
+            `call p_absen_manual('${result.sekolahId}')`,
+          )
+        }
+
+        return true
+      }
+
+      throw new BadRequestException()
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
   }
 }
