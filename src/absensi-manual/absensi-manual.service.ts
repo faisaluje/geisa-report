@@ -130,6 +130,15 @@ export class AbsensiManualService {
       )
     }
 
+    if (query.statusPengajuan) {
+      absensiManualQuery.andWhere(
+        'absensi.status_pengajuan = :statusPengajuan',
+        {
+          statusPengajuan: query.statusPengajuan,
+        },
+      )
+    }
+
     absensiManualQuery.orderBy('absensi.no_absensi_manual', 'DESC')
 
     const rows = new RowsService(absensiManualQuery)

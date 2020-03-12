@@ -72,6 +72,12 @@ export class KoreksiStatusKehadiranService {
       })
     }
 
+    if (request.statusPengajuan) {
+      query.andWhere('koreksi.status_pengajuan = :statusPengajuan', {
+        statusPengajuan: request.statusPengajuan,
+      })
+    }
+
     query.orderBy('koreksi.no_koreksi', 'DESC')
 
     const rows = new RowsService(query)

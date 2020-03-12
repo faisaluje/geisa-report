@@ -12,7 +12,6 @@ import { KoreksiStatusKehadiranService } from './koreksi-status-kehadiran.servic
 import { PagingDto } from 'src/dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
-import { JENIS_USULAN_KOREKSI_STATUS } from 'src/constants/jenis-usulan.constant'
 import { generateNoUrut } from 'src/utils/nourut.utils'
 
 @UseGuards(AuthGuard())
