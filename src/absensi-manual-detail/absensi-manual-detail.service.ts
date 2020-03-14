@@ -75,11 +75,7 @@ export class AbsensiManualDetailService {
 
         row.statusKehadiran = gtk.statusKehadiran
         row.waktuDatang = gtk.waktuDatang
-          ? moment(gtk.waktuDatang).format('HH:mm:ss')
-          : null
         row.waktuPulang = gtk.waktuPulang
-          ? moment(gtk.waktuPulang).format('HH:mm:ss')
-          : null
         row.keterangan = gtk.keterangan
         row.updatedBy = user.username
 

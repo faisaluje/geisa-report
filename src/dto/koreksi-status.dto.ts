@@ -15,10 +15,10 @@ export class KoreksiStatusDto {
   jenisKoreksi: number
   statusKehadiranAwal?: RefStatusKehadiran
   statusKehadiranKoreksi?: RefStatusKehadiran
-  waktuDatangAwal?: number
-  waktuPulangAwal?: number
-  waktuDatangKoreksi?: number
-  waktuPulangKoreksi?: number
+  waktuDatangAwal?: string
+  waktuPulangAwal?: string
+  waktuDatangKoreksi?: string
+  waktuPulangKoreksi?: string
   jenisIzin?: number
   statusPengajuan: number
   catatanDariPengusul?: string

@@ -10,7 +10,6 @@ import { Repository, Between, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
-import * as moment from 'moment'
 import { DokumenPendukungService } from 'src/dokumen-pendukung/dokumen-pendukung.service'
 import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
 import { Dataguru } from 'src/entities/dataguru.entity'
@@ -117,18 +116,10 @@ export class KoreksiStatusKehadiranService {
         statusKehadiranKoreksi: await RefStatusKehadiran.findOne(
           row.statusKehadiranKoreksi,
         ),
-        waktuDatangAwal: row.waktuDatangAwal
-          ? new Date(`2020-02-02 ${row.waktuDatangAwal}`).getTime()
-          : null,
-        waktuDatangKoreksi: row.waktuDatangKoreksi
-          ? new Date(`2020-02-02 ${row.waktuDatangKoreksi}`).getTime()
-          : null,
-        waktuPulangAwal: row.waktuPulangAwal
-          ? new Date(`2020-02-02 ${row.waktuPulangAwal}`).getTime()
-          : null,
-        waktuPulangKoreksi: row.waktuPulangKoreksi
-          ? new Date(`2020-02-02 ${row.waktuPulangKoreksi}`).getTime()
-          : null,
+        waktuDatangAwal: row.waktuDatangAwal,
+        waktuDatangKoreksi: row.waktuDatangKoreksi,
+        waktuPulangAwal: row.waktuPulangAwal,
+        waktuPulangKoreksi: row.waktuPulangKoreksi,
         jenisIzin: row.jenisIzin ? row.jenisIzin : null,
         statusPengajuan: row.statusPengajuan,
         catatanDariPengusul: row.catatanDariPengusul,
@@ -202,17 +193,9 @@ export class KoreksiStatusKehadiranService {
         ? new Date(data.tglKehadiranSampai)
         : null
       koreksiStatus.waktuDatangAwal = data.waktuDatangAwal
-        ? moment(data.waktuDatangAwal).format('HH:mm:ss')
-        : null
       koreksiStatus.waktuDatangKoreksi = data.waktuDatangKoreksi
-        ? moment(data.waktuDatangKoreksi).format('HH:mm:ss')
-        : null
       koreksiStatus.waktuPulangAwal = data.waktuPulangAwal
-        ? moment(data.waktuPulangAwal).format('HH:mm:ss')
-        : null
       koreksiStatus.waktuPulangKoreksi = data.waktuPulangKoreksi
-        ? moment(data.waktuPulangKoreksi).format('HH:mm:ss')
-        : null
       koreksiStatus.jenisIzin = data.jenisIzin ? data.jenisIzin : null
       koreksiStatus.catatanDariPengusul = data.catatanDariPengusul
       koreksiStatus.catatanDariPemeriksa = data.catatanDariPemeriksa
