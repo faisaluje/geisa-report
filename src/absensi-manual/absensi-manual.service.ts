@@ -50,9 +50,7 @@ export class AbsensiManualService {
         absensiManualId: absensiManual ? absensiManual.absensiManualId : 0,
         noAbsensiManual: absensiManual ? absensiManual.noAbsensiManual : '',
         sekolah: sekolah || null,
-        tanggal: absensiManual
-          ? absensiManual.tanggal
-          : moment().format('YYYY-MM-DD'),
+        tanggal: absensiManual ? absensiManual.tanggal : null,
         jenisAbsensiManual: absensiManual
           ? await RefStatusKehadiran.findOneOrFail(
               absensiManual.jenisAbsensiManualId,

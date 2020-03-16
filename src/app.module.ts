@@ -19,6 +19,7 @@ import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
 import { LogMesinModule } from './log-mesin/log-mesin.module';
 import { AbsensiManualModule } from './absensi-manual/absensi-manual.module';
 import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manual-detail.module';
+import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan-sekolah.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manua
     LogMesinModule,
     AbsensiManualModule,
     AbsensiManualDetailModule,
+    RekapBulananSekolahModule,
   ],
 })
 export class AppModule {}

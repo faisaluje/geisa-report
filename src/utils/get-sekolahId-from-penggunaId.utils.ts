@@ -7,6 +7,6 @@ export default async function getSekolahIdFromPenggunaId(
   if (pengguna) {
     return pengguna.sekolahId
   } else {
-    return 'xxx'
+    return ''
   }
 }

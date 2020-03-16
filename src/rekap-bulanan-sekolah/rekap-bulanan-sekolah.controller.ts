@@ -1,0 +1,24 @@
+import { Controller, UseGuards, Get, Query, Req } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
+import { RekapBulananSekolahService } from './rekap-bulanan-sekolah.service'
+import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
+
+@UseGuards(AuthGuard())
+@Controller('rekap/bulanan-sekolah')
+export class RekapBulananSekolahController {
+  constructor(
+    private readonly rekapBulananSekolahService: RekapBulananSekolahService,
+  ) {}
+
+  @Get('/')
+  async getRekapBulananSekolah(
+    @Query() query: any,
+    @Req() req: any,
+  ): Promise<any[]> {
+    const sekolahId = await getSekolahIdFromPenggunaId(req.user.id)
+    return await this.rekapBulananSekolahService.getRekapBulananSekolah(
+      sekolahId || query.sekolahId,
+      query.monthSelected,
+    )
+  }
+}
