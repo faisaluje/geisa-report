@@ -9,6 +9,7 @@ import {
 } from '../security/process-password.security'
 import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
 import { Sekolah } from '../entities/sekolah.entity'
+import { MstWilayah } from 'src/entities/mstWilayah.entity'
 
 @Injectable()
 export class AuthService {
@@ -29,12 +30,14 @@ export class AuthService {
     const userSekolah = await Pengguna.findOne({ username })
 
     if (userSekolah && validatePasswordMd5(userSekolah.password, password)) {
+      const sekolah = await Sekolah.findOne(userSekolah.sekolahId)
       return {
         id: userSekolah.penggunaId,
         nama: userSekolah.nama,
         username: userSekolah.username,
         peran: 99, // sekolah
         kodeWilayah: await this.getKodeWilayahBySekolah(userSekolah.username),
+        instansi: sekolah.nama,
       }
     } else {
       const userDinas = await RefAnggotaDinas.findOne({ userIdDinas: username })
@@ -42,12 +45,14 @@ export class AuthService {
         userDinas &&
         validatePasswordSha1(userDinas.passwordDinas, password)
       ) {
+        const wilayah = await this.getWilayahByDinas(userDinas.userIdDinas)
         return {
           id: userDinas.idAnggotaDinas.toString(),
           nama: userDinas.namaAnggotaDinas,
           username: userDinas.userIdDinas,
           peran: userDinas.roleId, // Dinas Kabkota / Provinsi
-          kodeWilayah: await this.getKodeWilayahByDinas(userDinas.userIdDinas),
+          kodeWilayah: wilayah ? wilayah.kodeWilayah : null,
+          instansi: wilayah ? wilayah.nama : null,
         }
       } else {
         return null
@@ -77,7 +82,7 @@ export class AuthService {
     }
   }
 
-  async getKodeWilayahByDinas(username: string): Promise<string> {
+  async getWilayahByDinas(username: string): Promise<MstWilayah> {
     const user = await RefAnggotaDinas.findOne({ userIdDinas: username })
     if (!user) {
       return null
@@ -100,6 +105,6 @@ export class AuthService {
       kodeWilayah = kodeWilayah.substr(0, 2) + '0000'
     }
 
-    return kodeWilayah
+    return await MstWilayah.findOne(kodeWilayah)
   }
 }
