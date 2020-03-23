@@ -20,8 +20,30 @@ export class DashboardController {
     return this.dashboardService.getRekapPengguna(req.user)
   }
 
+  @Get('/rekap-sync')
+  async getRekapSync(@Query() query: any, @Req() req: any): Promise<any> {
+    const sekolahLastSync = await this.dashboardService.getLastSunc(
+      req.user,
+      query,
+    )
+    const jumlahSekolahSync = await this.dashboardService.getJumlahSekolahSync(
+      req.user,
+      query,
+    )
+
+    return { sekolahLastSync, jumlahSekolahSync }
+  }
+
   @Get('/last-sync')
   async getLastSync(@Query() query: any, @Req() req: any): Promise<any> {
-    return this.dashboardService.getLastSunc(req.user, query)
+    return await this.dashboardService.getLastSunc(req.user, query)
+  }
+
+  @Get('jumlah-sekolah-sync')
+  async getJumlahSekolahSync(
+    @Query() query: any,
+    @Req() req: any,
+  ): Promise<any> {
+    return await this.dashboardService.getJumlahSekolahSync(req.user, query)
   }
 }
