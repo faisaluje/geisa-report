@@ -24,4 +24,22 @@ export class DashboardService {
       throw new BadRequestException()
     }
   }
+
+  async getLastSunc(
+    { peran, kodeWilayah }: UserDto,
+    { jenjang, status }: any,
+  ): Promise<any> {
+    try {
+      const level = getLevelUser(peran)
+      const result = await getConnection().query(
+        'call m_Last_Syncron(?, ?, ?, ?)',
+        [level, kodeWilayah, jenjang, status],
+      )
+
+      return result[0]
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
+  }
 }
