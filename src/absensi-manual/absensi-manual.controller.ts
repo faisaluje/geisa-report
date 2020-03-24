@@ -41,7 +41,7 @@ export class AbsensiManualController {
   async upsertAbsensiManual(
     @Body() data: AbsensiManualDto,
     @Req() req: any,
-  ): Promise<boolean> {
+  ): Promise<any> {
     return await this.absensiManualSerivce.upsertAbsensiManual(req.user, data)
   }
 }

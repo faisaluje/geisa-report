@@ -153,7 +153,7 @@ export class AbsensiManualService {
   async upsertAbsensiManual(
     user: UserDto,
     data: AbsensiManualDto,
-  ): Promise<boolean> {
+  ): Promise<any> {
     try {
       let absensiManual: AbsensiManual
       if (data.absensiManualId) {
@@ -205,7 +205,9 @@ export class AbsensiManualService {
           )
         }
 
-        return true
+        return {
+          absensiManualId: result.absensiManualId,
+        }
       }
 
       throw new BadRequestException()
