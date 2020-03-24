@@ -50,30 +50,11 @@ export class DashboardService {
     try {
       const level = getLevelUser(peran)
       const result = await getConnection().query(
-        `select
-          m_Jumlah_Sekolah_Syncron(?, ?, ?, ?, ?) h_0,
-          m_Jumlah_Sekolah_Syncron(?, ?, ?, ?, ?) h_7,
-          m_Jumlah_Sekolah_Syncron(?, ?, ?, ?, ?) h_30`,
-        [
-          level,
-          kodeWilayah,
-          jenjang,
-          status,
-          0,
-          level,
-          kodeWilayah,
-          jenjang,
-          status,
-          7,
-          level,
-          kodeWilayah,
-          jenjang,
-          status,
-          30,
-        ],
+        'call m_Jumlah_Sekolah_Syncron(?,?,?,?)',
+        [level, kodeWilayah, jenjang, status],
       )
 
-      return result[0]
+      return result[0][0]
     } catch (e) {
       logger.error(e.toString())
       throw new BadRequestException()
