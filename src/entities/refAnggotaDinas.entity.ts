@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from 'typeorm'
 
-@Entity('ref_anggota_dinas', { schema: 'new_geisa' })
+@Entity('ref_anggota_dinas', { database: 'geisa' })
 export class RefAnggotaDinas extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id_anggota_dinas' })
   idAnggotaDinas: number

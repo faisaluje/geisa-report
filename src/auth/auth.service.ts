@@ -33,7 +33,8 @@ export class AuthService {
       const sekolah = await Sekolah.findOne(userSekolah.sekolahId)
       return {
         id: userSekolah.penggunaId,
-        nama: userSekolah.nama,
+        // nama: userSekolah.nama,
+        nama: userSekolah.username,
         username: userSekolah.username,
         peran: 99, // sekolah
         kodeWilayah: await this.getKodeWilayahBySekolah(userSekolah.username),
