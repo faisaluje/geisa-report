@@ -1,9 +1,12 @@
 import { Controller, UseGuards, Get, Query } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { RekapHarianService } from './rekap-harian.service'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('rekap/harian')
+@Controller(`${prefixConfig.backend}/rekap/harian`)
 export class RekapHarianController {
   constructor(private readonly rekapHarianService: RekapHarianService) {}
 

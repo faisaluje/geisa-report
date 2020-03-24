@@ -77,7 +77,7 @@ export class DokumenPendukungService {
     try {
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < files.length; i++) {
-        unlinkSync(`${uploadConfig.path}${files[i]}`)
+        unlinkSync(`${uploadConfig.path}/${files[i]}`)
       }
 
       return true

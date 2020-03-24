@@ -1,9 +1,12 @@
 import { Controller, UseGuards, Get, Req, Param, Query } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { DashboardService } from './dashboard.service'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('dashboard')
+@Controller(`${prefixConfig.backend}/dashboard`)
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 

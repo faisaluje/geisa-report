@@ -19,7 +19,7 @@ import {
 @Index('last_update', ['lastUpdate'], {})
 @Index('update_from', ['updateFrom'], {})
 @Index('data_send_gtk', ['idPadaDapodik', 'dateTime', 'sekolahId'], {})
-@Entity('log_mesin', { schema: 'geisa' })
+@Entity('log_mesin', { schema: 'new_geisa' })
 export class LogMesin extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
   id: string

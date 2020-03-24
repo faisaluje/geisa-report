@@ -11,9 +11,12 @@ import {
 import { PengaturanLiburService } from './pengaturan-libur.service'
 import { PengaturanLibur } from 'src/entities/pengaturanLibur.entity'
 import { AuthGuard } from '@nestjs/passport'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('pengaturan')
+@Controller(`${prefixConfig.backend}/pengaturan`)
 export class PengaturanLiburController {
   constructor(
     private readonly pengaturanLiburService: PengaturanLiburService,

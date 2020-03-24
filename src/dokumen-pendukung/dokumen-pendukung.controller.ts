@@ -17,11 +17,13 @@ import { DokumenPendukungService } from './dokumen-pendukung.service'
 import { DokumenPendukung } from 'src/entities/dokumenPendukung.entity'
 import { FilesInterceptor } from '@nestjs/platform-express/multer'
 import { FileDto } from 'src/dto/file.dto'
+import * as config from 'config'
 
+const prefixConfig = config.get('prefix')
 const logger = new Logger('dokumen-pendukung-controller')
 
 @UseGuards(AuthGuard())
-@Controller('dokumen-pendukung')
+@Controller(`${prefixConfig.backend}/dokumen-pendukung`)
 export class DokumenPendukungController {
   constructor(
     private readonly dokumenPendukungService: DokumenPendukungService,

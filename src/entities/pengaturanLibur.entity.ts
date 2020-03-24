@@ -2,7 +2,7 @@ import { Column, Entity, Index } from 'typeorm'
 
 @Index('idx-from-google', ['status'], {})
 @Index('idx-tanggal-libur', ['kodeWilayah', 'jenisLiburId', 'tanggal'], {})
-@Entity('pengaturan_libur', { schema: 'geisa' })
+@Entity('pengaturan_libur', { schema: 'new_geisa' })
 export class PengaturanLibur {
   @Column('varchar', { primary: true, name: 'id', length: 36 })
   id: string

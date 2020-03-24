@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm'
 
-@Entity('absensi_manual_detail', { schema: 'geisa' })
+@Entity('absensi_manual_detail', { schema: 'new_geisa' })
 export class AbsensiManualDetail {
   @Column('int', { primary: true, name: 'absensi_manual_id' })
   absensiManualId: number

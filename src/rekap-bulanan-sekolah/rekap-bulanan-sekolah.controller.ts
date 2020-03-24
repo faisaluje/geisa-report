@@ -2,9 +2,12 @@ import { Controller, UseGuards, Get, Query, Req } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { RekapBulananSekolahService } from './rekap-bulanan-sekolah.service'
 import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('rekap/bulanan-sekolah')
+@Controller(`${prefixConfig.backend}/rekap/bulanan-sekolah`)
 export class RekapBulananSekolahController {
   constructor(
     private readonly rekapBulananSekolahService: RekapBulananSekolahService,

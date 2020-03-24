@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('koreksi_status_kehadiran', { schema: 'geisa' })
+@Entity('koreksi_status_kehadiran', { schema: 'new_geisa' })
 export class KoreksiStatusKehadiran {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'koreksi_status_id' })
   koreksiStatusId: number

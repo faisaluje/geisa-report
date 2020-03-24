@@ -1,6 +1,6 @@
 import { Column, Entity, BaseEntity } from 'typeorm'
 
-@Entity('mst_wilayah', { database: 'referensi' })
+@Entity('mst_wilayah', { database: 'new_geisa' })
 export class MstWilayah extends BaseEntity {
   @Column('char', { primary: true, name: 'kode_wilayah', length: 10 })
   kodeWilayah: string

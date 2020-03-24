@@ -15,12 +15,12 @@ import { StatusKehadiranModule } from './status-kehadiran/status-kehadiran.modul
 import { AlasanPenolakanModule } from './alasan-penolakan/alasan-penolakan.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
-import { RekapHarianModule } from './rekap-harian/rekap-harian.module';
-import { LogMesinModule } from './log-mesin/log-mesin.module';
-import { AbsensiManualModule } from './absensi-manual/absensi-manual.module';
-import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manual-detail.module';
-import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan-sekolah.module';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { RekapHarianModule } from './rekap-harian/rekap-harian.module'
+import { LogMesinModule } from './log-mesin/log-mesin.module'
+import { AbsensiManualModule } from './absensi-manual/absensi-manual.module'
+import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manual-detail.module'
+import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan-sekolah.module'
+import { DashboardModule } from './dashboard/dashboard.module'
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     StatusKehadiranModule,
     AlasanPenolakanModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
+      rootPath: join(__dirname, '..', 'public'),
     }),
     RekapHarianModule,
     LogMesinModule,

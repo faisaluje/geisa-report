@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('absensi_manual', { schema: 'geisa' })
+@Entity('absensi_manual', { schema: 'new_geisa' })
 export class AbsensiManual {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'absensi_manual_id' })
   absensiManualId: number

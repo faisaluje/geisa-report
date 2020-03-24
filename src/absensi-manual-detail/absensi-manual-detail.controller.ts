@@ -1,18 +1,12 @@
-import {
-  Controller,
-  UseGuards,
-  Get,
-  Req,
-  Param,
-  Query,
-  Post,
-} from '@nestjs/common'
+import { Controller, UseGuards, Get, Req, Query, Post } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { AbsensiManualDetailService } from './absensi-manual-detail.service'
-import { PagingDto } from 'src/dto/paging.dto'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('absensi-manual-detail')
+@Controller(`${prefixConfig.backend}/absensi-manual-detail`)
 export class AbsensiManualDetailController {
   constructor(
     private readonly absensiManualDetailService: AbsensiManualDetailService,

@@ -2,9 +2,12 @@ import { Controller, Get, Req, UseGuards, Post, Body } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { DurasiService } from './durasi.service'
 import { PengaturanDurasi } from '../entities/pengaturanDurasi.entity'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('durasi')
+@Controller(`${prefixConfig.backend}/durasi`)
 export class DurasiController {
   constructor(private readonly durasiService: DurasiService) {}
 

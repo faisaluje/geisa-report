@@ -7,7 +7,7 @@ import { Column, Entity, Index, BaseEntity } from 'typeorm'
 @Index('bentuk_pendidikan_id', ['bentukPendidikanId'], {})
 @Index('kode_wilayah_kecamatan', ['kodeWilayahKecamatan'], {})
 @Index('status_sekolah', ['statusSekolah'], {})
-@Entity('sekolah', { schema: 'geisa' })
+@Entity('sekolah', { schema: 'new_geisa' })
 export class Sekolah extends BaseEntity {
   @Column('varchar', { primary: true, name: 'sekolah_id', length: 50 })
   sekolahId: string

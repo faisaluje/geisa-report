@@ -1,7 +1,7 @@
 import { Column, Entity, Index } from 'typeorm'
 
 @Index('idx-dokumen-1', ['parentId', 'jenisUsulan'], {})
-@Entity('dokumen_pendukung', { schema: 'geisa' })
+@Entity('dokumen_pendukung', { schema: 'new_geisa' })
 export class DokumenPendukung {
   @Column('varchar', { primary: true, name: 'nama_file', length: 128 })
   namaFile: string

@@ -13,9 +13,12 @@ import { PagingDto } from 'src/dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
 import { generateNoUrut } from 'src/utils/nourut.utils'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('koreksi-status-kehadiran')
+@Controller(`${prefixConfig.backend}/koreksi-status-kehadiran`)
 export class KoreksiStatusKehadiranController {
   constructor(
     private readonly koreksiStatusKehadiranService: KoreksiStatusKehadiranService,

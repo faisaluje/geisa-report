@@ -1,6 +1,6 @@
 import { Column, Entity, BaseEntity } from 'typeorm'
 
-@Entity('ref_alasan_penolakan', { schema: 'geisa' })
+@Entity('ref_alasan_penolakan', { schema: 'new_geisa' })
 export class RefAlasanPenolakan extends BaseEntity {
   @Column('int', { primary: true, name: 'alasan_penolakan_id' })
   alasanPenolakanId: number

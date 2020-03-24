@@ -4,7 +4,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 @Index('sekolah_id', ['sekolahId'], {})
 @Index('id_dapodik_2', ['idDapodik'], {})
 @Index('sekolah_id_2', ['sekolahId'], {})
-@Entity('dataguru', { schema: 'geisa' })
+@Entity('dataguru', { schema: 'new_geisa' })
 export class Dataguru {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number

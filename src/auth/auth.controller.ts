@@ -9,8 +9,11 @@ import {
 import { AuthService } from './auth.service'
 import { AuthUserDto } from '../dto/auth-user.dto'
 import { AuthGuard } from '@nestjs/passport'
+import * as config from 'config'
 
-@Controller('/')
+const prefixConfig = config.get('prefix')
+
+@Controller(`${prefixConfig.backend}/`)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

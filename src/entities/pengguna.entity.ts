@@ -1,6 +1,6 @@
 import { Column, Entity, BaseEntity } from 'typeorm'
 
-@Entity('pengguna', { schema: 'geisa' })
+@Entity('pengguna', { schema: 'new_geisa' })
 export class Pengguna extends BaseEntity {
   @Column('varchar', { primary: true, name: 'pengguna_id', length: 50 })
   penggunaId: string

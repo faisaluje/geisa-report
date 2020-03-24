@@ -12,9 +12,12 @@ import { AbsensiManualService } from './absensi-manual.service'
 import { PagingDto } from 'src/dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import { AbsensiManualDto } from 'src/dto/absensi-manual.dto'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('absensi-manual')
+@Controller(`${prefixConfig.backend}/absensi-manual`)
 export class AbsensiManualController {
   constructor(private readonly absensiManualSerivce: AbsensiManualService) {}
 

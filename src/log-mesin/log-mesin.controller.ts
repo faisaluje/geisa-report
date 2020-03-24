@@ -1,8 +1,11 @@
 import { Controller, Get, Query } from '@nestjs/common'
 import { LogMesinService } from './log-mesin.service'
 import { PagingDto } from 'src/dto/paging.dto'
+import * as config from 'config'
 
-@Controller('log-mesin')
+const prefixConfig = config.get('prefix')
+
+@Controller(`${prefixConfig.backend}/log-mesin`)
 export class LogMesinController {
   constructor(private readonly logMesinService: LogMesinService) {}
 

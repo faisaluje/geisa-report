@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm'
 
-@Entity('pengaturan_durasi', { schema: 'geisa' })
+@Entity('pengaturan_durasi', { schema: 'new_geisa' })
 export class PengaturanDurasi {
   @Column('varchar', { primary: true, name: 'kode_wilayah', length: 8 })
   kodeWilayah: string

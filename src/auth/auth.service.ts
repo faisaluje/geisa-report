@@ -88,7 +88,8 @@ export class AuthService {
       return null
     }
 
-    let kodeWilayah = user.kabupatenKotaIdList
+    let kodeWilayah =
+      user.roleId === 1 ? '["000000"]' : user.kabupatenKotaIdList
     if (kodeWilayah) {
       kodeWilayah = JSON.parse(kodeWilayah)
     } else {
