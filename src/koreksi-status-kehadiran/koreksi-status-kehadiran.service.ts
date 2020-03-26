@@ -45,6 +45,7 @@ export class KoreksiStatusKehadiranService {
 
     let query = this.koreksiStatusKehadiranRepo
       .createQueryBuilder('koreksi')
+      .distinct(true)
       .select('koreksi.koreksi_status_id', 'id')
       .addSelect('koreksi.no_koreksi', 'noKoreksi')
       .addSelect('koreksi.sekolah_id', 'sekolahId')
@@ -56,7 +57,11 @@ export class KoreksiStatusKehadiranService {
       .addSelect('koreksi.tgl_pengajuan', 'tglPengajuan')
       .addSelect('koreksi.status_pengajuan', 'statusPengajuan')
       .addSelect('status_pengajuan.status_nama', 'statusPengajuanNama')
-      .leftJoin('dataguru', 'gtk', 'gtk.id_dapodik = koreksi.id_dapodik')
+      .leftJoin(
+        'dataguru',
+        'gtk',
+        'gtk.id_dapodik = koreksi.id_dapodik AND gtk.sekolah_id = koreksi.sekolah_id',
+      )
       .leftJoin('sekolah', 'sekolah', 'sekolah.sekolah_id = koreksi.sekolah_id')
       .leftJoin(
         'ref_status_pengajuan',

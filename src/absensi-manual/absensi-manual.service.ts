@@ -89,6 +89,7 @@ export class AbsensiManualService {
 
     let absensiManualQuery = this.absensiManualRepo
       .createQueryBuilder('absensi')
+      .distinct(true)
       .select('absensi.absensi_manual_id', 'id')
       .addSelect('absensi.no_absensi_manual', 'noAbsensiManual')
       .addSelect('absensi.sekolah_id', 'sekolahId')

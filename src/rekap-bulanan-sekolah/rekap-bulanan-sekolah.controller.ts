@@ -22,6 +22,8 @@ export class RekapBulananSekolahController {
     return await this.rekapBulananSekolahService.getRekapBulananSekolah(
       sekolahId || query.sekolahId,
       query.monthSelected,
+      // tslint:disable-next-line: radix
+      parseInt(query.hitungUlang),
     )
   }
 }

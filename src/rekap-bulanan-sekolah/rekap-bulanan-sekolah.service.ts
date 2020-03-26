@@ -8,8 +8,15 @@ export class RekapBulananSekolahService {
   async getRekapBulananSekolah(
     sekolahId: string,
     monthSelected: string,
+    hitungUlang: number,
   ): Promise<any[]> {
     try {
+      if (hitungUlang === 1) {
+        await getConnection().query('call p_calculate_monthly_by_sek(?);', [
+          sekolahId,
+        ])
+      }
+
       const rekapbulanan = await getConnection().query(
         `SELECT
           *
