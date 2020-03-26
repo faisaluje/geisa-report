@@ -6,6 +6,13 @@ import { UserDto } from 'src/dto/user.dto'
 import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
 import { Pengguna } from 'src/entities/pengguna.entity'
+import {
+  PERAN_KABKOTA,
+  PERAN_PROPINSI,
+  PERAN_SEKOLAH,
+  PERAN_UPTD,
+  PERAN_CABDIS,
+} from 'src/constants/peran.constant'
 
 const logger = new Logger('data-guru')
 
@@ -58,17 +65,23 @@ export class DataGuruService {
       const query = this.getDataGuruQuery()
 
       switch (peran) {
-        case 2:
+        case PERAN_UPTD:
+          query.where('sekolah.kode_wilayah_kecamatan = :kodeWilayah', {
+            kodeWilayah,
+          })
+          break
+        case PERAN_KABKOTA:
+        case PERAN_CABDIS:
           query.where('sekolah.kode_wilayah_kabupaten_kota = :kodeWilayah', {
             kodeWilayah,
           })
           break
-        case 3:
+        case PERAN_PROPINSI:
           query.where('sekolah.kode_wilayah_provinsi = :kodeWilayah', {
             kodeWilayah,
           })
           break
-        case 99:
+        case PERAN_SEKOLAH:
           const pengguna = await Pengguna.findOneOrFail(id)
           query.where('gtk.sekolah_id = :sekolahId', {
             sekolahId: pengguna.sekolahId,

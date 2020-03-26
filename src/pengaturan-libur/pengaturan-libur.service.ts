@@ -10,6 +10,7 @@ import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { v4 as uuid } from 'uuid'
 import moment = require('moment')
+import { PERAN_KABKOTA, PERAN_PROPINSI } from 'src/constants/peran.constant'
 
 const logger = new Logger('pengaturan-libur-service')
 
@@ -58,8 +59,10 @@ export class PengaturanLiburService {
         data.id = id.toUpperCase()
       }
 
+      const jenisLiburId = this.getJenisLiburId(user.peran)
+
       data.jenjang = JSON.stringify(data.jenjang)
-      data.jenisLiburId = user.peran
+      data.jenisLiburId = jenisLiburId
       data.kodeWilayah = user.kodeWilayah
       data.updatedBy = user.username
       data.tanggal = moment(data.tanggal).format('YYYY-MM-DD')
@@ -67,7 +70,7 @@ export class PengaturanLiburService {
       const result = await this.pengaturanLiburRepo.save(data)
       if (result) {
         await getConnection().query(
-          `call p_update_liburdaerah('${user.kodeWilayah}', ${user.peran})`,
+          `call p_update_liburdaerah('${user.kodeWilayah}', ${jenisLiburId})`,
         )
       }
       return result
@@ -82,7 +85,9 @@ export class PengaturanLiburService {
       const record = await this.pengaturanLiburRepo.delete({ id })
       if (record) {
         await getConnection().query(
-          `call p_update_liburdaerah('${user.kodeWilayah}', ${user.peran})`,
+          `call p_update_liburdaerah('${
+            user.kodeWilayah
+          }', ${this.getJenisLiburId(user.peran)})`,
         )
         return true
       } else {
@@ -91,6 +96,17 @@ export class PengaturanLiburService {
     } catch (e) {
       logger.error(e.toString())
       throw new NotFoundException()
+    }
+  }
+
+  getJenisLiburId(peran: number): number {
+    switch (peran) {
+      case PERAN_KABKOTA:
+        return 2
+      case PERAN_PROPINSI:
+        return 3
+      default:
+        return 1 // level admin
     }
   }
 }

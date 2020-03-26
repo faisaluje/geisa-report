@@ -8,6 +8,7 @@ import { PengaturanDurasi } from '../entities/pengaturanDurasi.entity'
 import { getConnection, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserDto } from '../dto/user.dto'
+import getLevelUser from 'src/utils/get-level-user.utils'
 
 const logger = new Logger('durasi-service')
 
@@ -82,11 +83,12 @@ export class DurasiService {
         kodeWilayah: user.kodeWilayah.trim(),
       }))
 
-      logger.log(rows)
       const result = await this.pengaturanDurasiRepo.save(rows)
       if (result) {
         await getConnection().query(
-          `call p_update_libur_mingguan('${user.kodeWilayah}', ${user.peran})`,
+          `call p_update_libur_mingguan('${user.kodeWilayah}', ${getLevelUser(
+            user.peran,
+          )})`,
         )
       }
       return result

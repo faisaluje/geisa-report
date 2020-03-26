@@ -3,6 +3,12 @@ import { SelectQueryBuilder } from 'typeorm'
 import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
+import {
+  PERAN_KABKOTA,
+  PERAN_PROPINSI,
+  PERAN_SEKOLAH,
+} from 'src/constants/peran.constant'
+import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 
 const logger = new Logger('rows-service')
 
@@ -70,7 +76,7 @@ export class RowsService {
   ): Promise<SelectQueryBuilder<any>> {
     const { kodeWilayah, peran } = user
 
-    if (peran === 2) {
+    if (peran === PERAN_KABKOTA) {
       // Dinas Kab/kota
       query.where(
         `${tblSekolahAlias}.kode_wilayah_kabupaten_kota = :kodeWilayah`,
@@ -81,10 +87,10 @@ export class RowsService {
       query.andWhere(
         `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,
         {
-          bentukPendidikanId: [1, 2, 3, 4, 5, 6],
+          bentukPendidikanId: getBentukPendidikanIdFromPeran(PERAN_KABKOTA),
         },
       )
-    } else if (peran === 3) {
+    } else if (peran === PERAN_PROPINSI) {
       // Dinas Provinsi
       query.where(`${tblSekolahAlias}.kode_wilayah_provinsi = :kodeWilayah`, {
         kodeWilayah,
@@ -93,11 +99,11 @@ export class RowsService {
         query.andWhere(
           `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,
           {
-            bentukPendidikanId: [7, 8, 13, 14, 15, 29],
+            bentukPendidikanId: getBentukPendidikanIdFromPeran(PERAN_PROPINSI),
           },
         )
       }
-    } else if (peran === 99) {
+    } else if (peran === PERAN_SEKOLAH) {
       // Sekolah
       try {
         const pengguna = await Pengguna.findOne(user.id)

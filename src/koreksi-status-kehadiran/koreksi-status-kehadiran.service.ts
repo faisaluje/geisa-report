@@ -18,6 +18,7 @@ import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
 import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
 import { generateNoUrut } from 'src/utils/nourut.utils'
 import { JENIS_USULAN_KOREKSI_STATUS } from 'src/constants/jenis-usulan.constant'
+import { PERAN_SEKOLAH } from 'src/constants/peran.constant'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -163,7 +164,7 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.lastUpdate = new Date()
       }
 
-      if (user.peran === 99) {
+      if (user.peran === PERAN_SEKOLAH) {
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
         koreksiStatus.statusPengajuan = 1

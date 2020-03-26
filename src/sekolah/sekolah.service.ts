@@ -6,6 +6,14 @@ import { RowsService } from '../rows/rows.service'
 import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from '../dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
+import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
+import {
+  PERAN_SEKOLAH,
+  PERAN_KABKOTA,
+  PERAN_PROPINSI,
+  PERAN_UPTD,
+  PERAN_CABDIS,
+} from 'src/constants/peran.constant'
 
 @Injectable()
 export class SekolahService {
@@ -16,7 +24,7 @@ export class SekolahService {
 
   async getSekolah(user: UserDto, query: any): Promise<PagingDto> {
     const { kodeWilayah, peran } = user
-    const bentukPendidikanId = peran === 3 ? [7, 8, 13, 14, 15, 29] : [5, 6]
+    const bentukPendidikanId = getBentukPendidikanIdFromPeran(peran)
 
     const sekolah = this.sekolahRepo
       .createQueryBuilder('sekolah')
@@ -36,7 +44,7 @@ export class SekolahService {
         bentukPendidikanId,
       })
 
-    if (peran === 99) {
+    if (peran === PERAN_SEKOLAH) {
       const userData = await Pengguna.findOne({ penggunaId: user.id })
 
       if (userData) {
@@ -48,12 +56,18 @@ export class SekolahService {
       }
     } else {
       switch (peran) {
-        case 2:
+        case PERAN_UPTD:
+          sekolah.andWhere('sekolah.kode_wilayah_kecamatan=:kecamatanId', {
+            kecamatanId: kodeWilayah,
+          })
+          break
+        case PERAN_KABKOTA:
+        case PERAN_CABDIS:
           sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kabKotaId', {
             kabKotaId: kodeWilayah,
           })
           break
-        case 3:
+        case PERAN_PROPINSI:
           sekolah.andWhere('sekolah.kode_wilayah_provinsi=:provId', {
             provId: kodeWilayah,
           })

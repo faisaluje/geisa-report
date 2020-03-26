@@ -19,7 +19,7 @@ import { DokumenPendukungService } from 'src/dokumen-pendukung/dokumen-pendukung
 import { JENIS_USULAN_ABSENSI_MANUAL } from 'src/constants/jenis-usulan.constant'
 import { generateNoUrut } from 'src/utils/nourut.utils'
 import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
-import moment = require('moment')
+import { PERAN_SEKOLAH } from 'src/constants/peran.constant'
 
 const logger = new Logger('absensi-manual-service')
 
@@ -171,7 +171,7 @@ export class AbsensiManualService {
         absensiManual.lastUpdate = new Date()
       }
 
-      if (user.peran === 99) {
+      if (user.peran === PERAN_SEKOLAH) {
         absensiManual.userIdPengusul = user.id
         absensiManual.statusPengajuan = 1
       } else {
