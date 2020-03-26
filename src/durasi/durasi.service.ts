@@ -42,7 +42,7 @@ export class DurasiService {
 
     for (let idx = 0; idx < 7; idx++) {
       const data = new PengaturanDurasi()
-      data.kodeWilayah = kodeWilayah
+      data.kodeWilayah = kodeWilayah.trim()
       data.hari = idx
       data.jamMasuk = '07:00:00'
       data.jamPulang = '14:00:00'
@@ -79,7 +79,7 @@ export class DurasiService {
         ...val,
         updatedBy: user.username,
         lastUpdate: new Date(),
-        kodeWilayah: user.kodeWilayah,
+        kodeWilayah: user.kodeWilayah.trim(),
       }))
 
       logger.log(rows)

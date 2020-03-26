@@ -2,7 +2,7 @@ server:
   port: 3000
 
 db:
-  type: 'mariadb'
+  type: 'mysql'
   port: 13357
   database: 'new_geisa'
   host: '172.17.60.67'

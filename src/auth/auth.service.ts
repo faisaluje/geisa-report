@@ -37,7 +37,9 @@ export class AuthService {
         nama: userSekolah.username,
         username: userSekolah.username,
         peran: 99, // sekolah
-        kodeWilayah: await this.getKodeWilayahBySekolah(userSekolah.username),
+        kodeWilayah: (
+          await this.getKodeWilayahBySekolah(userSekolah.username)
+        ).trim(),
         instansi: sekolah.nama,
       }
     } else {
@@ -52,7 +54,7 @@ export class AuthService {
           nama: userDinas.namaAnggotaDinas,
           username: userDinas.userIdDinas,
           peran: userDinas.roleId, // Dinas Kabkota / Provinsi
-          kodeWilayah: wilayah ? wilayah.kodeWilayah : null,
+          kodeWilayah: wilayah ? wilayah.kodeWilayah.trim() : null,
           instansi: wilayah ? wilayah.nama : null,
         }
       } else {
