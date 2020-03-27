@@ -149,7 +149,6 @@ export class KoreksiStatusKehadiranService {
     data: KoreksiStatusDto,
   ): Promise<KoreksiStatusDto> {
     try {
-      const sekolah = await Sekolah.findOne(data.gtkSelected.sekolahId)
       let koreksiStatus: KoreksiStatusKehadiran
       if (data.koreksiStatusId) {
         koreksiStatus = await this.koreksiStatusKehadiranRepo.findOne(
@@ -158,6 +157,7 @@ export class KoreksiStatusKehadiranService {
       }
 
       if (!koreksiStatus || !data.koreksiStatusId) {
+        const sekolah = await Sekolah.findOne(data.gtkSelected.sekolahId)
         koreksiStatus = new KoreksiStatusKehadiran()
         koreksiStatus.noKoreksi = await generateNoUrut(
           JENIS_USULAN_KOREKSI_STATUS,
@@ -165,6 +165,8 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
         koreksiStatus.statusPengajuan = 1
+        koreksiStatus.namaSekolah = sekolah.nama
+        koreksiStatus.sekolahId = sekolah.sekolahId
       } else {
         koreksiStatus.lastUpdate = new Date()
       }
@@ -185,8 +187,6 @@ export class KoreksiStatusKehadiranService {
 
       koreksiStatus.idDapodik = data.gtkSelected.idDapodik
       koreksiStatus.nama = data.gtkSelected.namaDapodik
-      koreksiStatus.namaSekolah = sekolah.nama
-      koreksiStatus.sekolahId = sekolah.sekolahId
       koreksiStatus.jenisKoreksi = data.jenisKoreksi
       koreksiStatus.statusKehadiranAwal = data.statusKehadiranAwal
         ? data.statusKehadiranAwal.statusKehadiranId
@@ -221,7 +221,7 @@ export class KoreksiStatusKehadiranService {
           koreksiStatusId: result.koreksiStatusId,
           noKoreksi: result.noKoreksi,
           gtkSelected: data.gtkSelected,
-          sekolah,
+          sekolah: await Sekolah.findOne(data.gtkSelected.sekolahId),
           tglPengajuan: result.tglPengajuan
             ? new Date(result.tglPengajuan).getTime()
             : null,
