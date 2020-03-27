@@ -10,22 +10,14 @@ const prefixConfig = config.get('prefix')
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  @Get('/rekap-pengguna/:status')
-  async getRekapPenggunaWithStatus(
-    @Req() req: any,
-    @Param('status') status: string,
-  ): Promise<any> {
-    return this.dashboardService.getRekapPengguna(req.user, status)
-  }
-
   @Get('/rekap-pengguna')
-  async getRekapPengguna(@Req() req: any): Promise<any> {
-    return this.dashboardService.getRekapPengguna(req.user)
+  async getRekapPengguna(@Query() query: any, @Req() req: any): Promise<any> {
+    return this.dashboardService.getRekapPengguna(req.user, query)
   }
 
   @Get('/rekap-sync')
   async getRekapSync(@Query() query: any, @Req() req: any): Promise<any> {
-    const sekolahLastSync = await this.dashboardService.getLastSunc(
+    const sekolahLastSync = await this.dashboardService.getLastSync(
       req.user,
       query,
     )
@@ -39,7 +31,7 @@ export class DashboardController {
 
   @Get('/last-sync')
   async getLastSync(@Query() query: any, @Req() req: any): Promise<any> {
-    return await this.dashboardService.getLastSunc(req.user, query)
+    return await this.dashboardService.getLastSync(req.user, query)
   }
 
   @Get('jumlah-sekolah-sync')

@@ -7,12 +7,12 @@ const logger = new Logger('dashboard-service')
 
 @Injectable()
 export class DashboardService {
-  async getRekapPengguna(
-    { peran, kodeWilayah }: UserDto,
-    status: string = '',
-  ): Promise<any> {
+  async getRekapPengguna(user: UserDto, query: any): Promise<any> {
     try {
-      const level = getLevelUser(peran)
+      const status = query.status || ''
+      const level = query.level || getLevelUser(user.peran)
+      const kodeWilayah = query.kodeWilayah || user.kodeWilayah
+
       const result = await getConnection().query(
         'call m_rekap_pengguna_nas(?, ?, ?)',
         [level, kodeWilayah, status],
@@ -25,15 +25,15 @@ export class DashboardService {
     }
   }
 
-  async getLastSunc(
-    { peran, kodeWilayah }: UserDto,
-    { jenjang, status }: any,
-  ): Promise<any> {
+  async getLastSync(user: UserDto, query: any): Promise<any> {
     try {
-      const level = getLevelUser(peran)
+      const level = query.level || getLevelUser(user.peran)
+      const status = query.status || ''
+      const kodeWilayah = query.kodeWilayah || user.kodeWilayah
+
       const result = await getConnection().query(
         'call m_Last_Syncron(?, ?, ?, ?)',
-        [level, kodeWilayah, jenjang, status],
+        [level, kodeWilayah, query.jenjang, status],
       )
 
       return result[0]
@@ -43,15 +43,15 @@ export class DashboardService {
     }
   }
 
-  async getJumlahSekolahSync(
-    { peran, kodeWilayah }: UserDto,
-    { jenjang, status }: any,
-  ): Promise<any> {
+  async getJumlahSekolahSync(user: UserDto, query: any): Promise<any> {
     try {
-      const level = getLevelUser(peran)
+      const level = query.level || getLevelUser(user.peran)
+      const status = query.status || ''
+      const kodeWilayah = query.kodeWilayah || user.kodeWilayah
+
       const result = await getConnection().query(
         'call m_Jumlah_Sekolah_Syncron(?,?,?,?)',
-        [level, kodeWilayah, jenjang, status],
+        [level, kodeWilayah, query.jenjang, status],
       )
 
       return result[0][0]
