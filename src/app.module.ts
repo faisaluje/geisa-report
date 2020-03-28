@@ -21,6 +21,7 @@ import { AbsensiManualModule } from './absensi-manual/absensi-manual.module'
 import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manual-detail.module'
 import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan-sekolah.module'
 import { DashboardModule } from './dashboard/dashboard.module'
+import { PengaturanDurasiJenjangModule } from './pengaturan-durasi-jenjang/pengaturan-durasi-jenjang.module'
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { DashboardModule } from './dashboard/dashboard.module'
     AbsensiManualDetailModule,
     RekapBulananSekolahModule,
     DashboardModule,
+    PengaturanDurasiJenjangModule,
   ],
 })
 export class AppModule {}
