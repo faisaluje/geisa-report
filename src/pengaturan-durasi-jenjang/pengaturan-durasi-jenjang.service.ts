@@ -5,6 +5,10 @@ import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { Jenjang } from 'src/enums/jenjang.enum'
 import getLevelUser from 'src/utils/get-level-user.utils'
+import { PERAN_SEKOLAH } from 'src/constants/peran.constant'
+import { Sekolah } from 'src/entities/sekolah.entity'
+import { Pengguna } from 'src/entities/pengguna.entity'
+import mapJenjangData from 'src/data/mapJenjang.data'
 
 const logger = new Logger('pengaturan-durasi-jenjang')
 
@@ -53,13 +57,29 @@ export class PengaturanDurasiJenjangService {
 
   async getPengaturanDurasiJenjang(
     user: UserDto,
-    jenjang: Jenjang,
+    jenjang?: Jenjang,
   ): Promise<PengaturanDurasiJenjang[]> {
     try {
-      const { kodeWilayah } = user
-      const pengaturandurasiJenjang = await this.pengaturanDurasiJenjangRepo.find(
-        { kodeWilayah, jenjang },
-      )
+      const { kodeWilayah, peran, id } = user
+      let pengaturandurasiJenjang: PengaturanDurasiJenjang[]
+
+      if (peran === PERAN_SEKOLAH) {
+        const pengguna = await Pengguna.findOneOrFail(id)
+        const sekolah = await Sekolah.findOneOrFail(pengguna.sekolahId)
+
+        const jenjangBySekolah = mapJenjangData.find(
+          val => val.jenisSekolahId === sekolah.bentukPendidikanId,
+        )
+        pengaturandurasiJenjang = await this.pengaturanDurasiJenjangRepo.find({
+          kodeWilayah,
+          jenjang: jenjangBySekolah.jenjang,
+        })
+      } else {
+        pengaturandurasiJenjang = await this.pengaturanDurasiJenjangRepo.find({
+          kodeWilayah,
+          jenjang,
+        })
+      }
       if (pengaturandurasiJenjang.length === 0) {
         return this.initPengaturanDurasiJenjang(user, jenjang)
       }
@@ -79,6 +99,7 @@ export class PengaturanDurasiJenjangService {
     try {
       const rows: PengaturanDurasiJenjang[] = data.map(val => ({
         ...val,
+        jenjang,
         updatedBy: user.username,
         lastUpdate: new Date(),
         kodeWilayah: user.kodeWilayah.trim(),
@@ -93,7 +114,7 @@ export class PengaturanDurasiJenjangService {
         ])
       }
 
-      return result
+      return await this.getPengaturanDurasiJenjang(user, jenjang)
     } catch (e) {
       logger.error(e.toString())
       throw new BadRequestException()

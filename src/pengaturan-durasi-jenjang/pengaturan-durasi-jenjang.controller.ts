@@ -11,9 +11,12 @@ import { AuthGuard } from '@nestjs/passport'
 import { PengaturanDurasiJenjangService } from './pengaturan-durasi-jenjang.service'
 import { PengaturanDurasiJenjang } from 'src/entities/pengaturanDurasiJenjang.entity'
 import { Jenjang } from 'src/enums/jenjang.enum'
+import * as config from 'config'
+
+const prefixConfig = config.get('prefix')
 
 @UseGuards(AuthGuard())
-@Controller('pengaturan/durasi')
+@Controller(`${prefixConfig.backend}/pengaturan/durasi`)
 export class PengaturanDurasiJenjangController {
   constructor(
     private readonly pengaturanDurasiJenjangService: PengaturanDurasiJenjangService,
@@ -27,6 +30,15 @@ export class PengaturanDurasiJenjangController {
     return await this.pengaturanDurasiJenjangService.getPengaturanDurasiJenjang(
       req.user,
       jenjang,
+    )
+  }
+
+  @Get('/')
+  async getPengaturanDurasiJenjangBySekolah(
+    @Req() req: any,
+  ): Promise<PengaturanDurasiJenjang[]> {
+    return await this.pengaturanDurasiJenjangService.getPengaturanDurasiJenjang(
+      req.user,
     )
   }
 
