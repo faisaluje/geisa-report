@@ -10,13 +10,8 @@ import {
 import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
 import { Sekolah } from '../entities/sekolah.entity'
 import { MstWilayah } from 'src/entities/mstWilayah.entity'
-import {
-  PERAN_SEKOLAH,
-  PERAN_KABKOTA,
-  PERAN_PROPINSI,
-  PERAN_ADMIN,
-} from 'src/constants/peran.constant'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
+import { Peran } from 'src/enums/peran.enum'
 
 @Injectable()
 export class AuthService {
@@ -43,7 +38,7 @@ export class AuthService {
         // nama: userSekolah.nama,
         nama: userSekolah.username,
         username: userSekolah.username,
-        peran: PERAN_SEKOLAH, // sekolah
+        peran: Peran.SEKOLAH, // sekolah
         kodeWilayah: (
           await this.getKodeWilayahBySekolah(userSekolah.username)
         ).trim(),
@@ -62,10 +57,10 @@ export class AuthService {
           username: userDinas.userIdDinas,
           peran:
             userDinas.roleId === 1
-              ? PERAN_ADMIN
+              ? Peran.ADMIN
               : userDinas.roleId === 2
-              ? PERAN_KABKOTA
-              : PERAN_PROPINSI, // Dinas Kabkota / Provinsi
+              ? Peran.KABKOTA
+              : Peran.PROPINSI, // Dinas Kabkota / Provinsi
           kodeWilayah: wilayah ? wilayah.kodeWilayah.trim() : null,
           instansi: wilayah ? wilayah.nama : null,
         }
@@ -87,13 +82,13 @@ export class AuthService {
     }
 
     if (
-      getBentukPendidikanIdFromPeran(PERAN_KABKOTA).includes(
+      getBentukPendidikanIdFromPeran(Peran.KABKOTA).includes(
         userSekolah.bentukPendidikanId,
       )
     ) {
       return userSekolah.kodeWilayahKabupatenKota
     } else if (
-      getBentukPendidikanIdFromPeran(PERAN_PROPINSI).includes(
+      getBentukPendidikanIdFromPeran(Peran.PROPINSI).includes(
         userSekolah.bentukPendidikanId,
       )
     ) {

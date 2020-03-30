@@ -3,12 +3,8 @@ import { SelectQueryBuilder } from 'typeorm'
 import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
-import {
-  PERAN_KABKOTA,
-  PERAN_PROPINSI,
-  PERAN_SEKOLAH,
-} from 'src/constants/peran.constant'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
+import { Peran } from 'src/enums/peran.enum'
 
 const logger = new Logger('rows-service')
 
@@ -76,8 +72,8 @@ export class RowsService {
   ): Promise<SelectQueryBuilder<any>> {
     const { kodeWilayah, peran } = user
 
-    if (peran === PERAN_KABKOTA) {
-      // Dinas Kab/kota
+    if ([Peran.KABKOTA, Peran.UPTD].includes(peran)) {
+      // Dinas Kab/kota || Dinas UPTD
       query.where(
         `${tblSekolahAlias}.kode_wilayah_kabupaten_kota = :kodeWilayah`,
         {
@@ -87,11 +83,11 @@ export class RowsService {
       query.andWhere(
         `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,
         {
-          bentukPendidikanId: getBentukPendidikanIdFromPeran(PERAN_KABKOTA),
+          bentukPendidikanId: getBentukPendidikanIdFromPeran(Peran.KABKOTA),
         },
       )
-    } else if (peran === PERAN_PROPINSI) {
-      // Dinas Provinsi
+    } else if ([Peran.PROPINSI, Peran.CABDIS].includes(peran)) {
+      // Dinas Provinsi || Dinas Cabdis
       query.where(`${tblSekolahAlias}.kode_wilayah_provinsi = :kodeWilayah`, {
         kodeWilayah,
       })
@@ -99,11 +95,11 @@ export class RowsService {
         query.andWhere(
           `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,
           {
-            bentukPendidikanId: getBentukPendidikanIdFromPeran(PERAN_PROPINSI),
+            bentukPendidikanId: getBentukPendidikanIdFromPeran(Peran.PROPINSI),
           },
         )
       }
-    } else if (peran === PERAN_SEKOLAH) {
+    } else if (peran === Peran.SEKOLAH) {
       // Sekolah
       try {
         const pengguna = await Pengguna.findOne(user.id)

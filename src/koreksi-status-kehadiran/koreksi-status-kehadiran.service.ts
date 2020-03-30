@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
-import { Repository, Between, getConnection } from 'typeorm'
+import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
@@ -17,8 +17,8 @@ import { Sekolah } from 'src/entities/sekolah.entity'
 import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
 import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
 import { generateNoUrut } from 'src/utils/nourut.utils'
-import { JENIS_USULAN_KOREKSI_STATUS } from 'src/constants/jenis-usulan.constant'
-import { PERAN_SEKOLAH } from 'src/constants/peran.constant'
+import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
+import { Peran } from 'src/enums/peran.enum'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -135,7 +135,7 @@ export class KoreksiStatusKehadiranService {
         ),
         dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
           row.koreksiStatusId,
-          JENIS_USULAN_KOREKSI_STATUS,
+          JenisUsulan.KOREKSI_STATUS,
         ),
       }
     } catch (e) {
@@ -160,7 +160,7 @@ export class KoreksiStatusKehadiranService {
         const sekolah = await Sekolah.findOne(data.gtkSelected.sekolahId)
         koreksiStatus = new KoreksiStatusKehadiran()
         koreksiStatus.noKoreksi = await generateNoUrut(
-          JENIS_USULAN_KOREKSI_STATUS,
+          JenisUsulan.KOREKSI_STATUS,
         )
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
@@ -171,7 +171,7 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.lastUpdate = new Date()
       }
 
-      if (user.peran === PERAN_SEKOLAH) {
+      if (user.peran === Peran.SEKOLAH) {
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
         koreksiStatus.statusPengajuan = 1
@@ -251,7 +251,7 @@ export class KoreksiStatusKehadiranService {
           alasanPenolakan: data.alasanPenolakan ? data.alasanPenolakan : null,
           dokumenPendukung: await this.dokumenPendukungService.getDokumenPendukung(
             result.koreksiStatusId,
-            JENIS_USULAN_KOREKSI_STATUS,
+            JenisUsulan.KOREKSI_STATUS,
           ),
         }
       }

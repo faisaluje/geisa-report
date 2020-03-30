@@ -16,10 +16,10 @@ import { Sekolah } from 'src/entities/sekolah.entity'
 import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
 import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
 import { DokumenPendukungService } from 'src/dokumen-pendukung/dokumen-pendukung.service'
-import { JENIS_USULAN_ABSENSI_MANUAL } from 'src/constants/jenis-usulan.constant'
 import { generateNoUrut } from 'src/utils/nourut.utils'
 import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
-import { PERAN_SEKOLAH } from 'src/constants/peran.constant'
+import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
+import { Peran } from 'src/enums/peran.enum'
 
 const logger = new Logger('absensi-manual-service')
 
@@ -71,7 +71,7 @@ export class AbsensiManualService {
         dokumenPendukung: absensiManual
           ? await this.dokumenPendukungService.getDokumenPendukung(
               absensiManual.absensiManualId,
-              JENIS_USULAN_ABSENSI_MANUAL,
+              JenisUsulan.ABSENSI_MANUAL,
             )
           : null,
       }
@@ -166,13 +166,13 @@ export class AbsensiManualService {
       if (!absensiManual || !data.absensiManualId) {
         absensiManual = new AbsensiManual()
         absensiManual.noAbsensiManual = await generateNoUrut(
-          JENIS_USULAN_ABSENSI_MANUAL,
+          JenisUsulan.ABSENSI_MANUAL,
         )
       } else {
         absensiManual.lastUpdate = new Date()
       }
 
-      if (user.peran === PERAN_SEKOLAH) {
+      if (user.peran === Peran.SEKOLAH) {
         absensiManual.userIdPengusul = user.id
         absensiManual.statusPengajuan = 1
       } else {

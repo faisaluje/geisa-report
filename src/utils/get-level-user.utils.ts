@@ -1,16 +1,12 @@
-import {
-  PERAN_KABKOTA,
-  PERAN_PROPINSI,
-  PERAN_UPTD,
-} from 'src/constants/peran.constant'
+import { Peran } from 'src/enums/peran.enum'
 
-export default function getLevelUser(peran: number): number {
+export default function getLevelUser(peran: Peran): number {
   switch (peran) {
-    case PERAN_KABKOTA:
+    case Peran.KABKOTA:
       return 2
-    case PERAN_PROPINSI:
+    case Peran.PROPINSI:
       return 1
-    case PERAN_UPTD:
+    case Peran.UPTD:
       return 3
     default:
       return 0

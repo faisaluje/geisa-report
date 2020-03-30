@@ -1,18 +1,12 @@
-import {
-  PERAN_KABKOTA,
-  PERAN_UPTD,
-  PERAN_PROPINSI,
-} from 'src/constants/peran.constant'
+import { Peran } from 'src/enums/peran.enum'
 
-export default function getBentukPendidikanIdFromPeran(
-  peran: number,
-): number[] {
+export default function getBentukPendidikanIdFromPeran(peran: Peran): number[] {
   switch (peran) {
-    case PERAN_KABKOTA:
-    case PERAN_UPTD:
+    case Peran.KABKOTA:
+    case Peran.UPTD:
       return [1, 5, 6]
-    case PERAN_PROPINSI:
-    case PERAN_UPTD:
+    case Peran.PROPINSI:
+    case Peran.CABDIS:
       return [7, 8, 13, 14, 15, 29]
     default:
       // PERAN_ADMIN

@@ -1,2 +1,0 @@
-export const JENIS_USULAN_KOREKSI_STATUS = 1
-export const JENIS_USULAN_ABSENSI_MANUAL = 2

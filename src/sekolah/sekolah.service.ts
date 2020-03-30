@@ -7,13 +7,7 @@ import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from '../dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
-import {
-  PERAN_SEKOLAH,
-  PERAN_KABKOTA,
-  PERAN_PROPINSI,
-  PERAN_UPTD,
-  PERAN_CABDIS,
-} from 'src/constants/peran.constant'
+import { Peran } from 'src/enums/peran.enum'
 
 @Injectable()
 export class SekolahService {
@@ -44,7 +38,7 @@ export class SekolahService {
         bentukPendidikanId,
       })
 
-    if (peran === PERAN_SEKOLAH) {
+    if (peran === Peran.SEKOLAH) {
       const userData = await Pengguna.findOne({ penggunaId: user.id })
 
       if (userData) {
@@ -56,18 +50,18 @@ export class SekolahService {
       }
     } else {
       switch (peran) {
-        case PERAN_UPTD:
+        case Peran.UPTD:
           sekolah.andWhere('sekolah.kode_wilayah_kecamatan=:kecamatanId', {
             kecamatanId: kodeWilayah,
           })
           break
-        case PERAN_KABKOTA:
-        case PERAN_CABDIS:
+        case Peran.KABKOTA:
+        case Peran.CABDIS:
           sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kabKotaId', {
             kabKotaId: kodeWilayah,
           })
           break
-        case PERAN_PROPINSI:
+        case Peran.PROPINSI:
           sekolah.andWhere('sekolah.kode_wilayah_provinsi=:provId', {
             provId: kodeWilayah,
           })

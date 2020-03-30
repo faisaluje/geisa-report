@@ -11,6 +11,7 @@ import { unlinkSync } from 'fs'
 import * as config from 'config'
 import { FileDto } from 'src/dto/file.dto'
 import { UserDto } from 'src/dto/user.dto'
+import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
 
 const uploadConfig = config.get('upload')
 const logger = new Logger('dokumen-pendukung-1')
@@ -24,7 +25,7 @@ export class DokumenPendukungService {
 
   async getDokumenPendukung(
     parentId: number,
-    jenisUsulan: number,
+    jenisUsulan: JenisUsulan,
   ): Promise<DokumenPendukung[]> {
     try {
       return await this.dokumenPendukungRepo.find({ parentId, jenisUsulan })
@@ -38,7 +39,7 @@ export class DokumenPendukungService {
     files: FileDto[],
     user: UserDto,
     parentId: number,
-    jenisUsulan: number,
+    jenisUsulan: JenisUsulan,
   ): Promise<DokumenPendukung[]> {
     try {
       const rows = files.map(file => ({

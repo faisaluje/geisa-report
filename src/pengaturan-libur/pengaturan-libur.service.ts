@@ -10,7 +10,7 @@ import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { v4 as uuid } from 'uuid'
 import moment = require('moment')
-import { PERAN_KABKOTA, PERAN_PROPINSI } from 'src/constants/peran.constant'
+import { Peran } from 'src/enums/peran.enum'
 
 const logger = new Logger('pengaturan-libur-service')
 
@@ -99,11 +99,13 @@ export class PengaturanLiburService {
     }
   }
 
-  getJenisLiburId(peran: number): number {
+  getJenisLiburId(peran: Peran): number {
     switch (peran) {
-      case PERAN_KABKOTA:
+      case Peran.KABKOTA:
+      case Peran.UPTD:
         return 2
-      case PERAN_PROPINSI:
+      case Peran.PROPINSI:
+      case Peran.CABDIS:
         return 3
       default:
         return 1 // level admin

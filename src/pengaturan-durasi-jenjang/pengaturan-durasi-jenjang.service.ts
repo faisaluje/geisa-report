@@ -5,10 +5,10 @@ import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { Jenjang } from 'src/enums/jenjang.enum'
 import getLevelUser from 'src/utils/get-level-user.utils'
-import { PERAN_SEKOLAH } from 'src/constants/peran.constant'
 import { Sekolah } from 'src/entities/sekolah.entity'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import mapJenjangData from 'src/data/mapJenjang.data'
+import { Peran } from 'src/enums/peran.enum'
 
 const logger = new Logger('pengaturan-durasi-jenjang')
 
@@ -63,7 +63,7 @@ export class PengaturanDurasiJenjangService {
       const { kodeWilayah, peran, id } = user
       let pengaturandurasiJenjang: PengaturanDurasiJenjang[]
 
-      if (peran === PERAN_SEKOLAH) {
+      if (peran === Peran.SEKOLAH) {
         const pengguna = await Pengguna.findOneOrFail(id)
         const sekolah = await Sekolah.findOneOrFail(pengguna.sekolahId)
 
