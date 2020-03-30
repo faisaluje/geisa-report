@@ -38,7 +38,7 @@ export class SekolahService {
         bentukPendidikanId,
       })
 
-    if (peran === Peran.SEKOLAH) {
+    if (peran == Peran.SEKOLAH) {
       const userData = await Pengguna.findOne({ penggunaId: user.id })
 
       if (userData) {

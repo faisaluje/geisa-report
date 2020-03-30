@@ -4,11 +4,11 @@ import { PengaturanDurasiJenjang } from 'src/entities/pengaturanDurasiJenjang.en
 import { Repository, getConnection } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { Jenjang } from 'src/enums/jenjang.enum'
-import getLevelUser from 'src/utils/get-level-user.utils'
 import { Sekolah } from 'src/entities/sekolah.entity'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import mapJenjangData from 'src/data/mapJenjang.data'
 import { Peran } from 'src/enums/peran.enum'
+import { TipeSubmitDurasi } from 'src/enums/tipe-submit-durasi.enum'
 
 const logger = new Logger('pengaturan-durasi-jenjang')
 
@@ -63,7 +63,7 @@ export class PengaturanDurasiJenjangService {
       const { kodeWilayah, peran, id } = user
       let pengaturandurasiJenjang: PengaturanDurasiJenjang[]
 
-      if (peran === Peran.SEKOLAH) {
+      if (peran == Peran.SEKOLAH) {
         const pengguna = await Pengguna.findOneOrFail(id)
         const sekolah = await Sekolah.findOneOrFail(pengguna.sekolahId)
 
@@ -95,23 +95,53 @@ export class PengaturanDurasiJenjangService {
     data: PengaturanDurasiJenjang[],
     user: UserDto,
     jenjang: Jenjang,
+    tipeSubmitDurasi: TipeSubmitDurasi,
   ): Promise<PengaturanDurasiJenjang[]> {
     try {
-      const rows: PengaturanDurasiJenjang[] = data.map(val => ({
-        ...val,
-        jenjang,
-        updatedBy: user.username,
-        lastUpdate: new Date(),
-        kodeWilayah: user.kodeWilayah.trim(),
-      }))
+      let shift: number
+      const rows: PengaturanDurasiJenjang[] = data.map(val => {
+        if (tipeSubmitDurasi == TipeSubmitDurasi.WAKTU) {
+          delete val.isLibur
+        } else if (tipeSubmitDurasi == TipeSubmitDurasi.HARILIBUR) {
+          delete val.jamMasuk
+          delete val.jamPulang
+          delete val.jamIstirahatMulai
+          delete val.jamIstirahatSelesai
+        }
+
+        shift = val.shift
+
+        return {
+          ...val,
+          jenjang,
+          updatedBy: user.username,
+          lastUpdate: new Date(),
+          kodeWilayah: user.kodeWilayah.trim(),
+        }
+      })
 
       const result = await this.pengaturanDurasiJenjangRepo.save(rows)
       if (result) {
-        await getConnection().query('call p_update_libur_mingguan(?, ?, ?)', [
-          user.kodeWilayah,
-          getLevelUser(user.peran),
-          jenjang,
-        ])
+        if (tipeSubmitDurasi == TipeSubmitDurasi.WAKTU) {
+          // logger.log(
+          // `call p_update_durasi(${user.kodeWilayah}, ${jenjang}, ${shift})`,
+          // )
+          await getConnection().query('call p_update_durasi(?, ?, ?)', [
+            user.kodeWilayah,
+            jenjang,
+            shift,
+          ])
+        } else if (tipeSubmitDurasi == TipeSubmitDurasi.HARILIBUR) {
+          // logger.log(
+          //   `call p_update_libur_minggu(${user.kodeWilayah}, ${jenjang})`,
+          // )
+          await getConnection().query('call p_update_libur_minggu(?, ?)', [
+            user.kodeWilayah,
+            jenjang,
+          ])
+        }
+        // call p_update_durasi('022100','SD',1);
+        // call p_update_libur_minggu('022100','SD');
       }
 
       return await this.getPengaturanDurasiJenjang(user, jenjang)

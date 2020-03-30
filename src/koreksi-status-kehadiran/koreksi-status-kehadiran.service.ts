@@ -171,7 +171,7 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.lastUpdate = new Date()
       }
 
-      if (user.peran === Peran.SEKOLAH) {
+      if (user.peran == Peran.SEKOLAH) {
         koreksiStatus.userIdPengusul = user.id
         koreksiStatus.tglPengajuan = new Date()
         koreksiStatus.statusPengajuan = 1

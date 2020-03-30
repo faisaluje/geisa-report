@@ -99,7 +99,7 @@ export class RowsService {
           },
         )
       }
-    } else if (peran === Peran.SEKOLAH) {
+    } else if (peran == Peran.SEKOLAH) {
       // Sekolah
       try {
         const pengguna = await Pengguna.findOne(user.id)

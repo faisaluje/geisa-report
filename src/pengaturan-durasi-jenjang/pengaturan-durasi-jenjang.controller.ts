@@ -12,6 +12,7 @@ import { PengaturanDurasiJenjangService } from './pengaturan-durasi-jenjang.serv
 import { PengaturanDurasiJenjang } from 'src/entities/pengaturanDurasiJenjang.entity'
 import { Jenjang } from 'src/enums/jenjang.enum'
 import * as config from 'config'
+import { TipeSubmitDurasi } from 'src/enums/tipe-submit-durasi.enum'
 
 const prefixConfig = config.get('prefix')
 
@@ -42,9 +43,10 @@ export class PengaturanDurasiJenjangController {
     )
   }
 
-  @Post('/:jenjang')
+  @Post('/:jenjang/:tipeSubmit')
   async setPengaturanDurasiJenjang(
     @Param('jenjang') jenjang: Jenjang,
+    @Param('tipeSubmit') tipeSubmitDurasi: TipeSubmitDurasi,
     @Body() body: PengaturanDurasiJenjang[],
     @Req() req: any,
   ): Promise<PengaturanDurasiJenjang[]> {
@@ -52,6 +54,7 @@ export class PengaturanDurasiJenjangController {
       body,
       req.user,
       jenjang,
+      tipeSubmitDurasi,
     )
   }
 }

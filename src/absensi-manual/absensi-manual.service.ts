@@ -172,7 +172,7 @@ export class AbsensiManualService {
         absensiManual.lastUpdate = new Date()
       }
 
-      if (user.peran === Peran.SEKOLAH) {
+      if (user.peran == Peran.SEKOLAH) {
         absensiManual.userIdPengusul = user.id
         absensiManual.statusPengajuan = 1
       } else {
