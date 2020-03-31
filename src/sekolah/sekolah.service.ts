@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Sekolah } from '../entities/sekolah.entity'
 import { Repository } from 'typeorm'
@@ -8,6 +8,8 @@ import { UserDto } from '../dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 import { Peran } from 'src/enums/peran.enum'
+
+const logger = new Logger('sekolah-service')
 
 @Injectable()
 export class SekolahService {
@@ -34,6 +36,11 @@ export class SekolahService {
       .addSelect('sekolah.kode_wilayah_kabupaten_kota_str', 'namaKabKota')
       .addSelect('sekolah.kode_wilayah_kecamatan', 'kodeWilayahKecamatan')
       .addSelect('sekolah.kode_wilayah_kecamatan_str', 'namaKecamatan')
+      .addSelect('sekolah.shift_pagi', 'shiftPagi')
+      .addSelect('sekolah.shift_siang', 'shiftSiang')
+      .addSelect('sekolah.shift_pagi_mulai', 'shiftPagiMulai')
+      .addSelect('sekolah.shift_siang_mulai', 'shiftSiangMulai')
+      .addSelect('sekolah.GMTPlus', 'gmtPlus')
       .where('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', {
         bentukPendidikanId,
       })
@@ -81,5 +88,23 @@ export class SekolahService {
     const rows = new RowsService(sekolah)
 
     return await rows.getResult()
+  }
+
+  async updateSekolah(body: Sekolah): Promise<Sekolah> {
+    try {
+      const sekolah = await Sekolah.findOneOrFail(body.sekolahId)
+
+      sekolah.shiftPagi = body.shiftPagi
+      sekolah.shiftSiang = body.shiftSiang
+      sekolah.shiftPagiMulai = body.shiftPagiMulai
+      sekolah.shiftSiangMulai = body.shiftSiangMulai
+      sekolah.gmtPlus = body.gmtPlus
+      sekolah.lastUpdate = new Date()
+
+      return await sekolah.save()
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
   }
 }

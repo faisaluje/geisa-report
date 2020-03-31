@@ -110,6 +110,9 @@ export class Sekolah extends BaseEntity {
   })
   kodeWilayahKecamatanStr: string | null
 
+  @Column('int', { name: 'GMTPlus', nullable: true })
+  gmtPlus: number | null
+
   @Column('datetime', {
     name: 'create_date',
     nullable: true,
@@ -122,4 +125,34 @@ export class Sekolah extends BaseEntity {
 
   @Column('datetime', { name: 'last_sync', nullable: true })
   lastSync: Date | null
+
+  @Column('tinyint', {
+    name: 'shift_pagi',
+    nullable: true,
+    width: 1,
+    default: () => 1,
+  })
+  shiftPagi: boolean
+
+  @Column('tinyint', {
+    name: 'shift_siang',
+    nullable: true,
+    width: 1,
+    default: () => 0,
+  })
+  shiftSiang: boolean
+
+  @Column('time', {
+    name: 'shift_pagi_mulai',
+    nullable: true,
+    default: () => '05:30:00',
+  })
+  shiftPagiMulai: string | null
+
+  @Column('time', {
+    name: 'shift_siang_mulai',
+    nullable: true,
+    default: () => '09:00:00',
+  })
+  shiftSiangMulai: string | null
 }

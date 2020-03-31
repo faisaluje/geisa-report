@@ -1,8 +1,17 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Query,
+  Req,
+  UseGuards,
+  Patch,
+  Body,
+} from '@nestjs/common'
 import { SekolahService } from './sekolah.service'
 import { PagingDto } from '../dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import * as config from 'config'
+import { Sekolah } from 'src/entities/sekolah.entity'
 
 const prefixConfig = config.get('prefix')
 
@@ -16,5 +25,10 @@ export class SekolahController {
     const user = req.user
 
     return await this.sekolahService.getSekolah(user, query)
+  }
+
+  @Patch('/')
+  async updateSekolah(@Body() body: Sekolah): Promise<Sekolah> {
+    return await this.sekolahService.updateSekolah(body)
   }
 }

@@ -9,7 +9,7 @@ export default function getBentukPendidikanIdFromPeran(peran: Peran): number[] {
     case Peran.CABDIS:
       return [7, 8, 13, 14, 15, 29]
     default:
-      // PERAN_ADMIN
+      // PERAN_ADMIN & PERAN_SEKOLAH
       return [1, 5, 6, 7, 8, 13, 14, 15, 29]
   }
 }
