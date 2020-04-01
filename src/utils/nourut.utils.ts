@@ -21,7 +21,7 @@ export async function generateNoUrut(
       })
     } else if (jenisUsulan == JenisUsulan.ABSENSI_MANUAL) {
       noUrut = await getRepository(AbsensiManual).count({
-        tanggal: Between(
+        createDate: Between(
           moment().format('YYYY-MM-01'),
           moment().format(`YYYY-MM-31`),
         ),
