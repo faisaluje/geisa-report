@@ -12,6 +12,7 @@ import { Sekolah } from '../entities/sekolah.entity'
 import { MstWilayah } from 'src/entities/mstWilayah.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 import { Peran } from 'src/enums/peran.enum'
+import { md5 } from 'locutus/php/strings'
 
 @Injectable()
 export class AuthService {
@@ -29,45 +30,43 @@ export class AuthService {
 
   async validateUserPassword(authUserDto: AuthUserDto): Promise<UserDto> {
     const { username, password } = authUserDto
-    const userSekolah = await Pengguna.findOne({ username })
+    const pengguna = await Pengguna.findOne({ username })
 
-    if (userSekolah && validatePasswordMd5(userSekolah.password, password)) {
-      const sekolah = await Sekolah.findOne(userSekolah.sekolahId)
+    if (pengguna && this.validatePassword(pengguna.password, password)) {
+      let instansi: string
+
+      if (pengguna.peranId == Peran.SEKOLAH) {
+        const sekolah = await Sekolah.findOne(pengguna.sekolahId)
+        instansi = sekolah.nama
+      } else if (pengguna.peranId === Peran.ADMIN) {
+        instansi = Peran.ADMIN.toString()
+      } else {
+        instansi = pengguna.wilayah.nama
+      }
+
       return {
-        id: userSekolah.penggunaId,
-        // nama: userSekolah.nama,
-        nama: userSekolah.username,
-        username: userSekolah.username,
-        peran: Peran.SEKOLAH, // sekolah
-        kodeWilayah: (
-          await this.getKodeWilayahBySekolah(userSekolah.username)
-        ).trim(),
-        instansi: sekolah.nama,
+        id: pengguna.penggunaId,
+        nama: pengguna.nama,
+        username: pengguna.username,
+        peran: pengguna.peranId,
+        kodeWilayah: pengguna.wilayah
+          ? pengguna.wilayah.kodeWilayah.trim()
+          : null,
+        instansi,
       }
     } else {
-      const userDinas = await RefAnggotaDinas.findOne({ userIdDinas: username })
-      if (
-        userDinas &&
-        validatePasswordSha1(userDinas.passwordDinas, password)
-      ) {
-        const wilayah = await this.getWilayahByDinas(userDinas.userIdDinas)
-        return {
-          id: userDinas.idAnggotaDinas.toString(),
-          nama: userDinas.namaAnggotaDinas,
-          username: userDinas.userIdDinas,
-          peran:
-            userDinas.roleId === 1
-              ? Peran.ADMIN
-              : userDinas.roleId === 2
-              ? Peran.KABKOTA
-              : Peran.PROPINSI, // Dinas Kabkota / Provinsi
-          kodeWilayah: wilayah ? wilayah.kodeWilayah.trim() : null,
-          instansi: wilayah ? wilayah.nama : null,
-        }
-      } else {
-        return null
-      }
+      return null
     }
+  }
+
+  validatePassword(encryptedPassword: string, plainPassword: string): boolean {
+    const isMd5 = validatePasswordMd5(encryptedPassword, plainPassword)
+
+    if (!isMd5) {
+      return validatePasswordSha1(encryptedPassword, md5(plainPassword))
+    }
+
+    return isMd5
   }
 
   async getKodeWilayahBySekolah(username: string): Promise<string> {

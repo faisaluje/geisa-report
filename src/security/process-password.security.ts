@@ -11,5 +11,5 @@ export const validatePasswordSha1 = (
   encryptedPassword: string,
   plainPassword: string,
 ): boolean => {
-  return encryptedPassword === sha1(md5(plainPassword))
+  return encryptedPassword === sha1(plainPassword)
 }
