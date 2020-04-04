@@ -39,7 +39,7 @@ export class AuthService {
         const sekolah = await Sekolah.findOne(pengguna.sekolahId)
         instansi = sekolah.nama
       } else if (pengguna.peranId === Peran.ADMIN) {
-        instansi = Peran.ADMIN.toString()
+        instansi = 'ADMIN'
       } else {
         instansi = pengguna.wilayah.nama
       }

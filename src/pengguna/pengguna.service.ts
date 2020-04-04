@@ -1,13 +1,7 @@
-import {
-  Injectable,
-  Logger,
-  BadRequestException,
-  NotAcceptableException,
-  NotFoundException,
-} from '@nestjs/common'
+import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Pengguna } from 'src/entities/pengguna.entity'
-import { Repository, Not, FindManyOptions, Like } from 'typeorm'
+import { Repository, Not, FindManyOptions, Like, In } from 'typeorm'
 import { UserDto } from 'src/dto/user.dto'
 import { PagingDto } from 'src/dto/paging.dto'
 import { Peran } from 'src/enums/peran.enum'
@@ -87,7 +81,7 @@ export class PenggunaService {
         case Peran.SEKOLAH:
           throw Error('No Access')
         default:
-          peran = Not(Peran.SEKOLAH)
+          peran = Not(In([Peran.SEKOLAH, Peran.ADMIN]))
       }
 
       condition.where = {
