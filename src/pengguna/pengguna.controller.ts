@@ -1,16 +1,40 @@
-import { Controller, UseGuards, Get, Req, Query, Param } from '@nestjs/common'
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Req,
+  Query,
+  Param,
+  Post,
+  Body,
+  Patch,
+  UseInterceptors,
+  UploadedFile,
+  Logger,
+  BadRequestException,
+} from '@nestjs/common'
 import * as config from 'config'
 import { AuthGuard } from '@nestjs/passport'
 import { PenggunaService } from './pengguna.service'
 import { PagingDto } from 'src/dto/paging.dto'
 import { PenggunaDto } from 'src/dto/pengguna.dto'
+import { FileInterceptor } from '@nestjs/platform-express/multer'
+import { FileDto } from 'src/dto/file.dto'
+import { PhotoService } from './photo.service'
+import { ChangePasswordService } from './change-password.service'
+import { UpdatePasswordDto } from 'src/dto/updatePassword.dto'
 
 const prefixConfig = config.get('prefix')
+const logger = new Logger('pengguna-controller')
 
 @UseGuards(AuthGuard())
 @Controller(`${prefixConfig.backend}/pengguna`)
 export class PenggunaController {
-  constructor(private readonly penggunaService: PenggunaService) {}
+  constructor(
+    private readonly penggunaService: PenggunaService,
+    private readonly photoService: PhotoService,
+    private readonly changePasswordService: ChangePasswordService,
+  ) {}
 
   @Get('/list')
   async getPengguna(@Query() query: any, @Req() req: any): Promise<PagingDto> {
@@ -27,5 +51,50 @@ export class PenggunaController {
   @Get()
   async getCurrentProfile(@Req() req: any): Promise<PenggunaDto> {
     return await this.penggunaService.getPenggunaOne(req.user.id)
+  }
+
+  @Post()
+  async createNewPengguna(
+    @Body() body: PenggunaDto,
+    @Req() req: any,
+  ): Promise<PenggunaDto> {
+    return await this.penggunaService.upsertPengguna(req.user, body)
+  }
+
+  @Patch('/:id')
+  async updatePengguna(
+    @Param('id') penggunaId: string,
+    @Body() body: PenggunaDto,
+    @Req() req: any,
+  ): Promise<PenggunaDto> {
+    return await this.penggunaService.upsertPengguna(req.user, body, penggunaId)
+  }
+
+  @Post('/change-photo')
+  @UseInterceptors(FileInterceptor('file'))
+  async changePhotoProfile(
+    @UploadedFile() file: FileDto,
+    @Query() query: any,
+  ): Promise<void> {
+    try {
+      await this.photoService.changePhoto({
+        penggunaId: query.id,
+        picName: file.filename,
+      })
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
+  }
+
+  @Patch('/update-password/:id')
+  async updatePassword(
+    @Param('id') penggunaId: string,
+    @Body() body: UpdatePasswordDto,
+  ): Promise<void> {
+    await this.changePasswordService.updatePassword({
+      ...body,
+      penggunaId,
+    })
   }
 }

@@ -77,4 +77,7 @@ export class Pengguna extends BaseEntity {
 
   @Column('varchar', { name: 'pic_name', nullable: true, length: 150 })
   picName: string | null
+
+  @Column('varchar', { name: 'updated_by', nullable: true, length: 100 })
+  updatedBy: string | null
 }

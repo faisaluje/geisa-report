@@ -7,6 +7,7 @@ export interface PenggunaDto {
   penggunaId: string
   nama: string
   username: string
+  password?: string
   peran: Peran
   noHp: string
   jenjang: Jenjang[]

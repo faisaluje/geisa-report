@@ -1,4 +1,10 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  BadRequestException,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { Repository, Not, FindManyOptions, Like } from 'typeorm'
@@ -9,6 +15,7 @@ import { Peran as PeranEntity } from 'src/entities/peran.entity'
 import { PenggunaDto } from 'src/dto/pengguna.dto'
 import { MstWilayah } from 'src/entities/mstWilayah.entity'
 import { WilayahDto } from 'src/dto/wilayah.dto'
+import { v4 as uuid } from 'uuid'
 
 const logger = new Logger('pengguna-service')
 
@@ -178,5 +185,59 @@ export class PenggunaService {
       logger.error(e.toString())
       throw new BadRequestException(e.toString())
     }
+  }
+
+  async upsertPengguna(
+    user: UserDto,
+    pengguna: PenggunaDto,
+    penggunaId?: string,
+  ): Promise<PenggunaDto> {
+    if (!penggunaId && (await this.checkUsernameExist(pengguna.username))) {
+      throw new BadRequestException('Username exist')
+    }
+    try {
+      let penggunaData = penggunaId
+        ? await this.penggunaRepo.findOneOrFail(penggunaId)
+        : null
+
+      if (!penggunaData) {
+        penggunaData = new Pengguna()
+        penggunaData.penggunaId = uuid()
+      } else {
+        penggunaData.lastUpdate = new Date()
+      }
+
+      penggunaData.nama = pengguna.nama
+      penggunaData.username = pengguna.username
+      if (pengguna.password) {
+        penggunaData.password = pengguna.password
+      }
+      penggunaData.peranId = pengguna.peran.peranId
+      penggunaData.noHp = pengguna.noHp
+      penggunaData.jenjang = pengguna.jenjang
+      penggunaData.wilayah = pengguna.wilayah
+      penggunaData.cakupanWilayah =
+        pengguna.cakupanWilayah && pengguna.cakupanWilayah.length > 0
+          ? pengguna.cakupanWilayah.map(val => val.kodeWilayah)
+          : null
+      penggunaData.hakAkses = pengguna.hakAkses
+      penggunaData.updatedBy = user.id
+
+      const result = await this.penggunaRepo.save(penggunaData)
+
+      return {
+        ...pengguna,
+        penggunaId: result.penggunaId,
+      }
+    } catch (e) {
+      logger.log(e.toString())
+      throw new BadRequestException()
+    }
+  }
+
+  async checkUsernameExist(username: string): Promise<boolean> {
+    const pengguna = await this.penggunaRepo.findOne({ username })
+
+    return Boolean(pengguna)
   }
 }

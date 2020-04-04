@@ -24,6 +24,7 @@ mailer:
 
 upload:
   path: 'public/uploads'
+  profilePicPath: 'public/uploads/pp'
 
 prefix:
   frontend: ''
