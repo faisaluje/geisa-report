@@ -10,6 +10,7 @@ import { PenggunaDto } from 'src/dto/pengguna.dto'
 import { MstWilayah } from 'src/entities/mstWilayah.entity'
 import { WilayahDto } from 'src/dto/wilayah.dto'
 import { v4 as uuid } from 'uuid'
+import { sha1, md5 } from 'locutus/php/strings'
 
 const logger = new Logger('pengguna-service')
 
@@ -187,7 +188,7 @@ export class PenggunaService {
     penggunaId?: string,
   ): Promise<PenggunaDto> {
     if (!penggunaId && (await this.checkUsernameExist(pengguna.username))) {
-      throw new BadRequestException('Username exist')
+      throw new BadRequestException('Username sudah dipakai')
     }
     try {
       let penggunaData = penggunaId
@@ -204,7 +205,7 @@ export class PenggunaService {
       penggunaData.nama = pengguna.nama
       penggunaData.username = pengguna.username
       if (pengguna.password) {
-        penggunaData.password = pengguna.password
+        penggunaData.password = sha1(md5(pengguna.password))
       }
       penggunaData.peranId = pengguna.peran.peranId
       penggunaData.noHp = pengguna.noHp
