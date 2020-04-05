@@ -3,4 +3,12 @@ export class WilayahDto {
   nama: string
   idLevelWilayah: number
   mstWilayah?: WilayahDto
+  mstKodeWilayah?: string
+  mstNama?: string
+  kodeKecamatan?: string
+  namaKecamatan?: string
+  kodeKabKota?: string
+  namaKabKota?: string
+  kodeProvinsi?: string
+  namaProvinsi?: string
 }
