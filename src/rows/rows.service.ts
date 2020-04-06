@@ -113,6 +113,13 @@ export class RowsService {
         logger.error(e.toString())
         throw new NotFoundException()
       }
+    } else {
+      query.andWhere(
+        `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,
+        {
+          bentukPendidikanId: getBentukPendidikanIdFromPeran(Peran.ADMIN),
+        },
+      )
     }
 
     return query
