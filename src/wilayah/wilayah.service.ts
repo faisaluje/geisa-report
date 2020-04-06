@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { RowsService } from 'src/rows/rows.service'
-import { PagingDto } from 'src/dto/Paging.dto'
-import { WilayahDto } from 'src/dto/wilayah.dto'
-import { MstWilayah } from 'src/entities/mstWilayah.entity'
+import { RowsService } from '../rows/rows.service'
+import { PagingDto } from '../dto/Paging.dto'
+import { WilayahDto } from '../dto/wilayah.dto'
+import { MstWilayah } from '../entities/mstWilayah.entity'
 
 @Injectable()
 export class WilayahService {

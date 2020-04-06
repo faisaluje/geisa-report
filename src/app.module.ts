@@ -22,7 +22,7 @@ import { AbsensiManualDetailModule } from './absensi-manual-detail/absensi-manua
 import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan-sekolah.module'
 import { DashboardModule } from './dashboard/dashboard.module'
 import { PengaturanDurasiJenjangModule } from './pengaturan-durasi-jenjang/pengaturan-durasi-jenjang.module'
-import { WilayahModule } from './wilayah/wilayah.module';
+import { WilayahModule } from './wilayah/wilayah.module'
 
 @Module({
   imports: [

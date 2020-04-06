@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common'
 import { WilayahService } from './wilayah.service'
-import { WilayahDto } from 'src/dto/wilayah.dto'
-import { PagingDto } from 'src/dto/paging.dto'
+import { WilayahDto } from '../dto/wilayah.dto'
+import { PagingDto } from '../dto/paging.dto'
 import * as config from 'config'
 
 const prefixConfig = config.get('prefix')
