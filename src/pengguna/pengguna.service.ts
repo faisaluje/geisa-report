@@ -122,7 +122,7 @@ export class PenggunaService {
       condition.skip = limit * (page - 1)
 
       const pengguna = await this.penggunaRepo.find(condition)
-      if (pengguna.length > 0) {
+      if (pengguna && pengguna.length > 0) {
         const peranData = await PeranEntity.find()
         let wilayahs: MstWilayah[] = []
         if (user.peran != Peran.ADMIN || user.kodeWilayah) {
@@ -139,7 +139,11 @@ export class PenggunaService {
             item => item.peranId === val.peranId,
           )
           const cakupanWilayah: WilayahDto[] = []
-          if (wilayahs.length > 0 && val.cakupanWilayah.length > 0) {
+          if (
+            wilayahs.length > 0 &&
+            val.cakupanWilayah &&
+            val.cakupanWilayah.length > 0
+          ) {
             val.cakupanWilayah.forEach(wilayah => {
               const wilayahSelected = wilayahs.find(
                 wil => wil.kodeWilayah === wilayah,

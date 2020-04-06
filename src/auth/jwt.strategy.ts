@@ -5,6 +5,7 @@ import { Strategy, ExtractJwt } from 'passport-jwt'
 import { Pengguna } from '../entities/pengguna.entity'
 import { UserDto } from '../dto/user.dto'
 import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
+import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
 
 const jwtConfig = config.get('jwt')
 
@@ -19,12 +20,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: UserDto): Promise<UserDto> {
     const { username } = payload
-    const userSekolah = await Pengguna.findOne({ username })
+    let userSekolah: any = await Pengguna.findOne({ username })
 
     if (!userSekolah) {
-      const userDinas = await RefAnggotaDinas.findOne({ userIdDinas: username })
+      userSekolah = await PenggunaTestGeisa.findOne({ username })
 
-      if (!userDinas) {
+      if (!userSekolah) {
         throw new UnauthorizedException()
       }
     }

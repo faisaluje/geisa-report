@@ -13,6 +13,7 @@ import { MstWilayah } from 'src/entities/mstWilayah.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 import { Peran } from 'src/enums/peran.enum'
 import { md5 } from 'locutus/php/strings'
+import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,11 @@ export class AuthService {
 
   async validateUserPassword(authUserDto: AuthUserDto): Promise<UserDto> {
     const { username, password } = authUserDto
-    const pengguna = await Pengguna.findOne({ username })
+    let pengguna: any = await Pengguna.findOne({ username })
+
+    if (!pengguna) {
+      pengguna = await PenggunaTestGeisa.findOne({ username })
+    }
 
     if (pengguna && this.validatePassword(pengguna.password, password)) {
       let instansi: string
@@ -46,7 +51,7 @@ export class AuthService {
 
       return {
         id: pengguna.penggunaId,
-        nama: pengguna.nama,
+        nama: pengguna.nama || pengguna.username,
         username: pengguna.username,
         peran: pengguna.peranId,
         kodeWilayah: pengguna.wilayah

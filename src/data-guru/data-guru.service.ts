@@ -7,8 +7,9 @@ import { PagingDto } from 'src/dto/paging.dto'
 import { RowsService } from 'src/rows/rows.service'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { Peran } from 'src/enums/peran.enum'
+import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
 
-const logger = new Logger('data-guru')
+const logger = new Logger('data-guru-service')
 
 @Injectable()
 export class DataGuruService {
@@ -76,7 +77,9 @@ export class DataGuruService {
           })
           break
         case Peran.SEKOLAH:
-          const pengguna = await Pengguna.findOneOrFail(id)
+          const pengguna =
+            (await Pengguna.findOne(id)) ||
+            (await PenggunaTestGeisa.findOne(id))
           query.where('gtk.sekolah_id = :sekolahId', {
             sekolahId: pengguna.sekolahId,
           })

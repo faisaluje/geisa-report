@@ -38,8 +38,9 @@ export class KoreksiStatusKehadiranService {
     user: UserDto,
     request: any,
   ): Promise<PagingDto> {
+    logger.log(user)
     const { kodeWilayah, peran } = user
-    if (!kodeWilayah || !peran) {
+    if (!kodeWilayah && !peran) {
       throw new NotFoundException()
     }
 

@@ -83,7 +83,7 @@ export class AbsensiManualService {
 
   async getAbasensiManual(user: UserDto, query: any): Promise<PagingDto> {
     const { kodeWilayah, peran } = user
-    if (!kodeWilayah || !peran) {
+    if (!kodeWilayah && !peran) {
       return null
     }
 

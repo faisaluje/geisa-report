@@ -5,6 +5,7 @@ import { UserDto } from 'src/dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 import { Peran } from 'src/enums/peran.enum'
+import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
 
 const logger = new Logger('rows-service')
 
@@ -102,7 +103,9 @@ export class RowsService {
     } else if (peran == Peran.SEKOLAH) {
       // Sekolah
       try {
-        const pengguna = await Pengguna.findOne(user.id)
+        const pengguna =
+          (await Pengguna.findOne(user.id)) ||
+          (await PenggunaTestGeisa.findOne(user.id))
         query.where(`${tblAlias}.sekolah_id = :sekolahId`, {
           sekolahId: pengguna.sekolahId,
         })

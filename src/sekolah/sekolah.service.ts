@@ -8,6 +8,7 @@ import { UserDto } from '../dto/user.dto'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 import { Peran } from 'src/enums/peran.enum'
+import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
 
 const logger = new Logger('sekolah-service')
 
@@ -46,7 +47,9 @@ export class SekolahService {
       })
 
     if (peran == Peran.SEKOLAH) {
-      const userData = await Pengguna.findOne({ penggunaId: user.id })
+      const userData =
+        (await Pengguna.findOne(user.id)) ||
+        (await PenggunaTestGeisa.findOne(user.id))
 
       if (userData) {
         sekolah.andWhere('sekolah.sekolah_id=:sekolahId', {
