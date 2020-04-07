@@ -24,12 +24,15 @@ export class PengaturanLiburService {
   async getPengaturanLibur(user: UserDto): Promise<PengaturanLibur[]> {
     try {
       const { kodeWilayah } = user
-      if (!kodeWilayah) {
+      if (!kodeWilayah && user.peran != Peran.ADMIN) {
         return null
       }
 
       const pengaturanLibur = await this.pengaturanLiburRepo.find({
-        where: [{ kodeWilayah }, { jenisLiburId: 1 }],
+        where:
+          user.peran == Peran.ADMIN
+            ? { jenisLiburId: 1 }
+            : [{ kodeWilayah }, { jenisLiburId: 1 }],
       })
       if (!pengaturanLibur) {
         return null
@@ -63,15 +66,19 @@ export class PengaturanLiburService {
 
       data.jenjang = JSON.stringify(data.jenjang)
       data.jenisLiburId = jenisLiburId
-      data.kodeWilayah = user.kodeWilayah
+      data.kodeWilayah = user.kodeWilayah || '000000'
       data.updatedBy = user.username
       data.tanggal = moment(data.tanggal).format('YYYY-MM-DD')
 
       const result = await this.pengaturanLiburRepo.save(data)
       if (result) {
-        await getConnection().query(
-          `call p_update_liburdaerah('${user.kodeWilayah}', ${jenisLiburId})`,
-        )
+        if (user.peran == Peran.ADMIN) {
+          await getConnection().query('call p_update_libur_nasional()')
+        } else {
+          await getConnection().query(
+            `call p_update_liburdaerah('${user.kodeWilayah}', ${jenisLiburId})`,
+          )
+        }
       }
       return result
     } catch (e) {
@@ -84,11 +91,16 @@ export class PengaturanLiburService {
     try {
       const record = await this.pengaturanLiburRepo.delete({ id })
       if (record) {
-        await getConnection().query(
-          `call p_update_liburdaerah('${
-            user.kodeWilayah
-          }', ${this.getJenisLiburId(user.peran)})`,
-        )
+        if (user.peran == Peran.ADMIN) {
+          await getConnection().query('call p_update_libur_nasional()')
+        } else {
+          await getConnection().query(
+            `call p_update_liburdaerah('${
+              user.kodeWilayah
+            }', ${this.getJenisLiburId(user.peran)})`,
+          )
+        }
+
         return true
       } else {
         throw new NotFoundException()

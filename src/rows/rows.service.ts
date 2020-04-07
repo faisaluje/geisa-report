@@ -71,16 +71,33 @@ export class RowsService {
     tblAlias: string,
     tblSekolahAlias = 'sekolah',
   ): Promise<SelectQueryBuilder<any>> {
-    const { kodeWilayah, peran } = user
+    const { kodeWilayah, peran, id } = user
 
     if ([Peran.KABKOTA, Peran.UPTD].includes(peran)) {
       // Dinas Kab/kota || Dinas UPTD
-      query.where(
-        `${tblSekolahAlias}.kode_wilayah_kabupaten_kota = :kodeWilayah`,
-        {
-          kodeWilayah,
-        },
-      )
+      if (peran == Peran.UPTD) {
+        const pengguna = await Pengguna.findOne(id)
+
+        if (pengguna && pengguna.cakupanWilayah?.length > 1) {
+          query.where(
+            `${tblSekolahAlias}.kode_wilayah_kecamatan in(:cakupanWilayah)`,
+            {
+              cakupanWilayah: pengguna.cakupanWilayah,
+            },
+          )
+        } else {
+          logger.warn('Cakupan Wilayah kosong')
+          throw new NotFoundException()
+        }
+      } else {
+        query.where(
+          `${tblSekolahAlias}.kode_wilayah_kabupaten_kota = :kodeWilayah`,
+          {
+            kodeWilayah,
+          },
+        )
+      }
+
       query.andWhere(
         `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,
         {
@@ -89,9 +106,26 @@ export class RowsService {
       )
     } else if ([Peran.PROPINSI, Peran.CABDIS].includes(peran)) {
       // Dinas Provinsi || Dinas Cabdis
-      query.where(`${tblSekolahAlias}.kode_wilayah_provinsi = :kodeWilayah`, {
-        kodeWilayah,
-      })
+      if (peran == Peran.CABDIS) {
+        const pengguna = await Pengguna.findOne(id)
+
+        if (pengguna && pengguna.cakupanWilayah?.length > 1) {
+          query.where(
+            `${tblSekolahAlias}.kode_wilayah_kabupaten_kota in(:cakupanWilayah)`,
+            {
+              cakupanWilayah: pengguna.cakupanWilayah,
+            },
+          )
+        } else {
+          logger.warn('Cakupan Wilayah kosong')
+          throw new NotFoundException()
+        }
+      } else {
+        query.where(`${tblSekolahAlias}.kode_wilayah_provinsi = :kodeWilayah`, {
+          kodeWilayah,
+        })
+      }
+
       if (kodeWilayah !== '010000') {
         query.andWhere(
           `${tblSekolahAlias}.bentuk_pendidikan_id in(:bentukPendidikanId)`,

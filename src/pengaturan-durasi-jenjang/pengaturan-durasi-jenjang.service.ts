@@ -9,6 +9,7 @@ import { Pengguna } from 'src/entities/pengguna.entity'
 import mapJenjangData from 'src/data/mapJenjang.data'
 import { Peran } from 'src/enums/peran.enum'
 import { TipeSubmitDurasi } from 'src/enums/tipe-submit-durasi.enum'
+import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
 
 const logger = new Logger('pengaturan-durasi-jenjang')
 
@@ -64,7 +65,9 @@ export class PengaturanDurasiJenjangService {
       let pengaturandurasiJenjang: PengaturanDurasiJenjang[]
 
       if (peran == Peran.SEKOLAH) {
-        const pengguna = await Pengguna.findOneOrFail(id)
+        const pengguna =
+          (await Pengguna.findOne(id)) ||
+          (await PenggunaTestGeisa.findOneOrFail(id))
         const sekolah = await Sekolah.findOneOrFail(pengguna.sekolahId)
 
         const jenjangBySekolah = mapJenjangData.find(

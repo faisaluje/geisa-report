@@ -92,7 +92,7 @@ export class PenggunaService {
       if ([Peran.PROPINSI, Peran.KABKOTA].includes(user.peran)) {
         condition.where = {
           ...condition.where,
-          kodeWilayah: user.kodeWilayah,
+          wilayah: { kodeWilayah: user.kodeWilayah },
         }
       }
 

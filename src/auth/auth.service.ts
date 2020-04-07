@@ -14,6 +14,7 @@ import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-fro
 import { Peran } from 'src/enums/peran.enum'
 import { md5 } from 'locutus/php/strings'
 import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
+import { HakAkses } from 'src/enums/hak-akses.enum'
 
 @Injectable()
 export class AuthService {
@@ -31,17 +32,16 @@ export class AuthService {
 
   async validateUserPassword(authUserDto: AuthUserDto): Promise<UserDto> {
     const { username, password } = authUserDto
-    let pengguna: any = await Pengguna.findOne({ username })
-
-    if (!pengguna) {
-      pengguna = await PenggunaTestGeisa.findOne({ username })
-    }
+    let sekolah: Sekolah
+    const pengguna: any =
+      (await Pengguna.findOne({ username })) ||
+      (await PenggunaTestGeisa.findOne({ username }))
 
     if (pengguna && this.validatePassword(pengguna.password, password)) {
       let instansi: string
 
       if (pengguna.peranId == Peran.SEKOLAH) {
-        const sekolah = await Sekolah.findOne(pengguna.sekolahId)
+        sekolah = await Sekolah.findOne(pengguna.sekolahId)
         instansi = sekolah.nama
       } else if (pengguna.peranId === Peran.ADMIN) {
         instansi = 'ADMIN'
@@ -54,8 +54,11 @@ export class AuthService {
         nama: pengguna.nama || pengguna.username,
         username: pengguna.username,
         peran: pengguna.peranId,
+        hakAkses: pengguna.hakAkses || HakAkses.MONITORING,
         kodeWilayah: pengguna.wilayah
           ? pengguna.wilayah.kodeWilayah.trim()
+          : pengguna.peranId == Peran.SEKOLAH
+          ? this.getKodeWilayahBySekolah(sekolah)
           : null,
         instansi,
       }
@@ -74,29 +77,19 @@ export class AuthService {
     return isMd5
   }
 
-  async getKodeWilayahBySekolah(username: string): Promise<string> {
-    const user = await Pengguna.findOne({ username })
-    if (!user) {
-      return null
-    }
-
-    const userSekolah = await Sekolah.findOne(user.sekolahId)
-    if (!userSekolah) {
-      return null
-    }
-
+  getKodeWilayahBySekolah(sekolah: Sekolah): string {
     if (
       getBentukPendidikanIdFromPeran(Peran.KABKOTA).includes(
-        userSekolah.bentukPendidikanId,
+        sekolah.bentukPendidikanId,
       )
     ) {
-      return userSekolah.kodeWilayahKabupatenKota
+      return sekolah.kodeWilayahKabupatenKota
     } else if (
       getBentukPendidikanIdFromPeran(Peran.PROPINSI).includes(
-        userSekolah.bentukPendidikanId,
+        sekolah.bentukPendidikanId,
       )
     ) {
-      return userSekolah.kodeWilayahProvinsi
+      return sekolah.kodeWilayahProvinsi
     } else {
       return null
     }
