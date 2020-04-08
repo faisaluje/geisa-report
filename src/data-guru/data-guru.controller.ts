@@ -12,8 +12,8 @@ export class DataGuruController {
   constructor(private readonly dataGuruService: DataGuruService) {}
 
   @Get('/:id')
-  async getDataGuruOne(@Param('id') id: string): Promise<any> {
-    return await this.dataGuruService.getDataGuruOne(id)
+  async getDataGuruOne(@Param('id') id: string, @Req() req: any): Promise<any> {
+    return await this.dataGuruService.getDataGuruOne(req.user, id)
   }
 
   @Get('/')

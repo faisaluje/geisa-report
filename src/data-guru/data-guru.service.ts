@@ -8,6 +8,8 @@ import { RowsService } from 'src/rows/rows.service'
 import { Pengguna } from 'src/entities/pengguna.entity'
 import { Peran } from 'src/enums/peran.enum'
 import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
+import getCakupanWilayahFromPengguna from 'src/utils/get-cakupanWilayah-from-pengguna.utils'
+import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 
 const logger = new Logger('data-guru-service')
 
@@ -18,7 +20,9 @@ export class DataGuruService {
     private readonly dataGuruRepo: Repository<Dataguru>,
   ) {}
 
-  getDataGuruQuery(): SelectQueryBuilder<Dataguru> {
+  getDataGuruQuery(peran: Peran): SelectQueryBuilder<Dataguru> {
+    const bentukPendidikanId = getBentukPendidikanIdFromPeran(peran)
+
     return this.dataGuruRepo
       .createQueryBuilder('gtk')
       .select('gtk.id', 'id')
@@ -45,10 +49,15 @@ export class DataGuruService {
       .addSelect('sekolah.kode_wilayah_kecamatan', 'kodeWilayahKecamatan')
       .addSelect('sekolah.kode_wilayah_kecamatan_str', 'namaKecamatan')
       .leftJoin('sekolah', 'sekolah', 'sekolah.sekolah_id = gtk.sekolah_id')
+      .where('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', {
+        bentukPendidikanId,
+      })
   }
 
-  async getDataGuruOne(id: string): Promise<any> {
-    const query = this.getDataGuruQuery().where('gtk.id = :id', { id })
+  async getDataGuruOne(user: UserDto, id: string): Promise<any> {
+    const query = this.getDataGuruQuery(user.peran).where('gtk.id = :id', {
+      id,
+    })
 
     return await query.getRawOne()
   }
@@ -57,22 +66,33 @@ export class DataGuruService {
     const { id, peran, kodeWilayah } = user
 
     try {
-      const query = this.getDataGuruQuery()
+      const query = this.getDataGuruQuery(peran)
+      let cakupanWilayah: string[] = ['']
+      if ([Peran.UPTD, Peran.CABDIS].includes(peran)) {
+        cakupanWilayah = await getCakupanWilayahFromPengguna(user)
+      }
 
       switch (peran) {
         case Peran.UPTD:
-          query.where('sekolah.kode_wilayah_kecamatan = :kodeWilayah', {
-            kodeWilayah,
+          query.andWhere('sekolah.kode_wilayah_kecamatan in(:cakupanWilayah)', {
+            cakupanWilayah,
           })
           break
-        case Peran.KABKOTA:
         case Peran.CABDIS:
-          query.where('sekolah.kode_wilayah_kabupaten_kota = :kodeWilayah', {
+          query.andWhere(
+            'sekolah.kode_wilayah_kabupaten_kota in(:cakupanWilayah)',
+            {
+              cakupanWilayah,
+            },
+          )
+          break
+        case Peran.KABKOTA:
+          query.andWhere('sekolah.kode_wilayah_kabupaten_kota = :kodeWilayah', {
             kodeWilayah,
           })
           break
         case Peran.PROPINSI:
-          query.where('sekolah.kode_wilayah_provinsi = :kodeWilayah', {
+          query.andWhere('sekolah.kode_wilayah_provinsi = :kodeWilayah', {
             kodeWilayah,
           })
           break
@@ -80,12 +100,12 @@ export class DataGuruService {
           const pengguna =
             (await Pengguna.findOne(id)) ||
             (await PenggunaTestGeisa.findOne(id))
-          query.where('gtk.sekolah_id = :sekolahId', {
+          query.andWhere('gtk.sekolah_id = :sekolahId', {
             sekolahId: pengguna.sekolahId,
           })
           break
         default:
-          query.where('gtk.sekolah_id IS NOT NULL')
+          query.andWhere('gtk.sekolah_id IS NOT NULL')
       }
 
       if (request) {

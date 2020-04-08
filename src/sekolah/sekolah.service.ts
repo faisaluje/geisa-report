@@ -9,6 +9,7 @@ import { Pengguna } from 'src/entities/pengguna.entity'
 import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
 import { Peran } from 'src/enums/peran.enum'
 import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
+import getCakupanWilayahFromPengguna from 'src/utils/get-cakupanWilayah-from-pengguna.utils'
 
 const logger = new Logger('sekolah-service')
 
@@ -59,25 +60,38 @@ export class SekolahService {
         return null
       }
     } else {
+      let cakupanWilayah: string[] = ['']
+      if ([Peran.UPTD, Peran.CABDIS].includes(peran)) {
+        cakupanWilayah = await getCakupanWilayahFromPengguna(user)
+      }
+
       switch (peran) {
         case Peran.UPTD:
-          sekolah.andWhere('sekolah.kode_wilayah_kecamatan=:kecamatanId', {
-            kecamatanId: kodeWilayah,
-          })
+          sekolah.andWhere(
+            'sekolah.kode_wilayah_kecamatan in(:cakupanWilayah)',
+            {
+              cakupanWilayah,
+            },
+          )
+          break
+        case Peran.CABDIS:
+          sekolah.andWhere(
+            'sekolah.kode_wilayah_kabupaten_kota in(:cakupanWilayah)',
+            {
+              cakupanWilayah,
+            },
+          )
           break
         case Peran.KABKOTA:
-        case Peran.CABDIS:
-          sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kabKotaId', {
-            kabKotaId: kodeWilayah,
+          sekolah.andWhere('sekolah.kode_wilayah_kabupaten_kota=:kodeWilayah', {
+            kodeWilayah,
           })
           break
         case Peran.PROPINSI:
-          sekolah.andWhere('sekolah.kode_wilayah_provinsi=:provId', {
-            provId: kodeWilayah,
+          sekolah.andWhere('sekolah.kode_wilayah_provinsi=:kodeWilayah', {
+            kodeWilayah,
           })
           break
-        default:
-          return null
       }
 
       if (query.search) {
