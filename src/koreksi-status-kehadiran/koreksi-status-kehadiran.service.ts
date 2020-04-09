@@ -176,8 +176,7 @@ export class KoreksiStatusKehadiranService {
         koreksiStatus.tglPengajuan = new Date()
         koreksiStatus.statusPengajuan = 1
       } else {
-        // tslint:disable-next-line: radix
-        koreksiStatus.userIdPemeriksa = parseInt(user.id)
+        koreksiStatus.userIdPemeriksa = user.id
         koreksiStatus.tglDiperiksa = new Date()
         koreksiStatus.statusPengajuan = data.statusPengajuan
         koreksiStatus.alasanPenolakanId = data.alasanPenolakan

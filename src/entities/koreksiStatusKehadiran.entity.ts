@@ -64,8 +64,8 @@ export class KoreksiStatusKehadiran {
   @Column('int', { name: 'status_pengajuan' })
   statusPengajuan: number
 
-  @Column('int', { name: 'user_id_pemeriksa', nullable: true })
-  userIdPemeriksa: number | null
+  @Column('varchar', { name: 'user_id_pemeriksa', nullable: true })
+  userIdPemeriksa: string | null
 
   @Column('date', { name: 'tgl_diperiksa', nullable: true })
   tglDiperiksa: Date | null
