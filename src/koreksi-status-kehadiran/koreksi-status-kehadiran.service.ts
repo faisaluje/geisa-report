@@ -19,6 +19,7 @@ import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
 import { generateNoUrut } from 'src/utils/nourut.utils'
 import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
 import { Peran } from 'src/enums/peran.enum'
+import { getMethodName } from 'src/services/ClassHelpers'
 
 const logger = new Logger('koreksi-status-kehadiran')
 
@@ -139,7 +140,9 @@ export class KoreksiStatusKehadiranService {
         ),
       }
     } catch (e) {
-      logger.error(e.toString())
+      logger.error(
+        `${getMethodName(this.getKoreksiStatusKehadiranOne)}, ${e.toString()}`,
+      )
       throw new BadRequestException()
     }
   }
@@ -255,7 +258,9 @@ export class KoreksiStatusKehadiranService {
         }
       }
     } catch (e) {
-      logger.error(e.toString())
+      logger.error(
+        `${getMethodName(this.upsertKoreksiStatusKehadiran)}, ${e.toString()}`,
+      )
       throw new BadRequestException()
     }
   }

@@ -20,6 +20,7 @@ import { generateNoUrut } from 'src/utils/nourut.utils'
 import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
 import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
 import { Peran } from 'src/enums/peran.enum'
+import { getMethodName } from 'src/services/ClassHelpers'
 
 const logger = new Logger('absensi-manual-service')
 
@@ -76,7 +77,9 @@ export class AbsensiManualService {
           : null,
       }
     } catch (e) {
-      logger.error(e.toString())
+      logger.error(
+        `${getMethodName(this.getAbsensiManualOne)}, ${e.toString()}`,
+      )
       throw new NotFoundException()
     }
   }
@@ -213,7 +216,9 @@ export class AbsensiManualService {
 
       throw new BadRequestException()
     } catch (e) {
-      logger.error(e.toString())
+      logger.error(
+        `${getMethodName(this.upsertAbsensiManual)}, ${e.toString()}`,
+      )
       throw new BadRequestException()
     }
   }

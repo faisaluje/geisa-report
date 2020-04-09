@@ -11,6 +11,8 @@ import { MstWilayah } from 'src/entities/mstWilayah.entity'
 import { WilayahDto } from 'src/dto/wilayah.dto'
 import { v4 as uuid } from 'uuid'
 import { sha1, md5 } from 'locutus/php/strings'
+import { HakAkses } from 'src/enums/hak-akses.enum'
+import { getMethodName } from 'src/services/ClassHelpers'
 
 const logger = new Logger('pengguna-service')
 
@@ -62,7 +64,7 @@ export class PenggunaService {
         cakupanWilayah,
       }
     } catch (e) {
-      logger.error(e.toString())
+      logger.error(`${getMethodName(this.getPenggunaOne)}, ${e.toString()}`)
       throw new BadRequestException()
     }
   }
@@ -181,7 +183,7 @@ export class PenggunaService {
         rows,
       }
     } catch (e) {
-      logger.error(e.toString())
+      logger.error(`${getMethodName(this.getPengguna)}, ${e.toString()}`)
       throw new BadRequestException(e.toString())
     }
   }
@@ -204,6 +206,10 @@ export class PenggunaService {
         penggunaData.penggunaId = uuid()
       } else {
         penggunaData.lastUpdate = new Date()
+      }
+
+      if (await this.checkUserApprovalExist(pengguna)) {
+        throw new BadRequestException('User Approval hanya bisa 1 per wilayah')
       }
 
       penggunaData.nama = pengguna.nama
@@ -229,8 +235,8 @@ export class PenggunaService {
         penggunaId: result.penggunaId,
       }
     } catch (e) {
-      logger.log(e.toString())
-      throw new BadRequestException()
+      logger.error(`${getMethodName(this.upsertPengguna)}, ${e.toString()}`)
+      throw new BadRequestException(e.message)
     }
   }
 
@@ -238,5 +244,23 @@ export class PenggunaService {
     const pengguna = await this.penggunaRepo.findOne({ username })
 
     return Boolean(pengguna)
+  }
+
+  async checkUserApprovalExist(pengguna: PenggunaDto): Promise<boolean> {
+    if (pengguna.hakAkses == HakAkses.MONITORING) {
+      return false
+    }
+
+    if ([Peran.CABDIS, Peran.UPTD].includes(pengguna.peran.peranId)) {
+      return false
+    }
+
+    const userApproval = await this.penggunaRepo.findOne({
+      wilayah: pengguna.wilayah,
+      peranId: pengguna.peran.peranId,
+      hakAkses: HakAkses.APPROVAL,
+    })
+
+    return Boolean(userApproval)
   }
 }

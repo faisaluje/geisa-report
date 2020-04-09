@@ -71,7 +71,7 @@ export class RowsService {
     tblAlias: string,
     tblSekolahAlias = 'sekolah',
   ): Promise<SelectQueryBuilder<any>> {
-    const { kodeWilayah, peran, id } = user
+    const { kodeWilayah, peran, id, username } = user
 
     if ([Peran.KABKOTA, Peran.UPTD].includes(peran)) {
       // Dinas Kab/kota || Dinas UPTD
@@ -86,7 +86,7 @@ export class RowsService {
             },
           )
         } else {
-          logger.warn('Cakupan Wilayah kosong')
+          logger.warn(`Cakupan Wilayah ${username} kosong`)
           throw new NotFoundException()
         }
       } else {
@@ -117,7 +117,7 @@ export class RowsService {
             },
           )
         } else {
-          logger.warn('Cakupan Wilayah kosong')
+          logger.warn(`Cakupan Wilayah ${username} kosong`)
           throw new NotFoundException()
         }
       } else {

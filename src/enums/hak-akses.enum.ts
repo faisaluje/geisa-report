@@ -1,4 +1,4 @@
 export enum HakAkses {
-  MONITORING,
-  APPROVAL,
+  MONITORING = 'MONITORING',
+  APPROVAL = 'APPROVAL',
 }
