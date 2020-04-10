@@ -78,7 +78,7 @@ export class RowsService {
       if (peran == Peran.UPTD) {
         const pengguna = await Pengguna.findOne(id)
 
-        if (pengguna && pengguna.cakupanWilayah?.length > 1) {
+        if (pengguna && pengguna.cakupanWilayah?.length >= 1) {
           query.where(
             `${tblSekolahAlias}.kode_wilayah_kecamatan in(:cakupanWilayah)`,
             {
@@ -109,7 +109,7 @@ export class RowsService {
       if (peran == Peran.CABDIS) {
         const pengguna = await Pengguna.findOne(id)
 
-        if (pengguna && pengguna.cakupanWilayah?.length > 1) {
+        if (pengguna && pengguna.cakupanWilayah?.length >= 1) {
           query.where(
             `${tblSekolahAlias}.kode_wilayah_kabupaten_kota in(:cakupanWilayah)`,
             {
