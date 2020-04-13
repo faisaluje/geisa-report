@@ -61,6 +61,14 @@ export class PenggunaController {
     return await this.penggunaService.upsertPengguna(req.user, body)
   }
 
+  @Patch('/update-password')
+  async updatePassword(
+    @Body() body: UpdatePasswordDto,
+    @Req() req: any,
+  ): Promise<void> {
+    await this.changePasswordService.updatePassword(req.user, body)
+  }
+
   @Patch('/:id')
   async updatePengguna(
     @Param('id') penggunaId: string,
@@ -85,16 +93,5 @@ export class PenggunaController {
       logger.error(e.toString())
       throw new BadRequestException()
     }
-  }
-
-  @Patch('/update-password/:id')
-  async updatePassword(
-    @Param('id') penggunaId: string,
-    @Body() body: UpdatePasswordDto,
-  ): Promise<void> {
-    await this.changePasswordService.updatePassword({
-      ...body,
-      penggunaId,
-    })
   }
 }

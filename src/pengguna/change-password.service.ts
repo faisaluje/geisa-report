@@ -11,6 +11,8 @@ import {
 import { UpdatePasswordDto } from 'src/dto/updatePassword.dto'
 import { validatePasswordSha1 } from 'src/security/process-password.security'
 import { md5, sha1 } from 'locutus/php/strings'
+import { getMethodName } from 'src/services/ClassHelpers'
+import { UserDto } from 'src/dto/user.dto'
 
 const logger = new Logger('change-password-service')
 
@@ -21,8 +23,8 @@ export class ChangePasswordService {
     private readonly penggunaRepo: Repository<Pengguna>,
   ) {}
 
-  async updatePassword(data: UpdatePasswordDto): Promise<void> {
-    const pengguna = await this.penggunaRepo.findOne(data.penggunaId)
+  async updatePassword(user: UserDto, data: UpdatePasswordDto): Promise<void> {
+    const pengguna = await this.penggunaRepo.findOne(user.id)
     if (!pengguna) {
       throw new NotFoundException('Pengguna not found')
     }
@@ -37,7 +39,7 @@ export class ChangePasswordService {
 
       await this.penggunaRepo.save(pengguna)
     } catch (e) {
-      logger.error(e.toString(), 'update-password')
+      logger.error(`${getMethodName(this.updatePassword)}, ${e.toString()}`)
       throw new NotAcceptableException()
     }
   }
