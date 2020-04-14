@@ -3,6 +3,8 @@ import { AuthGuard } from '@nestjs/passport'
 import { DashboardService } from './dashboard.service'
 import * as config from 'config'
 import { PenggunaGeisaService } from './pengguna-geisa.service'
+import { DashboardSekolahDto } from 'src/dto/dashboard-sekolah.dto'
+import { DashboardSekolahService } from './dashboard-sekolah.service'
 
 const prefixConfig = config.get('prefix')
 
@@ -12,7 +14,21 @@ export class DashboardController {
   constructor(
     private readonly dashboardService: DashboardService,
     private readonly penggunaGeisaService: PenggunaGeisaService,
+    private readonly dashboardSekolahService: DashboardSekolahService,
   ) {}
+
+  @Get('/sekolah/:id')
+  async getDashboardSekolahById(
+    @Param('id') id: string,
+    @Req() req: any,
+  ): Promise<DashboardSekolahDto> {
+    return this.dashboardSekolahService.getDashboardSekolah(req.user, id)
+  }
+
+  @Get('/sekolah')
+  async getDashboardSekolah(@Req() req: any): Promise<DashboardSekolahDto> {
+    return this.dashboardSekolahService.getDashboardSekolah(req.user)
+  }
 
   @Get('/rekap-pengguna')
   async getRekapPengguna(@Query() query: any, @Req() req: any): Promise<any> {

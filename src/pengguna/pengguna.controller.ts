@@ -53,6 +53,23 @@ export class PenggunaController {
     return await this.penggunaService.getPenggunaOne(req.user.id)
   }
 
+  @Post('/change-photo')
+  @UseInterceptors(FileInterceptor('file'))
+  async changePhotoProfile(
+    @UploadedFile() file: FileDto,
+    @Query() query: any,
+  ): Promise<void> {
+    try {
+      await this.photoService.changePhoto({
+        penggunaId: query.id,
+        picName: file.filename,
+      })
+    } catch (e) {
+      logger.error(e.toString())
+      throw new BadRequestException()
+    }
+  }
+
   @Post()
   async createNewPengguna(
     @Body() body: PenggunaDto,
@@ -76,22 +93,5 @@ export class PenggunaController {
     @Req() req: any,
   ): Promise<PenggunaDto> {
     return await this.penggunaService.upsertPengguna(req.user, body, penggunaId)
-  }
-
-  @Post('/change-photo')
-  @UseInterceptors(FileInterceptor('file'))
-  async changePhotoProfile(
-    @UploadedFile() file: FileDto,
-    @Query() query: any,
-  ): Promise<void> {
-    try {
-      await this.photoService.changePhoto({
-        penggunaId: query.id,
-        picName: file.filename,
-      })
-    } catch (e) {
-      logger.error(e.toString())
-      throw new BadRequestException()
-    }
   }
 }
