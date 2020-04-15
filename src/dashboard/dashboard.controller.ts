@@ -21,13 +21,25 @@ export class DashboardController {
   async getDashboardSekolahById(
     @Param('id') id: string,
     @Req() req: any,
+    @Query() query: any,
   ): Promise<DashboardSekolahDto> {
-    return this.dashboardSekolahService.getDashboardSekolah(req.user, id)
+    return this.dashboardSekolahService.getDashboardSekolah(
+      req.user,
+      id,
+      query.tanggal,
+    )
   }
 
   @Get('/sekolah')
-  async getDashboardSekolah(@Req() req: any): Promise<DashboardSekolahDto> {
-    return this.dashboardSekolahService.getDashboardSekolah(req.user)
+  async getDashboardSekolah(
+    @Req() req: any,
+    @Query() query: any,
+  ): Promise<DashboardSekolahDto> {
+    return this.dashboardSekolahService.getDashboardSekolah(
+      req.user,
+      null,
+      query.tanggal,
+    )
   }
 
   @Get('/rekap-pengguna')

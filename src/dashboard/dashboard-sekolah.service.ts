@@ -5,6 +5,7 @@ import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.
 import { getMethodName } from 'src/services/ClassHelpers'
 import { DashboardSekolahDto } from 'src/dto/dashboard-sekolah.dto'
 import { getConnection } from 'typeorm'
+import moment = require('moment')
 
 const logger = new Logger('dashboard-sekolah-service')
 
@@ -13,6 +14,7 @@ export class DashboardSekolahService {
   async getDashboardSekolah(
     user: UserDto,
     sekolahId?: string,
+    tanggal?: string,
   ): Promise<DashboardSekolahDto> {
     try {
       const sekolah = await Sekolah.findOneOrFail(
@@ -23,6 +25,10 @@ export class DashboardSekolahService {
         sekolah,
         token: await this.getTokenInfo(sekolah.sekolahId),
         progressDhgtk: await this.getProgressDhgtk(sekolah.sekolahId),
+        kehadiranGtk: await this.getKehadiranGtk(
+          sekolah.sekolahId,
+          tanggal || moment().format('YYYY-MM-DD'),
+        ),
       }
     } catch (e) {
       logger.error(
@@ -44,6 +50,18 @@ export class DashboardSekolahService {
     const result = await getConnection().query('call m_progress_kirim(?)', [
       sekolahId,
       // 'e0645514-2cf5-e011-8114-2b1605213879',
+    ])
+
+    return result[0]
+  }
+
+  private async getKehadiranGtk(
+    sekolahId: string,
+    tanggal: string,
+  ): Promise<any[]> {
+    const result = await getConnection().query('call m_dayli_attend(?,?)', [
+      sekolahId,
+      tanggal,
     ])
 
     return result[0]
