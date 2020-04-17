@@ -23,6 +23,7 @@ import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan
 import { DashboardModule } from './dashboard/dashboard.module'
 import { PengaturanDurasiJenjangModule } from './pengaturan-durasi-jenjang/pengaturan-durasi-jenjang.module'
 import { WilayahModule } from './wilayah/wilayah.module'
+import { MailboxModule } from './mailbox/mailbox.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { WilayahModule } from './wilayah/wilayah.module'
     DashboardModule,
     PengaturanDurasiJenjangModule,
     WilayahModule,
+    MailboxModule,
   ],
 })
 export class AppModule {}

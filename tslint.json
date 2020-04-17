@@ -5,6 +5,7 @@
     "no-unused-expression": true
   },
   "rules": {
+    "variable-name": [false],
     "semicolon": [true, "never"],
     "quotemark": [true, "single"],
     "member-access": [false],

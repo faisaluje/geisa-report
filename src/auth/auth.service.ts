@@ -44,7 +44,7 @@ export class AuthService {
         sekolah = await Sekolah.findOne(pengguna.sekolahId)
         instansi = sekolah.nama
       } else if (pengguna.peranId === Peran.ADMIN) {
-        instansi = 'ADMIN'
+        instansi = 'Nasional'
       } else {
         instansi = pengguna.wilayah.nama
       }
