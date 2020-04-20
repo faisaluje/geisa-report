@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
+import { PesanPenerima } from './PesanPenerima.entity'
 
 @Entity('pesan', { schema: 'new_geisa' })
 export class Pesan {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id_pesan' })
-  idPesan: string
+  idPesan: number
 
   @Column('date', { name: 'tanggal', nullable: true })
   tanggal: string | null
@@ -26,4 +27,11 @@ export class Pesan {
     default: () => 1,
   })
   sifatPesan: number | null
+
+  @OneToMany(
+    _type => PesanPenerima,
+    pesanPenerima => pesanPenerima.pesan,
+    { eager: true },
+  )
+  penerima: PesanPenerima[]
 }

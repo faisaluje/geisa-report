@@ -5,10 +5,11 @@ import { JenisPenerimaService } from './jenis-penerima.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { RefJenisPenerima } from 'src/entities/RefJenisPenerima.entity'
 import { PassportModule } from '@nestjs/passport'
+import { Pesan } from 'src/entities/Pesan.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([RefJenisPenerima]),
+    TypeOrmModule.forFeature([RefJenisPenerima, Pesan]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   providers: [MailboxService, JenisPenerimaService],

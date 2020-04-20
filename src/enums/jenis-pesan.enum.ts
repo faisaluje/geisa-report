@@ -1,6 +1,6 @@
 export enum JenisPesan {
-  DRAFT = 1,
-  TERKIRIM = 2,
-  DIHAPUS = 3,
-  INBOX = 4,
+  Draft = 'Draft',
+  Terkirim = 'Terkirim',
+  Dihapus = 'Dihapus',
+  Inbox = 'Inbox',
 }

@@ -1,14 +1,36 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common'
 import { UserDto } from 'src/dto/user.dto'
 import { PesanDto } from 'src/dto/pesan.dto'
 import { JenisPesan } from 'src/enums/jenis-pesan.enum'
-import { getConnection } from 'typeorm'
+import { getConnection, Repository, getRepository } from 'typeorm'
 import { getMethodName } from 'src/services/ClassHelpers'
+import { Pesan } from 'src/entities/Pesan.entity'
+import { InjectRepository } from '@nestjs/typeorm'
+import moment = require('moment')
+import { PesanPenerima } from 'src/entities/PesanPenerima.entity'
 
 const logger = new Logger('mailbox-service')
 
 @Injectable()
 export class MailboxService {
+  constructor(
+    @InjectRepository(Pesan) private readonly pesanRepo: Repository<Pesan>,
+  ) {}
+
+  async getPesanOne(idPesan: number): Promise<Pesan> {
+    try {
+      return await this.pesanRepo.findOneOrFail(idPesan)
+    } catch (e) {
+      logger.error(`${getMethodName(this.getPesanOne)}, ${e.toString()}`)
+      throw new NotFoundException()
+    }
+  }
+
   async getPesan(user: UserDto, jenisPesan: JenisPesan): Promise<PesanDto[]> {
     const { username } = user
     const spName = this.getSpName(jenisPesan)
@@ -25,13 +47,48 @@ export class MailboxService {
     }
   }
 
+  async updateReadPesan(user: UserDto, idPesan: number): Promise<void> {
+    try {
+      await getConnection().query('call p_baca_pesan(?,?)', [
+        idPesan,
+        user.username,
+      ])
+    } catch (e) {
+      logger.error(`${getMethodName(this.updateReadPesan)}, ${e.toString()}`)
+      throw new BadRequestException('Gagal memperbaharui sudah baca')
+    }
+  }
+
+  async upsertPesan(user: UserDto, body: Pesan): Promise<void> {
+    try {
+      const { username } = user
+
+      body.tanggal = moment()
+        .locale('id')
+        .format('YYYY-MM-DD')
+      body.dariPenggunaId = username
+
+      const pesan = await this.pesanRepo.save(body)
+
+      if (body.penerima) {
+        for (const pesanPenerima of body.penerima) {
+          pesanPenerima.pesan = pesan
+        }
+        await getRepository(PesanPenerima).save(body.penerima)
+      }
+    } catch (e) {
+      logger.error(`${getMethodName(this.upsertPesan)}, ${e.toString()}`)
+      throw new BadRequestException()
+    }
+  }
+
   getSpName(jenisPesan: JenisPesan): string {
     switch (jenisPesan) {
-      case JenisPesan.DRAFT:
+      case JenisPesan.Draft:
         return 'e_draft'
-      case JenisPesan.TERKIRIM:
+      case JenisPesan.Terkirim:
         return 'e_terkirim'
-      case JenisPesan.DIHAPUS:
+      case JenisPesan.Dihapus:
         return 'e_dihapus'
       default:
         return 'e_inbox'
