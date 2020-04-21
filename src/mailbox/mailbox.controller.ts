@@ -62,4 +62,9 @@ export class MailboxController {
   ): Promise<void> {
     await this.mailboxService.updateReadPesan(req.user, id)
   }
+
+  @Patch('/delete')
+  async delPesan(@Body() body: any): Promise<void> {
+    await this.mailboxService.deletePesan(body.idPesan)
+  }
 }

@@ -82,6 +82,15 @@ export class MailboxService {
     }
   }
 
+  async deletePesan(idPesan: number[]): Promise<void> {
+    try {
+      await this.pesanRepo.update(idPesan, { statusPesanId: 3 })
+    } catch (e) {
+      logger.error(`${getMethodName(this.deletePesan)}, ${e.toString()}`)
+      throw new BadRequestException()
+    }
+  }
+
   getSpName(jenisPesan: JenisPesan): string {
     switch (jenisPesan) {
       case JenisPesan.Draft:
