@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { typeOrmConfig } from './config/typeorm.config'
 import { PenggunaModule } from './pengguna/pengguna.module'
@@ -23,7 +23,10 @@ import { RekapBulananSekolahModule } from './rekap-bulanan-sekolah/rekap-bulanan
 import { DashboardModule } from './dashboard/dashboard.module'
 import { PengaturanDurasiJenjangModule } from './pengaturan-durasi-jenjang/pengaturan-durasi-jenjang.module'
 import { WilayahModule } from './wilayah/wilayah.module'
-import { MailboxModule } from './mailbox/mailbox.module';
+import { MailboxModule } from './mailbox/mailbox.module'
+import { SettingModule } from './setting/setting.module'
+import { MaintenanceMiddleware } from './middleware/maintenance.middleware'
+import { JwtModule } from '@nestjs/jwt'
 
 @Module({
   imports: [
@@ -52,6 +55,12 @@ import { MailboxModule } from './mailbox/mailbox.module';
     PengaturanDurasiJenjangModule,
     WilayahModule,
     MailboxModule,
+    SettingModule,
+    JwtModule.register({}),
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  async configure(consumer: MiddlewareConsumer) {
+    consumer.apply(MaintenanceMiddleware).forRoutes('api')
+  }
+}
