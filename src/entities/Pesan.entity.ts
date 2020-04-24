@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { PesanPenerima } from './PesanPenerima.entity'
+import { PesanTerbaca } from './PesanTerbaca.entity'
 
 @Entity('pesan', { schema: 'new_geisa' })
 export class Pesan {
@@ -34,4 +35,11 @@ export class Pesan {
     { eager: true },
   )
   penerima: PesanPenerima[]
+
+  @OneToMany(
+    _type => PesanTerbaca,
+    pesanTerbaca => pesanTerbaca.pesan,
+    { eager: true },
+  )
+  terbaca: PesanTerbaca[]
 }

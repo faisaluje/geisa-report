@@ -31,6 +31,21 @@ export class MailboxService {
     }
   }
 
+  async getPesanWithDetail(
+    user: UserDto,
+    statusPesanId: number,
+  ): Promise<Pesan[]> {
+    try {
+      return await this.pesanRepo.find({
+        dariPenggunaId: user.username,
+        statusPesanId,
+      })
+    } catch (e) {
+      logger.error(`${getMethodName(this.getPesanWithDetail)}, ${e.toString()}`)
+      throw new NotFoundException()
+    }
+  }
+
   async getPesan(user: UserDto, jenisPesan: JenisPesan): Promise<PesanDto[]> {
     const { username } = user
     const spName = this.getSpName(jenisPesan)

@@ -17,6 +17,7 @@ import { PesanDto } from 'src/dto/pesan.dto'
 import { MailboxService } from './mailbox.service'
 import { JenisPesan } from 'src/enums/jenis-pesan.enum'
 import { Pesan } from 'src/entities/Pesan.entity'
+import { StatusPesan } from './status-pesan.const'
 
 const prefixConfig = config.get('prefix')
 
@@ -34,15 +35,22 @@ export class MailboxController {
   }
 
   @Get('/:jenisPesan')
-  async getInboxbyJenis(
+  async getPesanbyJenis(
     @Req() req: any,
     @Param('jenisPesan') jenisPesan: JenisPesan,
-  ): Promise<PesanDto[]> {
+  ): Promise<PesanDto[] | Pesan[]> {
+    if (jenisPesan == JenisPesan.Terkirim) {
+      return await this.mailboxService.getPesanWithDetail(
+        req.user,
+        StatusPesan.TERKIRIM,
+      )
+    }
+
     return await this.mailboxService.getPesan(req.user, jenisPesan)
   }
 
   @Get('/')
-  async getInbox(@Req() req: any, @Query() query: any): Promise<any> {
+  async getPesan(@Req() req: any, @Query() query: any): Promise<any> {
     if (query.id) {
       return await this.mailboxService.getPesanOne(query.id)
     }

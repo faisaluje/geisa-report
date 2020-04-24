@@ -31,10 +31,10 @@ export class MaintenanceMiddleware implements NestMiddleware {
     }
 
     try {
-      const token = req.headers.authorization.split(' ')[1]
-      const userData = this.jwtService.decode(token) as UserDto
+      const token = req.headers.authorization?.split(' ')[1]
+      const userData = token ? (this.jwtService.decode(token) as UserDto) : null
 
-      if (userData.peran == Peran.ADMIN) {
+      if (userData?.peran == Peran.ADMIN) {
         return next()
       }
     } catch (e) {

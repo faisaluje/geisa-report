@@ -1,10 +1,16 @@
-import { Column, Entity, Index } from 'typeorm'
+import { Column, Entity, Index, ManyToOne, JoinColumn } from 'typeorm'
+import { Pesan } from './Pesan.entity'
 
-@Index('unik', ['idPesan', 'username'], {})
+@Index('unik', ['pesan', 'username'], {})
 @Entity('pesan_terbaca', { schema: 'new_geisa' })
 export class PesanTerbaca {
+  // @Column('bigint', { primary: true, name: 'id_pesan' })
+  // idPesan: string
+
+  @ManyToOne(() => Pesan)
+  @JoinColumn({ name: 'id_pesan' })
   @Column('bigint', { primary: true, name: 'id_pesan' })
-  idPesan: string
+  pesan: Pesan
 
   @Column('varchar', { primary: true, name: 'username', length: 50 })
   username: string

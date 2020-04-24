@@ -8,6 +8,7 @@ import {
 import { MstWilayah } from './mstWilayah.entity'
 import { WilayahDto } from 'src/dto/wilayah.dto'
 import { Pesan } from './Pesan.entity'
+import { RefJenisPenerima } from './RefJenisPenerima.entity'
 
 @Entity('pesan_penerima', { schema: 'new_geisa' })
 export class PesanPenerima {
@@ -16,14 +17,14 @@ export class PesanPenerima {
 
   @ManyToOne(() => Pesan)
   @JoinColumn({ name: 'id_pesan' })
-  // @Column('bigint', { name: 'id_pesan' })
   pesan: Pesan
 
   @Column('int', { name: 'jenis_penerima_id' })
   jenisPenerimaId: number
 
-  // @Column('varchar', { name: 'kode_wilayah', nullable: true, length: 6 })
-  // kodeWilayah: string | null
+  @ManyToOne(() => RefJenisPenerima, { eager: true })
+  @JoinColumn({ name: 'jenis_penerima_id' })
+  jenisPenerima: RefJenisPenerima
 
   @ManyToOne(() => MstWilayah, { eager: true, nullable: true })
   @JoinColumn({ name: 'kode_wilayah' })
