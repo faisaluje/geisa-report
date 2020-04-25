@@ -38,14 +38,7 @@ export class MailboxController {
   async getPesanbyJenis(
     @Req() req: any,
     @Param('jenisPesan') jenisPesan: JenisPesan,
-  ): Promise<PesanDto[] | Pesan[]> {
-    if (jenisPesan == JenisPesan.Terkirim) {
-      return await this.mailboxService.getPesanWithDetail(
-        req.user,
-        StatusPesan.TERKIRIM,
-      )
-    }
-
+  ): Promise<PesanDto[]> {
     return await this.mailboxService.getPesan(req.user, jenisPesan)
   }
 

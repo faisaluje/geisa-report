@@ -15,9 +15,12 @@ export class PesanPenerima {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id_pesan_penerima' })
   idPesanPenerima: number
 
+  @Column('bigint', { name: 'id_pesan' })
+  idPesan?: number
+
   @ManyToOne(() => Pesan)
   @JoinColumn({ name: 'id_pesan' })
-  pesan: Pesan
+  pesan?: Pesan
 
   @Column('int', { name: 'jenis_penerima_id' })
   jenisPenerimaId: number

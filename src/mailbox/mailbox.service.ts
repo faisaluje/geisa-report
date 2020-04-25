@@ -7,12 +7,13 @@ import {
 import { UserDto } from 'src/dto/user.dto'
 import { PesanDto } from 'src/dto/pesan.dto'
 import { JenisPesan } from 'src/enums/jenis-pesan.enum'
-import { getConnection, Repository, getRepository } from 'typeorm'
+import { getConnection, Repository, getRepository, In } from 'typeorm'
 import { getMethodName } from 'src/services/ClassHelpers'
 import { Pesan } from 'src/entities/Pesan.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import moment = require('moment')
 import { PesanPenerima } from 'src/entities/PesanPenerima.entity'
+import { PesanTerbaca } from 'src/entities/PesanTerbaca.entity'
 
 const logger = new Logger('mailbox-service')
 
@@ -20,6 +21,10 @@ const logger = new Logger('mailbox-service')
 export class MailboxService {
   constructor(
     @InjectRepository(Pesan) private readonly pesanRepo: Repository<Pesan>,
+    @InjectRepository(PesanPenerima)
+    private readonly pesanPenerima: Repository<PesanPenerima>,
+    @InjectRepository(PesanTerbaca)
+    private readonly pesanTerbaca: Repository<PesanTerbaca>,
   ) {}
 
   async getPesanOne(idPesan: number): Promise<Pesan> {
@@ -54,8 +59,30 @@ export class MailboxService {
       const response = await getConnection().query(
         `call ${spName}('${username}')`,
       )
+      const rows = response[0] as PesanDto[]
 
-      return response[0] as PesanDto[]
+      if (jenisPesan == JenisPesan.Terkirim) {
+        const listPesanId = rows.map(row => row.id_pesan)
+
+        const penerima =
+          listPesanId && listPesanId.length > 0
+            ? await this.pesanPenerima.find({ idPesan: In(listPesanId) })
+            : []
+
+        const terbaca =
+          listPesanId && listPesanId.length > 0
+            ? await this.pesanTerbaca.find({ idPesan: In(listPesanId) })
+            : []
+
+        for (const pesan of rows) {
+          pesan.penerima = penerima.filter(
+            val => val.idPesan === pesan.id_pesan,
+          )
+          pesan.dibaca = terbaca.filter(val => val.idPesan === pesan.id_pesan)
+        }
+      }
+
+      return rows
     } catch (e) {
       logger.error(`${getMethodName(this.getPesan)}, ${e.toString()}`)
       throw new BadRequestException()
@@ -76,12 +103,10 @@ export class MailboxService {
 
   async upsertPesan(user: UserDto, body: Pesan): Promise<void> {
     try {
-      const { username } = user
-
       body.tanggal = moment()
         .locale('id')
         .format('YYYY-MM-DD')
-      body.dariPenggunaId = username
+      body.dariPenggunaId = user.username
 
       const pesan = await this.pesanRepo.save(body)
 
