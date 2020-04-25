@@ -75,7 +75,7 @@ export class MailboxService {
             : []
 
         for (const pesan of rows) {
-          pesan.penerima = penerima.filter(
+          pesan.penerima_list = penerima.filter(
             val => val.idPesan === pesan.id_pesan,
           )
           pesan.dibaca = terbaca.filter(val => val.idPesan === pesan.id_pesan)
