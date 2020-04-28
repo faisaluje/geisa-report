@@ -10,13 +10,17 @@ import {
 import { PenggunaService } from 'src/pengguna/pengguna.service'
 import * as config from 'config'
 import { RegistrasiDto } from 'src/dto/registrasi.dto'
+import { RegistrasiService } from './registrasi.service'
 
 const prefixConfig = config.get('prefix')
 const logger = new Logger('registrasi')
 
 @Controller(`${prefixConfig.backend}/registrasi`)
 export class RegistrasiController {
-  constructor(private readonly penggunaService: PenggunaService) {}
+  constructor(
+    private readonly penggunaService: PenggunaService,
+    private readonly registrasiService: RegistrasiService,
+  ) {}
 
   @Get('check-username/:username')
   async checkUsernameExist(@Param('username') username: string): Promise<void> {
@@ -27,6 +31,6 @@ export class RegistrasiController {
 
   @Post()
   async submitRegistrasi(@Body() body: RegistrasiDto): Promise<void> {
-    logger.log(body, 'registration-successfully')
+    return await this.registrasiService.submitRegistrasi(body)
   }
 }

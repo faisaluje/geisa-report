@@ -155,4 +155,12 @@ export class Sekolah extends BaseEntity {
     default: () => '09:00:00',
   })
   shiftSiangMulai: string | null
+
+  @Column('tinyint', {
+    name: 'is_online_registration',
+    nullable: true,
+    width: 1,
+    default: () => 1,
+  })
+  isOnlineRegistration: boolean
 }
