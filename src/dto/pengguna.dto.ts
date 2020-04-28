@@ -3,7 +3,7 @@ import { Jenjang } from 'src/enums/jenjang.enum'
 import { HakAkses } from 'src/enums/hak-akses.enum'
 import { WilayahDto } from './wilayah.dto'
 
-export interface PenggunaDto {
+export class PenggunaDto {
   penggunaId: string
   nama: string
   username: string

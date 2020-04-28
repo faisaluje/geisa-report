@@ -27,6 +27,7 @@ import { MailboxModule } from './mailbox/mailbox.module'
 import { SettingModule } from './setting/setting.module'
 import { MaintenanceMiddleware } from './middleware/maintenance.middleware'
 import { JwtModule } from '@nestjs/jwt'
+import { RegistrasiModule } from './registrasi/registrasi.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { JwtModule } from '@nestjs/jwt'
     MailboxModule,
     SettingModule,
     JwtModule.register({}),
+    RegistrasiModule,
   ],
 })
 export class AppModule implements NestModule {

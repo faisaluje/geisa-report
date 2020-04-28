@@ -14,5 +14,6 @@ import { ChangePasswordService } from './change-password.service'
   ],
   providers: [PenggunaService, PhotoService, ChangePasswordService],
   controllers: [PenggunaController],
+  exports: [PenggunaService],
 })
 export class PenggunaModule {}
