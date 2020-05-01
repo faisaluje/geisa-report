@@ -5,5 +5,5 @@ import { Dataguru } from '../entities/dataguru.entity'
 export class RegistrasiDto {
   sekolah: Sekolah
   pengguna: Pengguna
-  gtk: Dataguru
+  gtk: Dataguru[]
 }

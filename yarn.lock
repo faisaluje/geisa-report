@@ -1435,6 +1435,13 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
+camelcase-keys-object@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/camelcase-keys-object/-/camelcase-keys-object-1.2.2.tgz#5f3b2f9f6766859337b9bfb33f7a2f970fc9256f"
+  integrity sha512-6cCoC1mZNmRRqmIWCXn+I7Impt6YYGMWH7WapE3w9nf0+y6VFIJGLkdm5Y5JnsK5JowzFBB7VIv7tYobZLQoWg==
+  dependencies:
+    js-camelcase "^1.1.0"
+
 camelcase@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
@@ -3675,6 +3682,65 @@ jest@^24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
+js-camelcase@^1.1.0, js-camelcase@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/js-camelcase/-/js-camelcase-1.1.1.tgz#8aa02552556f8f7affbc51c11aeb08734b699713"
+  integrity sha512-u9mm16kN8vxxg6LpFj3qyK1y60ruY5QEzzfPDOqiNiwVBjBkRdy9+9XxoKUAubsj75rNGxHwhKd7TBGuzHv8HQ==
+
+js-convert-case@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/js-convert-case/-/js-convert-case-3.1.6.tgz#5ada5ece970cf89c6232097b4f2010d31ffb987f"
+  integrity sha512-Rs4T6u4LLy4ATpR4c/pqEs/tu8KIXGqHlbNwGvmhBR3Zplq60t0LxmaYW7fRupna7Z3Yth7gpcnq5eVglGBuIg==
+  dependencies:
+    camelcase-keys-object "^1.2.2"
+    js-camelcase "^1.1.1"
+    js-dotcase "^1.2.1"
+    js-headercase "^1.2.1"
+    js-pascalcase "^1.2.1"
+    js-pathcase "^1.2.1"
+    js-sentencecase "^1.2.1"
+    js-snakecase "^1.2.0"
+    js-textcase "^1.2.2"
+    lowercase-keys-object "^1.1.3"
+    pascalcase-keys-object "^1.0.1"
+    snakecase-keys-object "^1.0.2"
+    uppercase-keys-object "^1.1.4"
+
+js-dotcase@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/js-dotcase/-/js-dotcase-1.2.1.tgz#7702c22a00c70f325755296d8bc72b652c9af4af"
+  integrity sha512-NclkrJOig0qfeOshb/WERLS+tI2mHxbTTePinqyBI2c2RmQ+ACXoDFj0YgR/YbbJP+Wlu9hSuMI2mv4n0aArsg==
+
+js-headercase@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/js-headercase/-/js-headercase-1.2.1.tgz#812974e46e0cd1a4634194bfcf0ceb1b94a9efae"
+  integrity sha512-xCrLEPmHqgA2QqtlE9twMswvMmAzhGEaHSHnTF4fngP2lLahGTIbham978oYHASl9i4/8288ziGUANoxNBONdQ==
+
+js-pascalcase@^1.0.0, js-pascalcase@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/js-pascalcase/-/js-pascalcase-1.2.1.tgz#c5ea1bb23c13a54016e400f0d718aec8dbf066ee"
+  integrity sha512-m7vOQmZ7w3OHGe3JFr5VHcGXdXUVk1289g/Upr0cQlGNkzygxpzI59I0xF5xhZklvd7bRr4kRl6F9Hs3whM1gQ==
+
+js-pathcase@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/js-pathcase/-/js-pathcase-1.2.1.tgz#7e43fc3e6885a60635ed139073c34d0e8e120bf4"
+  integrity sha512-eomUgwRNoxvOpzZIMx+gv2M/InI0/jfjMhtTcipXY5kDPZMQpIeYJc4RzKJgdgeoxQvMKCQ9wSOM7VfRwbGJcw==
+
+js-sentencecase@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/js-sentencecase/-/js-sentencecase-1.2.1.tgz#e16174901309b3d37ae38c00012fdbd88e1fe34d"
+  integrity sha512-OVlbUKPpoRi9eFGdTGTLbbtiiqcJlMmBELpA97uxehh6xjTr2nNiIWwPtBGib9Weno2lho2ZFrk9SGDMzx2I2A==
+
+js-snakecase@^1.1.0, js-snakecase@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/js-snakecase/-/js-snakecase-1.2.0.tgz#61cf6f3d2e931757a49ce05197e9acd1448192b8"
+  integrity sha512-2XYxKNXlue3JpUYYhT5hfI87Z57hLm1n1AdVhqhxDX1NxupWrz9PqLToFgXLh1tYe4KVSVX1qyR+1jPe1bEjsg==
+
+js-textcase@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/js-textcase/-/js-textcase-1.2.2.tgz#b66b1f36a60e1a7ae35d8561290ecd67a1f9a83a"
+  integrity sha512-wOT4swMjZJyQtn+esu4OX/z8koChg7VK7KUqbXxPI7OgOlgPtxwrGDhnLTNUyrcepyn2YHdtGqKeu/ZRZeYj4w==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -4000,6 +4066,11 @@ loose-envify@^1.0.0:
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
+
+lowercase-keys-object@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/lowercase-keys-object/-/lowercase-keys-object-1.1.3.tgz#60cb541ab8cb3f4fb3c7a0b9ef6bbd59f29c7417"
+  integrity sha512-vjwzasuoGSAnbaKfwnTrY+nOqajU5rynJcZt5B70/539sSebdVzFuNpVHHmC6E8q/QMbwF8CEbyi/f5ajTZi5g==
 
 lru-cache@^5.1.1:
   version "5.1.1"
@@ -4713,6 +4784,13 @@ parseurl@~1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
   integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
+
+pascalcase-keys-object@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/pascalcase-keys-object/-/pascalcase-keys-object-1.0.1.tgz#0f71b49d2e0a00588641f710324002e1af64879f"
+  integrity sha512-OGA6PjN8IhnMpi59eVN+wyxwRftxXQXDvD/rZb6jxareOSanfncXV/Oy/5i6FF65+cFyWApUdu8ayIjOackjkA==
+  dependencies:
+    js-pascalcase "^1.0.0"
 
 pascalcase@^0.1.1:
   version "0.1.1"
@@ -5447,6 +5525,13 @@ slash@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
   integrity sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==
+
+snakecase-keys-object@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/snakecase-keys-object/-/snakecase-keys-object-1.0.2.tgz#1015287ce910dc1bd6e4941a48ee7b75f3ad7b59"
+  integrity sha512-/xxPDN7A9l0qoNbNAJDAleE1LRG6pQNaIePO4Ny8LjbVE4pk2tC53kuNZGWLbF58hjDMNBSZKsCceBtRqkIOLw==
+  dependencies:
+    js-snakecase "^1.1.0"
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
@@ -6198,6 +6283,11 @@ upath@^1.0.5, upath@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.2.0.tgz#8f66dbcd55a883acdae4408af8b035a5044c1894"
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
+
+uppercase-keys-object@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/uppercase-keys-object/-/uppercase-keys-object-1.1.4.tgz#8f599c39bc20a1c47c8fc2744667b9db9ed5862f"
+  integrity sha512-OirmeBmoiKHBJ4jGbf/A8859D91lLfUJgegrgmlX8yUoV1jy9hwsqdIJOODycSqzuwUVOq/Ieza17e3biZft+g==
 
 uri-js@^4.2.2:
   version "4.2.2"

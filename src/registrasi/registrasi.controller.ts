@@ -31,7 +31,9 @@ export class RegistrasiController {
   }
 
   @Post()
-  async submitRegistrasi(@Body() body: SubmitRegistrasiDto): Promise<void> {
+  async submitRegistrasi(
+    @Body() body: SubmitRegistrasiDto,
+  ): Promise<RegistrasiDto> {
     return await this.registrasiService.submitRegistrasi(body)
   }
 }

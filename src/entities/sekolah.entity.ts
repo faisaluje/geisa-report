@@ -160,7 +160,6 @@ export class Sekolah extends BaseEntity {
     name: 'is_online_registration',
     nullable: true,
     width: 1,
-    default: () => 1,
   })
   isOnlineRegistration: boolean
 }
