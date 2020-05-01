@@ -97,6 +97,10 @@ export class AbsensiManualService {
       .addSelect('absensi.no_absensi_manual', 'noAbsensiManual')
       .addSelect('absensi.sekolah_id', 'sekolahId')
       .addSelect('sekolah.nama', 'namaSekolah')
+      .addSelect('sekolah.kode_wilayah_kabupaten_kota', 'kabupatenKotaId')
+      .addSelect('sekolah.kode_wilayah_kabupaten_kota_str', 'namaKabupatenKota')
+      .addSelect('sekolah.kode_wilayah_provinsi', 'provinsiId')
+      .addSelect('sekolah.kode_wilayah_provinsi_str', 'namaProvinsi')
       .addSelect('absensi.tanggal', 'tglAbsensi')
       .addSelect('absensi.jenis_absensi_manual_id', 'jenisAbsensiManualId')
       .addSelect(
@@ -218,6 +222,19 @@ export class AbsensiManualService {
     } catch (e) {
       logger.error(
         `${getMethodName(this.upsertAbsensiManual)}, ${e.toString()}`,
+      )
+      throw new BadRequestException()
+    }
+  }
+
+  async getRekapAbsensiManual(): Promise<any[]> {
+    try {
+      const result = await getConnection().query('call r_usulan_absen_manual')
+
+      return result[0]
+    } catch (e) {
+      logger.error(
+        `${getMethodName(this.getRekapAbsensiManual)}, ${e.toString()}`,
       )
       throw new BadRequestException()
     }

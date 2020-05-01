@@ -51,6 +51,10 @@ export class KoreksiStatusKehadiranService {
       .addSelect('koreksi.no_koreksi', 'noKoreksi')
       .addSelect('koreksi.sekolah_id', 'sekolahId')
       .addSelect('koreksi.nama_sekolah', 'namaSekolah')
+      .addSelect('sekolah.kode_wilayah_kabupaten_kota', 'kabupatenKotaId')
+      .addSelect('sekolah.kode_wilayah_kabupaten_kota_str', 'namaKabupatenKota')
+      .addSelect('sekolah.kode_wilayah_provinsi', 'provinsiId')
+      .addSelect('sekolah.kode_wilayah_provinsi_str', 'namaProvinsi')
       .addSelect('koreksi.id_dapodik', 'idDapodik')
       .addSelect('koreksi.nama', 'nama')
       .addSelect('gtk.nip', 'nip')
@@ -260,6 +264,19 @@ export class KoreksiStatusKehadiranService {
     } catch (e) {
       logger.error(
         `${getMethodName(this.upsertKoreksiStatusKehadiran)}, ${e.toString()}`,
+      )
+      throw new BadRequestException()
+    }
+  }
+
+  async getRekapKoreksiStatus(): Promise<any[]> {
+    try {
+      const result = await getConnection().query('call r_usulan_koreksi_status')
+
+      return result[0]
+    } catch (e) {
+      logger.error(
+        `${getMethodName(this.getRekapKoreksiStatus)}, ${e.toString()}`,
       )
       throw new BadRequestException()
     }

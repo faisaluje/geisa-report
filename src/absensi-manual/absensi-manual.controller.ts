@@ -21,6 +21,11 @@ const prefixConfig = config.get('prefix')
 export class AbsensiManualController {
   constructor(private readonly absensiManualSerivce: AbsensiManualService) {}
 
+  @Get('/rekap')
+  async getRekapKoreksiStatus(): Promise<any[]> {
+    return this.absensiManualSerivce.getRekapAbsensiManual()
+  }
+
   @Get('/:id')
   async getAbsensiManualOne(
     @Param('id') id: number,

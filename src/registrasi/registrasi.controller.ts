@@ -11,6 +11,7 @@ import { PenggunaService } from 'src/pengguna/pengguna.service'
 import * as config from 'config'
 import { RegistrasiDto } from 'src/dto/registrasi.dto'
 import { RegistrasiService } from './registrasi.service'
+import { SubmitRegistrasiDto } from 'src/dto/submit-registrasi.dto'
 
 const prefixConfig = config.get('prefix')
 const logger = new Logger('registrasi')
@@ -30,7 +31,7 @@ export class RegistrasiController {
   }
 
   @Post()
-  async submitRegistrasi(@Body() body: RegistrasiDto): Promise<void> {
+  async submitRegistrasi(@Body() body: SubmitRegistrasiDto): Promise<void> {
     return await this.registrasiService.submitRegistrasi(body)
   }
 }

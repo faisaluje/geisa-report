@@ -31,6 +31,11 @@ export class KoreksiStatusKehadiranController {
     return await generateNoUrut(jenisUsulan)
   }
 
+  @Get('/rekap')
+  async getRekapKoreksiStatus(): Promise<any[]> {
+    return this.koreksiStatusKehadiranService.getRekapKoreksiStatus()
+  }
+
   @Get('/:id')
   async getKoreksiStatusKehadiranOne(
     @Param('id') id: number,
