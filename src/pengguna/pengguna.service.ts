@@ -259,6 +259,7 @@ export class PenggunaService {
       wilayah: pengguna.wilayah,
       peranId: pengguna.peran.peranId,
       hakAkses: HakAkses.APPROVAL,
+      penggunaId: Not(pengguna.penggunaId),
     })
 
     return Boolean(userApproval)

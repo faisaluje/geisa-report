@@ -146,6 +146,18 @@ export class AbsensiManualService {
       )
     }
 
+    if (query.kodeWilayah) {
+      const colWilayah =
+        query.levelWilayah === '1'
+          ? 'kode_wilayah_provinsi'
+          : query.levelWilayah === '2'
+          ? 'kode_wilayah_kabupaten_kota'
+          : 'kode_wilayah_kecamatan'
+      absensiManualQuery.andWhere(`sekolah.${colWilayah} = :kodeWilayah`, {
+        kodeWilayah: query.kodeWilayah,
+      })
+    }
+
     absensiManualQuery.orderBy('absensi.no_absensi_manual', 'DESC')
 
     const rows = new RowsService(absensiManualQuery)

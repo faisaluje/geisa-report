@@ -88,6 +88,18 @@ export class KoreksiStatusKehadiranService {
       })
     }
 
+    if (request.kodeWilayah) {
+      const colWilayah =
+        request.levelWilayah === '1'
+          ? 'kode_wilayah_provinsi'
+          : request.levelWilayah === '2'
+          ? 'kode_wilayah_kabupaten_kota'
+          : 'kode_wilayah_kecamatan'
+      query.andWhere(`sekolah.${colWilayah} = :kodeWilayah`, {
+        kodeWilayah: request.kodeWilayah,
+      })
+    }
+
     query.orderBy('koreksi.no_koreksi', 'DESC')
 
     const rows = new RowsService(query)

@@ -165,6 +165,11 @@ export class WilayahService {
       rows.setPage(parseInt(query.page))
     }
 
+    if (query.limit) {
+      // tslint:disable-next-line: radix
+      rows.setLimit(parseInt(query.limit))
+    }
+
     return rows.getResult()
   }
 }
