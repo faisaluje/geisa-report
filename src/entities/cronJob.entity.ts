@@ -19,7 +19,7 @@ export class CronJob {
   hari: number | null
 
   @Column('tinyint', { name: 'tanggal', nullable: true, width: 1 })
-  tanggal: boolean | null
+  tanggal: number | null
 
   @Column('tinyint', { name: 'jam', nullable: true })
   jam: number | null

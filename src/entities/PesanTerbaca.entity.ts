@@ -4,7 +4,7 @@ import { Pesan } from './Pesan.entity'
 @Index('unik', ['pesan', 'username'], {})
 @Entity('pesan_terbaca', { schema: 'new_geisa' })
 export class PesanTerbaca {
-  @Column('bigint', { primary: true, name: 'id_pesan' })
+  @Column('bigint', { primary: true, name: 'id_pesan', select: false })
   idPesan?: number
 
   @ManyToOne(() => Pesan)

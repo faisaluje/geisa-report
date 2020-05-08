@@ -5,8 +5,8 @@ db:
   type: 'mysql'
   port: 13357
   database: 'new_geisa'
-  # host: '172.17.60.67'
-  host: '36.86.63.187'
+  host: '172.17.60.67'
+  # host: '36.86.63.187'
   username: 'uje'
   password: 'ujegeisa'
   # port: 3631
