@@ -1,4 +1,4 @@
-import { Peran } from 'src/enums/peran.enum'
+import { Peran } from '../enums/peran.enum'
 
 export default function getLevelUser(peran: Peran): number {
   switch (peran) {

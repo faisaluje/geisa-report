@@ -9,10 +9,10 @@ import {
   Param,
 } from '@nestjs/common'
 import { KoreksiStatusKehadiranService } from './koreksi-status-kehadiran.service'
-import { PagingDto } from 'src/dto/paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
-import { KoreksiStatusDto } from 'src/dto/koreksi-status.dto'
-import { generateNoUrut } from 'src/utils/nourut.utils'
+import { KoreksiStatusDto } from '../dto/koreksi-status.dto'
+import { generateNoUrut } from '../utils/nourut.utils'
 import * as config from 'config'
 
 const prefixConfig = config.get('prefix')

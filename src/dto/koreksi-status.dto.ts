@@ -1,8 +1,8 @@
-import { Dataguru } from 'src/entities/dataguru.entity'
-import { RefStatusKehadiran } from 'src/entities/refStatusKehadiran.entity'
-import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
-import { Sekolah } from 'src/entities/sekolah.entity'
-import { DokumenPendukung } from 'src/entities/dokumenPendukung.entity'
+import { Dataguru } from '../entities/dataguru.entity'
+import { RefStatusKehadiran } from '../entities/refStatusKehadiran.entity'
+import { RefAlasanPenolakan } from '../entities/refAlasanPenolakan.entity'
+import { Sekolah } from '../entities/sekolah.entity'
+import { DokumenPendukung } from '../entities/dokumenPendukung.entity'
 
 export class KoreksiStatusDto {
   koreksiStatusId?: number

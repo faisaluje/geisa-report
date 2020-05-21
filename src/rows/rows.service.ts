@@ -1,11 +1,11 @@
 import { Injectable, Inject, NotFoundException, Logger } from '@nestjs/common'
 import { SelectQueryBuilder } from 'typeorm'
 import { PagingDto } from '../dto/paging.dto'
-import { UserDto } from 'src/dto/user.dto'
-import { Pengguna } from 'src/entities/pengguna.entity'
-import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
-import { Peran } from 'src/enums/peran.enum'
-import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
+import { UserDto } from '../dto/user.dto'
+import { Pengguna } from '../entities/pengguna.entity'
+import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
+import { Peran } from '../enums/peran.enum'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
 
 const logger = new Logger('rows-service')
 

@@ -3,7 +3,7 @@ import { PenggunaService } from './pengguna.service'
 import { PenggunaController } from './pengguna.controller'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Pengguna } from 'src/entities/pengguna.entity'
+import { Pengguna } from '../entities/pengguna.entity'
 import { PhotoService } from './photo.service'
 import { ChangePasswordService } from './change-password.service'
 

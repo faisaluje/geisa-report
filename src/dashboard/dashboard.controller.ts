@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { DashboardService } from './dashboard.service'
 import * as config from 'config'
 import { PenggunaGeisaService } from './pengguna-geisa.service'
-import { DashboardSekolahDto } from 'src/dto/dashboard-sekolah.dto'
+import { DashboardSekolahDto } from '../dto/dashboard-sekolah.dto'
 import { DashboardSekolahService } from './dashboard-sekolah.service'
 
 const prefixConfig = config.get('prefix')

@@ -5,13 +5,13 @@ import {
   BadRequestException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { DokumenPendukung } from 'src/entities/dokumenPendukung.entity'
+import { DokumenPendukung } from '../entities/dokumenPendukung.entity'
 import { Repository } from 'typeorm'
 import { unlinkSync } from 'fs'
 import * as config from 'config'
-import { FileDto } from 'src/dto/file.dto'
-import { UserDto } from 'src/dto/user.dto'
-import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
+import { FileDto } from '../dto/file.dto'
+import { UserDto } from '../dto/user.dto'
+import { JenisUsulan } from '../enums/jenis-usulan.enum'
 
 const uploadConfig = config.get('upload')
 const logger = new Logger('dokumen-pendukung-1')

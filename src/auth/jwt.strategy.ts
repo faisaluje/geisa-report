@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
 import { Pengguna } from '../entities/pengguna.entity'
 import { UserDto } from '../dto/user.dto'
-import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
 
 const jwtConfig = config.get('jwt')
 

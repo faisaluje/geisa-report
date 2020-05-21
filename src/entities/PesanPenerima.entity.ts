@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm'
 import { MstWilayah } from './mstWilayah.entity'
-import { WilayahDto } from 'src/dto/wilayah.dto'
+import { WilayahDto } from '../dto/wilayah.dto'
 import { Pesan } from './Pesan.entity'
 import { RefJenisPenerima } from './RefJenisPenerima.entity'
 

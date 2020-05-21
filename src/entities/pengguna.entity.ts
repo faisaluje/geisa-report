@@ -6,10 +6,10 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm'
-import { HakAkses } from 'src/enums/hak-akses.enum'
-import { Jenjang } from 'src/enums/jenjang.enum'
+import { HakAkses } from '../enums/hak-akses.enum'
+import { Jenjang } from '../enums/jenjang.enum'
 import { MstWilayah } from './mstWilayah.entity'
-import { WilayahDto } from 'src/dto/wilayah.dto'
+import { WilayahDto } from '../dto/wilayah.dto'
 
 @Index('username_pengguna', ['username'], { unique: true })
 @Entity('pengguna', { database: 'new_geisa' })

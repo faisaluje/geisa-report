@@ -5,12 +5,12 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { PengaturanLibur } from 'src/entities/pengaturanLibur.entity'
+import { PengaturanLibur } from '../entities/pengaturanLibur.entity'
 import { Repository, getConnection } from 'typeorm'
-import { UserDto } from 'src/dto/user.dto'
+import { UserDto } from '../dto/user.dto'
 import { v4 as uuid } from 'uuid'
 import moment = require('moment')
-import { Peran } from 'src/enums/peran.enum'
+import { Peran } from '../enums/peran.enum'
 
 const logger = new Logger('pengaturan-libur-service')
 

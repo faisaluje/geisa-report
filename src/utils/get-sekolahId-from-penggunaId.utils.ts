@@ -1,5 +1,5 @@
-import { Pengguna } from 'src/entities/pengguna.entity'
-import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
+import { Pengguna } from '../entities/pengguna.entity'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
 
 export default async function getSekolahIdFromPenggunaId(
   penggunaId: string,

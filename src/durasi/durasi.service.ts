@@ -8,7 +8,7 @@ import { PengaturanDurasi } from '../entities/pengaturanDurasi.entity'
 import { getConnection, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserDto } from '../dto/user.dto'
-import getLevelUser from 'src/utils/get-level-user.utils'
+import getLevelUser from '../utils/get-level-user.utils'
 
 const logger = new Logger('durasi-service')
 

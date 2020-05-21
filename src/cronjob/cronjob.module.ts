@@ -3,7 +3,7 @@ import { CronjobService } from './cronjob.service'
 import { CronjobController } from './cronjob.controller'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { CronJob } from 'src/entities/cronJob.entity'
+import { CronJob } from '../entities/cronJob.entity'
 
 @Module({
   imports: [

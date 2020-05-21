@@ -2,7 +2,7 @@ import { Controller, UseGuards, Get, Query } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { RekapHarianService } from './rekap-harian.service'
 import * as config from 'config'
-import { RekapSummaryDto } from 'src/dto/rekap-summary.dto'
+import { RekapSummaryDto } from '../dto/rekap-summary.dto'
 
 const prefixConfig = config.get('prefix')
 

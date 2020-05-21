@@ -1,9 +1,9 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { AbsensiManualDetail } from 'src/entities/absensiManualDetail.entity'
+import { AbsensiManualDetail } from '../entities/absensiManualDetail.entity'
 import { Repository } from 'typeorm'
-import { UserDto } from 'src/dto/user.dto'
-import { Dataguru } from 'src/entities/dataguru.entity'
+import { UserDto } from '../dto/user.dto'
+import { Dataguru } from '../entities/dataguru.entity'
 import moment = require('moment')
 
 const logger = new Logger('absensi-manual-detail-service')

@@ -9,9 +9,9 @@ import {
   Body,
 } from '@nestjs/common'
 import { AbsensiManualService } from './absensi-manual.service'
-import { PagingDto } from 'src/dto/paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
-import { AbsensiManualDto } from 'src/dto/absensi-manual.dto'
+import { AbsensiManualDto } from '../dto/absensi-manual.dto'
 import * as config from 'config'
 
 const prefixConfig = config.get('prefix')

@@ -1,5 +1,5 @@
-import { PesanPenerima } from 'src/entities/PesanPenerima.entity'
-import { PesanTerbaca } from 'src/entities/PesanTerbaca.entity'
+import { PesanPenerima } from '../entities/PesanPenerima.entity'
+import { PesanTerbaca } from '../entities/PesanTerbaca.entity'
 
 export class PesanDto {
   id_pesan: number

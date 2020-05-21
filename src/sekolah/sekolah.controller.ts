@@ -11,7 +11,7 @@ import { SekolahService } from './sekolah.service'
 import { PagingDto } from '../dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import * as config from 'config'
-import { Sekolah } from 'src/entities/sekolah.entity'
+import { Sekolah } from '../entities/sekolah.entity'
 
 const prefixConfig = config.get('prefix')
 

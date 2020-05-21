@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { AuthUserDto } from 'src/dto/auth-user.dto'
+import { AuthUserDto } from '../dto/auth-user.dto'
 import { UserDto } from '../dto/user.dto'
 import { Pengguna } from '../entities/pengguna.entity'
 import {
@@ -9,12 +9,12 @@ import {
 } from '../security/process-password.security'
 import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
 import { Sekolah } from '../entities/sekolah.entity'
-import { MstWilayah } from 'src/entities/mstWilayah.entity'
-import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
-import { Peran } from 'src/enums/peran.enum'
+import { MstWilayah } from '../entities/mstWilayah.entity'
+import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
+import { Peran } from '../enums/peran.enum'
 import { md5 } from 'locutus/php/strings'
-import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
-import { HakAkses } from 'src/enums/hak-akses.enum'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
+import { HakAkses } from '../enums/hak-akses.enum'
 
 @Injectable()
 export class AuthService {
@@ -42,7 +42,7 @@ export class AuthService {
 
       if (pengguna.peranId == Peran.SEKOLAH) {
         sekolah = await Sekolah.findOne(pengguna.sekolahId)
-        instansi = sekolah.nama
+        instansi = sekolah?.nama || 'Sekolah'
       } else if (pengguna.peranId === Peran.ADMIN) {
         instansi = 'Nasional'
       } else {

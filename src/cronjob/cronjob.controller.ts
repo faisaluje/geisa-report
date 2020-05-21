@@ -11,7 +11,7 @@ import {
 import * as config from 'config'
 import { AuthGuard } from '@nestjs/passport'
 import { CronjobService } from './cronjob.service'
-import { CronJob } from 'src/entities/cronJob.entity'
+import { CronJob } from '../entities/cronJob.entity'
 
 const prefixConfig = config.get('prefix')
 

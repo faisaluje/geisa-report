@@ -1,7 +1,7 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
-import { UserDto } from 'src/dto/user.dto'
+import { UserDto } from '../dto/user.dto'
 import { getConnection } from 'typeorm'
-import getLevelUser from 'src/utils/get-level-user.utils'
+import getLevelUser from '../utils/get-level-user.utils'
 
 const logger = new Logger('dashboard-service')
 

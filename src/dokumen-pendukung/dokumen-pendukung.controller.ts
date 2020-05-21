@@ -14,9 +14,9 @@ import {
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { DokumenPendukungService } from './dokumen-pendukung.service'
-import { DokumenPendukung } from 'src/entities/dokumenPendukung.entity'
+import { DokumenPendukung } from '../entities/dokumenPendukung.entity'
 import { FilesInterceptor } from '@nestjs/platform-express/multer'
-import { FileDto } from 'src/dto/file.dto'
+import { FileDto } from '../dto/file.dto'
 import * as config from 'config'
 
 const prefixConfig = config.get('prefix')

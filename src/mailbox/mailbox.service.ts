@@ -4,16 +4,16 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common'
-import { UserDto } from 'src/dto/user.dto'
-import { PesanDto } from 'src/dto/pesan.dto'
-import { JenisPesan } from 'src/enums/jenis-pesan.enum'
+import { UserDto } from '../dto/user.dto'
+import { PesanDto } from '../dto/pesan.dto'
+import { JenisPesan } from '../enums/jenis-pesan.enum'
 import { getConnection, Repository, getRepository, In } from 'typeorm'
-import { getMethodName } from 'src/services/ClassHelpers'
-import { Pesan } from 'src/entities/Pesan.entity'
+import { getMethodName } from '../services/ClassHelpers'
+import { Pesan } from '../entities/Pesan.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import moment = require('moment')
-import { PesanPenerima } from 'src/entities/PesanPenerima.entity'
-import { PesanTerbaca } from 'src/entities/PesanTerbaca.entity'
+import { PesanPenerima } from '../entities/PesanPenerima.entity'
+import { PesanTerbaca } from '../entities/PesanTerbaca.entity'
 
 const logger = new Logger('mailbox-service')
 

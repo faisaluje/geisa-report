@@ -10,13 +10,13 @@ import {
   Patch,
 } from '@nestjs/common'
 import { JenisPenerimaService } from './jenis-penerima.service'
-import { RefJenisPenerima } from 'src/entities/RefJenisPenerima.entity'
+import { RefJenisPenerima } from '../entities/RefJenisPenerima.entity'
 import { AuthGuard } from '@nestjs/passport'
 import * as config from 'config'
-import { PesanDto } from 'src/dto/pesan.dto'
+import { PesanDto } from '../dto/pesan.dto'
 import { MailboxService } from './mailbox.service'
-import { JenisPesan } from 'src/enums/jenis-pesan.enum'
-import { Pesan } from 'src/entities/Pesan.entity'
+import { JenisPesan } from '../enums/jenis-pesan.enum'
+import { Pesan } from '../entities/Pesan.entity'
 import { StatusPesan } from './status-pesan.const'
 
 const prefixConfig = config.get('prefix')

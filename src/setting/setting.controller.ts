@@ -1,7 +1,7 @@
 import { Controller, Get, Patch, UseGuards, Body } from '@nestjs/common'
 import { SettingService } from './setting.service'
 import * as config from 'config'
-import { Setting } from 'src/entities/Setting.entity'
+import { Setting } from '../entities/Setting.entity'
 import { AuthGuard } from '@nestjs/passport'
 
 const prefixConfig = config.get('prefix')

@@ -1,7 +1,7 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
-import { UserDto } from 'src/dto/user.dto'
-import { getMethodName } from 'src/services/ClassHelpers'
-import { Pengguna } from 'src/entities/pengguna.entity'
+import { UserDto } from '../dto/user.dto'
+import { getMethodName } from '../services/ClassHelpers'
+import { Pengguna } from '../entities/pengguna.entity'
 import { getConnection } from 'typeorm'
 
 const logger = new Logger('pengguna-geisa-service')

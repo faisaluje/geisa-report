@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Req, UseGuards, Param } from '@nestjs/common'
 import { DataGuruService } from './data-guru.service'
-import { PagingDto } from 'src/dto/paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import { AuthGuard } from '@nestjs/passport'
 import * as config from 'config'
 

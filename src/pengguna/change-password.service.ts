@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm'
-import { Pengguna } from 'src/entities/pengguna.entity'
+import { Pengguna } from '../entities/pengguna.entity'
 import { Repository } from 'typeorm'
 import {
   Injectable,
@@ -8,11 +8,11 @@ import {
   NotAcceptableException,
   Logger,
 } from '@nestjs/common'
-import { UpdatePasswordDto } from 'src/dto/updatePassword.dto'
-import { validatePasswordSha1 } from 'src/security/process-password.security'
+import { UpdatePasswordDto } from '../dto/updatePassword.dto'
+import { validatePasswordSha1 } from '../security/process-password.security'
 import { md5, sha1 } from 'locutus/php/strings'
-import { getMethodName } from 'src/services/ClassHelpers'
-import { UserDto } from 'src/dto/user.dto'
+import { getMethodName } from '../services/ClassHelpers'
+import { UserDto } from '../dto/user.dto'
 
 const logger = new Logger('change-password-service')
 

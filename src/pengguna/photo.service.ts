@@ -5,9 +5,9 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Pengguna } from 'src/entities/pengguna.entity'
+import { Pengguna } from '../entities/pengguna.entity'
 import { Repository } from 'typeorm'
-import { ChangePhotoDto } from 'src/dto/change-photo.dto'
+import { ChangePhotoDto } from '../dto/change-photo.dto'
 import * as config from 'config'
 import { unlinkSync } from 'fs'
 

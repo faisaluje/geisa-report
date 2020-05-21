@@ -16,13 +16,13 @@ import {
 import * as config from 'config'
 import { AuthGuard } from '@nestjs/passport'
 import { PenggunaService } from './pengguna.service'
-import { PagingDto } from 'src/dto/paging.dto'
-import { PenggunaDto } from 'src/dto/pengguna.dto'
+import { PagingDto } from '../dto/paging.dto'
+import { PenggunaDto } from '../dto/pengguna.dto'
 import { FileInterceptor } from '@nestjs/platform-express/multer'
-import { FileDto } from 'src/dto/file.dto'
+import { FileDto } from '../dto/file.dto'
 import { PhotoService } from './photo.service'
 import { ChangePasswordService } from './change-password.service'
-import { UpdatePasswordDto } from 'src/dto/updatePassword.dto'
+import { UpdatePasswordDto } from '../dto/updatePassword.dto'
 
 const prefixConfig = config.get('prefix')
 const logger = new Logger('pengguna-controller')

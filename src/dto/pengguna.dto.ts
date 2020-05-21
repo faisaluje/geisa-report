@@ -1,6 +1,6 @@
-import { Peran } from 'src/entities/peran.entity'
-import { Jenjang } from 'src/enums/jenjang.enum'
-import { HakAkses } from 'src/enums/hak-akses.enum'
+import { Peran } from '../entities/peran.entity'
+import { Jenjang } from '../enums/jenjang.enum'
+import { HakAkses } from '../enums/hak-akses.enum'
 import { WilayahDto } from './wilayah.dto'
 
 export class PenggunaDto {

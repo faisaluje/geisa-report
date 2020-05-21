@@ -5,11 +5,11 @@ import {
   ForbiddenException,
 } from '@nestjs/common'
 import { Request, Response } from 'express'
-import { SettingService } from 'src/setting/setting.service'
-import { getMethodName } from 'src/services/ClassHelpers'
+import { SettingService } from '../setting/setting.service'
+import { getMethodName } from '../services/ClassHelpers'
 import { JwtService } from '@nestjs/jwt'
-import { UserDto } from 'src/dto/user.dto'
-import { Peran } from 'src/enums/peran.enum'
+import { UserDto } from '../dto/user.dto'
+import { Peran } from '../enums/peran.enum'
 
 const logger = new Logger('maintenance-middleware')
 

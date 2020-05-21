@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { getConnection } from 'typeorm'
-import { RekapSummaryDto } from 'src/dto/rekap-summary.dto'
+import { RekapSummaryDto } from '../dto/rekap-summary.dto'
 
 const logger = new Logger('rekap-harian')
 

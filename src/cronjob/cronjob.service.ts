@@ -1,9 +1,9 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CronJob } from 'src/entities/cronJob.entity'
+import { CronJob } from '../entities/cronJob.entity'
 import { Repository } from 'typeorm'
-import { UserDto } from 'src/dto/user.dto'
-import { getMethodName } from 'src/services/ClassHelpers'
+import { UserDto } from '../dto/user.dto'
+import { getMethodName } from '../services/ClassHelpers'
 
 const logger = new Logger('cronjob-service')
 

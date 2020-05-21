@@ -9,10 +9,10 @@ import {
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { PengaturanDurasiJenjangService } from './pengaturan-durasi-jenjang.service'
-import { PengaturanDurasiJenjang } from 'src/entities/pengaturanDurasiJenjang.entity'
-import { Jenjang } from 'src/enums/jenjang.enum'
+import { PengaturanDurasiJenjang } from '../entities/pengaturanDurasiJenjang.entity'
+import { Jenjang } from '../enums/jenjang.enum'
 import * as config from 'config'
-import { TipeSubmitDurasi } from 'src/enums/tipe-submit-durasi.enum'
+import { TipeSubmitDurasi } from '../enums/tipe-submit-durasi.enum'
 
 const prefixConfig = config.get('prefix')
 

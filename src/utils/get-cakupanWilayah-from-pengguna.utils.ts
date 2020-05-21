@@ -1,5 +1,5 @@
-import { UserDto } from 'src/dto/user.dto'
-import { Pengguna } from 'src/entities/pengguna.entity'
+import { UserDto } from '../dto/user.dto'
+import { Pengguna } from '../entities/pengguna.entity'
 
 export default async function getCakupanWilayahFromPengguna(
   user: UserDto,

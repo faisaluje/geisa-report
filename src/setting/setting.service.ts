@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Setting } from 'src/entities/Setting.entity'
+import { Setting } from '../entities/Setting.entity'
 import { Repository } from 'typeorm'
 
 const logger = new Logger('setting-service')

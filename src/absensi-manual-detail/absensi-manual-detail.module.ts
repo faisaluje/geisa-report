@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common'
 import { AbsensiManualDetailService } from './absensi-manual-detail.service'
 import { AbsensiManualDetailController } from './absensi-manual-detail.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AbsensiManualDetail } from 'src/entities/absensiManualDetail.entity'
+import { AbsensiManualDetail } from '../entities/absensiManualDetail.entity'
 import { PassportModule } from '@nestjs/passport'
-import { Dataguru } from 'src/entities/dataguru.entity'
+import { Dataguru } from '../entities/dataguru.entity'
 
 @Module({
   imports: [

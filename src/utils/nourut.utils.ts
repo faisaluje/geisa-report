@@ -1,9 +1,9 @@
 import { getRepository, Between } from 'typeorm'
-import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
+import { KoreksiStatusKehadiran } from '../entities/koreksiStatusKehadiran.entity'
 import moment = require('moment')
-import { AbsensiManual } from 'src/entities/absensiManual.entity'
+import { AbsensiManual } from '../entities/absensiManual.entity'
 import { Logger } from '@nestjs/common'
-import { JenisUsulan } from 'src/enums/jenis-usulan.enum'
+import { JenisUsulan } from '../enums/jenis-usulan.enum'
 
 export async function generateNoUrut(
   jenisUsulan: JenisUsulan,

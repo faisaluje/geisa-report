@@ -9,7 +9,7 @@ import {
   Param,
 } from '@nestjs/common'
 import { PengaturanLiburService } from './pengaturan-libur.service'
-import { PengaturanLibur } from 'src/entities/pengaturanLibur.entity'
+import { PengaturanLibur } from '../entities/pengaturanLibur.entity'
 import { AuthGuard } from '@nestjs/passport'
 import * as config from 'config'
 

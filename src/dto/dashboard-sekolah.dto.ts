@@ -1,4 +1,4 @@
-import { Sekolah } from 'src/entities/sekolah.entity'
+import { Sekolah } from '../entities/sekolah.entity'
 
 export class DashboardSekolahDto {
   sekolah: Sekolah

@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common'
 import { KoreksiStatusKehadiranService } from './koreksi-status-kehadiran.service'
 import { KoreksiStatusKehadiranController } from './koreksi-status-kehadiran.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { KoreksiStatusKehadiran } from 'src/entities/koreksiStatusKehadiran.entity'
+import { KoreksiStatusKehadiran } from '../entities/koreksiStatusKehadiran.entity'
 import { PassportModule } from '@nestjs/passport'
-import { RowsModule } from 'src/rows/rows.module'
+import { RowsModule } from '../rows/rows.module'
 import * as config from 'config'
-import { DokumenPendukungModule } from 'src/dokumen-pendukung/dokumen-pendukung.module'
-import { Dataguru } from 'src/entities/dataguru.entity'
+import { DokumenPendukungModule } from '../dokumen-pendukung/dokumen-pendukung.module'
+import { Dataguru } from '../entities/dataguru.entity'
 
 const uploadConfig = config.get('upload')
 

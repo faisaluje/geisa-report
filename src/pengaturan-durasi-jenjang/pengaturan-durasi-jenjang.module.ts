@@ -3,7 +3,7 @@ import { PengaturanDurasiJenjangService } from './pengaturan-durasi-jenjang.serv
 import { PengaturanDurasiJenjangController } from './pengaturan-durasi-jenjang.controller'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { PengaturanDurasiJenjang } from 'src/entities/pengaturanDurasiJenjang.entity'
+import { PengaturanDurasiJenjang } from '../entities/pengaturanDurasiJenjang.entity'
 
 @Module({
   imports: [

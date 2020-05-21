@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { AlasanPenolakanService } from './alasan-penolakan.service'
 import { AlasanPenolakanController } from './alasan-penolakan.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
+import { RefAlasanPenolakan } from '../entities/refAlasanPenolakan.entity'
 import { PassportModule } from '@nestjs/passport'
 
 @Module({

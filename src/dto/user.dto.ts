@@ -1,4 +1,4 @@
-import { HakAkses } from 'src/enums/hak-akses.enum'
+import { HakAkses } from '../enums/hak-akses.enum'
 
 export class UserDto {
   id: string

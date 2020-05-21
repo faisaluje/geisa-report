@@ -1,9 +1,9 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { RefJenisPenerima } from 'src/entities/RefJenisPenerima.entity'
+import { RefJenisPenerima } from '../entities/RefJenisPenerima.entity'
 import { Repository } from 'typeorm'
-import { UserDto } from 'src/dto/user.dto'
-import { getMethodName } from 'src/services/ClassHelpers'
+import { UserDto } from '../dto/user.dto'
+import { getMethodName } from '../services/ClassHelpers'
 
 const logger = new Logger('jenis-penerima-service')
 

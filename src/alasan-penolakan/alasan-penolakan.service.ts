@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
+import { RefAlasanPenolakan } from '../entities/refAlasanPenolakan.entity'
 import { Repository } from 'typeorm'
 
 const logger = new Logger('alasan-penolakan')

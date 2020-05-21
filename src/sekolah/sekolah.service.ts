@@ -5,11 +5,11 @@ import { Repository } from 'typeorm'
 import { RowsService } from '../rows/rows.service'
 import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from '../dto/user.dto'
-import { Pengguna } from 'src/entities/pengguna.entity'
-import getBentukPendidikanIdFromPeran from 'src/utils/get-bentukPendidikanId-from-peran.utils'
-import { Peran } from 'src/enums/peran.enum'
-import { PenggunaTestGeisa } from 'src/entities/pengguna.testgeisa.entity'
-import getCakupanWilayahFromPengguna from 'src/utils/get-cakupanWilayah-from-pengguna.utils'
+import { Pengguna } from '../entities/pengguna.entity'
+import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
+import { Peran } from '../enums/peran.enum'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
+import getCakupanWilayahFromPengguna from '../utils/get-cakupanWilayah-from-pengguna.utils'
 
 const logger = new Logger('sekolah-service')
 

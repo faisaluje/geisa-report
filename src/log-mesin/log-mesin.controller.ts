@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common'
 import { LogMesinService } from './log-mesin.service'
-import { PagingDto } from 'src/dto/paging.dto'
+import { PagingDto } from '../dto/paging.dto'
 import * as config from 'config'
 
 const prefixConfig = config.get('prefix')

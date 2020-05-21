@@ -1,9 +1,9 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
-import { UserDto } from 'src/dto/user.dto'
-import { Sekolah } from 'src/entities/sekolah.entity'
-import getSekolahIdFromPenggunaId from 'src/utils/get-sekolahId-from-penggunaId.utils'
-import { getMethodName } from 'src/services/ClassHelpers'
-import { DashboardSekolahDto } from 'src/dto/dashboard-sekolah.dto'
+import { UserDto } from '../dto/user.dto'
+import { Sekolah } from '../entities/sekolah.entity'
+import getSekolahIdFromPenggunaId from '../utils/get-sekolahId-from-penggunaId.utils'
+import { getMethodName } from '../services/ClassHelpers'
+import { DashboardSekolahDto } from '../dto/dashboard-sekolah.dto'
 import { getConnection } from 'typeorm'
 import moment = require('moment')
 

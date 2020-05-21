@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common'
 import { AlasanPenolakanService } from './alasan-penolakan.service'
-import { RefAlasanPenolakan } from 'src/entities/refAlasanPenolakan.entity'
+import { RefAlasanPenolakan } from '../entities/refAlasanPenolakan.entity'
 import { AuthGuard } from '@nestjs/passport'
 import * as config from 'config'
 
