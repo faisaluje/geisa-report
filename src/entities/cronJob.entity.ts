@@ -42,4 +42,7 @@ export class CronJob {
 
   @Column('varchar', { name: 'updated_by', nullable: true, length: 50 })
   updatedBy: string | null
+
+  @Column('tinyint', { name: 'prioritas', nullable: true })
+  prioritas: number | null
 }

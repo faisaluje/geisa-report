@@ -78,6 +78,10 @@ export class AuthService {
   }
 
   getKodeWilayahBySekolah(sekolah: Sekolah): string {
+    if (!sekolah) {
+      return null
+    }
+
     if (
       getBentukPendidikanIdFromPeran(Peran.KABKOTA).includes(
         sekolah.bentukPendidikanId,

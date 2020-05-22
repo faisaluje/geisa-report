@@ -1,7 +1,7 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CronJob } from '../entities/cronJob.entity'
 import { Repository } from 'typeorm'
+import { CronJob } from '../entities/cronJob.entity'
 import { UserDto } from '../dto/user.dto'
 import { getMethodName } from '../services/ClassHelpers'
 
@@ -35,6 +35,7 @@ export class CronjobService {
     cronjob.jam = data.jam
     cronjob.enable = data.enable
     cronjob.updatedBy = user.id
+    cronjob.prioritas = data.prioritas
 
     try {
       await this.cronJobRepo.save(cronjob)
