@@ -56,7 +56,7 @@ export class Dataguru {
   jenisKeluarIdStr: string | null
 
   @Column('date', { name: 'tgl_ptk_keluar', nullable: true })
-  tglPtkKeluar: string | null
+  tglPtkKeluar: Date | null
 
   @Column('datetime', { name: 'last_sync', nullable: true })
   lastSync: Date | null
@@ -67,9 +67,17 @@ export class Dataguru {
   @Column('varchar', { name: 'user_updated', nullable: true, length: 255 })
   userUpdated: string | null
 
-  @Column('tinyint', { name: 'sumber', unsigned: true, default: () => '1' })
+  @Column('tinyint', { name: 'sumber', unsigned: true, default: () => 1 })
   sumber: number
 
   @Column('tinyint', { name: 'is_dapodik', nullable: true, width: 1 })
   isDapodik: boolean | null
+
+  @Column('tinyint', {
+    name: 'show_sptjm',
+    nullable: true,
+    width: 1,
+    default: () => 1,
+  })
+  showSptjm: boolean
 }

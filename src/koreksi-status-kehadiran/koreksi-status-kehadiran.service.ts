@@ -230,11 +230,11 @@ export class KoreksiStatusKehadiranService {
 
       const result = await this.koreksiStatusKehadiranRepo.save(koreksiStatus)
       if (result) {
-        if (result.statusPengajuan === 2) {
-          await getConnection().query(
-            `call p_koreksi_kehadiran(${result.koreksiStatusId})`,
-          )
-        }
+        // if (result.statusPengajuan === 2) {
+        //   await getConnection().query(
+        //     `call p_koreksi_kehadiran(${result.koreksiStatusId})`,
+        //   )
+        // }
         return {
           koreksiStatusId: result.koreksiStatusId,
           noKoreksi: result.noKoreksi,

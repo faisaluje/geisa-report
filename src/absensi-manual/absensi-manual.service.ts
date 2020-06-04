@@ -219,11 +219,11 @@ export class AbsensiManualService {
           user,
           result.absensiManualId,
         )
-        if (absensiManualDetail && result.statusPengajuan === 2) {
-          await getConnection().query(
-            `call p_absen_manual('${result.sekolahId}', ${result.absensiManualId})`,
-          )
-        }
+        // if (absensiManualDetail && result.statusPengajuan === 2) {
+        //   await getConnection().query(
+        //     `call p_absen_manual('${result.sekolahId}', ${result.absensiManualId})`,
+        //   )
+        // }
 
         return {
           absensiManualId: result.absensiManualId,

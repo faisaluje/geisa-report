@@ -38,6 +38,8 @@ export class DataGuruService {
       .addSelect('gtk.jenis_keluar_id', 'jenisKeluarId')
       .addSelect('gtk.jenis_keluar_id_str', 'jenisKeluar')
       .addSelect('gtk.tgl_ptk_keluar', 'tglPtkKeluar')
+      .addSelect('gtk.is_dapodik', 'isDapodik')
+      .addSelect('gtk.show_sptjm', 'showSptjm')
       .addSelect('gtk.sekolah_id', 'sekolahId')
       .addSelect('sekolah.nama', 'namaSekolah')
       .addSelect('sekolah.npsn', 'npsn')
@@ -124,6 +126,8 @@ export class DataGuruService {
         }
       }
 
+      query.orderBy('gtk.nama_dapodik')
+
       const rows = new RowsService(query)
       rows.setLimit(250)
 
@@ -134,6 +138,34 @@ export class DataGuruService {
       return await rows.getResult()
     } catch (e) {
       logger.error(e.toString())
+      throw new BadRequestException()
+    }
+  }
+
+  async upsertDataGuru(user: UserDto, gtk: Dataguru): Promise<void> {
+    let dataGuru: Dataguru
+
+    if (gtk.id) {
+      dataGuru = await this.dataGuruRepo.findOne(gtk.id)
+    }
+
+    if (!dataGuru || !gtk.id) {
+      dataGuru = new Dataguru()
+      dataGuru.createDate = new Date()
+    } else {
+      dataGuru.lastUpdate = new Date()
+    }
+
+    dataGuru.userUpdated = user.id
+    dataGuru.jenisKeluarId = gtk.jenisKeluarId
+    dataGuru.jenisKeluarIdStr = gtk.jenisKeluarIdStr
+    dataGuru.tglPtkKeluar = gtk.tglPtkKeluar
+    dataGuru.showSptjm = gtk.showSptjm
+
+    try {
+      await this.dataGuruRepo.save(dataGuru)
+    } catch (err) {
+      logger.error(err.toString())
       throw new BadRequestException()
     }
   }
