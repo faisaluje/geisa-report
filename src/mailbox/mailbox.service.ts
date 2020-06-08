@@ -61,27 +61,6 @@ export class MailboxService {
       )
       const rows = response[0] as PesanDto[]
 
-      if (jenisPesan == JenisPesan.Terkirim) {
-        const listPesanId = rows.map(row => row.id_pesan)
-
-        const penerima =
-          listPesanId && listPesanId.length > 0
-            ? await this.pesanPenerima.find({ idPesan: In(listPesanId) })
-            : []
-
-        const terbaca =
-          listPesanId && listPesanId.length > 0
-            ? await this.pesanTerbaca.find({ idPesan: In(listPesanId) })
-            : []
-
-        for (const pesan of rows) {
-          pesan.penerima_list = penerima.filter(
-            val => val.idPesan === pesan.id_pesan,
-          )
-          pesan.dibaca = terbaca.filter(val => val.idPesan === pesan.id_pesan)
-        }
-      }
-
       return rows
     } catch (e) {
       logger.error(`${getMethodName(this.getPesan)}, ${e.toString()}`)
