@@ -45,4 +45,11 @@ export class CronJob {
 
   @Column('tinyint', { name: 'prioritas', nullable: true })
   prioritas: number | null
+
+  @Column('enum', {
+    name: 'status',
+    nullable: true,
+    enum: ['RUNNING', 'SUCCESS', 'FAILED'],
+  })
+  status: 'RUNNING' | 'SUCCESS' | 'FAILED' | null
 }

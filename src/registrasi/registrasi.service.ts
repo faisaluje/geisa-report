@@ -89,7 +89,7 @@ export class RegistrasiService {
 
   async getPrivateKey(form: SubmitRegistrasiDto): Promise<PrivateKeyDto> {
     try {
-      const today = moment().format('YYYY-MM-01')
+      const today = moment().format('YYYY-MM-DD')
       const _cd = sha1(`${this.vendorCode}${today}`)
 
       const response = await Axios({
@@ -111,7 +111,7 @@ export class RegistrasiService {
 
   async getDataFromGtk(tableName: string, privateKey: string): Promise<any> {
     try {
-      const response = await Axios.get(`${this.urlWsGtk}/api/${tableName}`, {
+      const { data } = await Axios.get(`${this.urlWsGtk}/api/${tableName}`, {
         withCredentials: false,
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +120,11 @@ export class RegistrasiService {
         },
       })
 
-      return response.data
+      if (!Array.isArray(data)) {
+        return []
+      }
+
+      return data
     } catch (e) {
       logger.error(e.toString())
       return false
