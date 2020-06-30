@@ -34,10 +34,17 @@ export class AbsensiManualDetailService {
         .addSelect('detail.waktu_datang', 'waktuDatang')
         .addSelect('detail.waktu_pulang', 'waktuPulang')
         .addSelect('detail.keterangan', 'keterangan')
+        .addSelect('status.status_kirim', 'statusKirim')
+        .addSelect('detail.keterangan_status_kirim', 'keteranganStatusKirim')
         .leftJoin(
           'absensi_manual_detail',
           'detail',
           `detail.ptk_id = gtk.id_dapodik AND detail.absensi_manual_id = ${id}`,
+        )
+        .leftJoin(
+          'ref_status_kirim',
+          'status',
+          'detail.status_kirim_id = status.status_kirim_id',
         )
         .where('gtk.sekolah_id = :sekolahId', { sekolahId })
         .orderBy('gtk.nama_dapodik')
