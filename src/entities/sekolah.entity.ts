@@ -113,6 +113,9 @@ export class Sekolah extends BaseEntity {
   @Column('int', { name: 'GMTPlus', nullable: true })
   gmtPlus: number | null
 
+  @Column('int', { name: 'kalibrasi_waktu', nullable: false, default: 0 })
+  kalibrasiWaktu: number | null
+
   @Column('datetime', {
     name: 'create_date',
     nullable: true,

@@ -43,6 +43,7 @@ export class SekolahService {
       .addSelect('sekolah.shift_pagi_mulai', 'shiftPagiMulai')
       .addSelect('sekolah.shift_siang_mulai', 'shiftSiangMulai')
       .addSelect('sekolah.GMTPlus', 'gmtPlus')
+      .addSelect('sekolah.kalibrasi_waktu', 'kalibrasiWaktu')
       .where('sekolah.bentuk_pendidikan_id in(:bentukPendidikanId)', {
         bentukPendidikanId,
       })
@@ -115,7 +116,7 @@ export class SekolahService {
       sekolah.shiftSiang = body.shiftSiang
       sekolah.shiftPagiMulai = body.shiftPagiMulai
       sekolah.shiftSiangMulai = body.shiftSiangMulai
-      sekolah.gmtPlus = body.gmtPlus
+      sekolah.kalibrasiWaktu = body.kalibrasiWaktu
       sekolah.lastUpdate = new Date()
 
       return await sekolah.save()
