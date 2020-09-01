@@ -1,26 +1,22 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common'
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { AbsensiManual } from '../entities/absensiManual.entity'
-import { Repository, getConnection } from 'typeorm'
+import { getConnection, Repository } from 'typeorm'
+
+import { AbsensiManualDetailService } from '../absensi-manual-detail/absensi-manual-detail.service'
+import { DokumenPendukungService } from '../dokumen-pendukung/dokumen-pendukung.service'
+import { AbsensiManualDto } from '../dto/absensi-manual.dto'
 import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from '../dto/user.dto'
-import { RowsService } from '../rows/rows.service'
-import { AbsensiManualDetailService } from '../absensi-manual-detail/absensi-manual-detail.service'
-import { AbsensiManualDto } from '../dto/absensi-manual.dto'
-import { Sekolah } from '../entities/sekolah.entity'
-import { RefStatusKehadiran } from '../entities/refStatusKehadiran.entity'
+import { AbsensiManual } from '../entities/absensiManual.entity'
 import { RefAlasanPenolakan } from '../entities/refAlasanPenolakan.entity'
-import { DokumenPendukungService } from '../dokumen-pendukung/dokumen-pendukung.service'
-import { generateNoUrut } from '../utils/nourut.utils'
-import getSekolahIdFromPenggunaId from '../utils/get-sekolahId-from-penggunaId.utils'
+import { RefStatusKehadiran } from '../entities/refStatusKehadiran.entity'
+import { Sekolah } from '../entities/sekolah.entity'
 import { JenisUsulan } from '../enums/jenis-usulan.enum'
 import { Peran } from '../enums/peran.enum'
+import { RowsService } from '../rows/rows.service'
 import { getMethodName } from '../services/ClassHelpers'
+import getSekolahIdFromPenggunaId from '../utils/get-sekolahId-from-penggunaId.utils'
+import { generateNoUrut } from '../utils/nourut.utils'
 
 const logger = new Logger('absensi-manual-service')
 
@@ -214,7 +210,7 @@ export class AbsensiManualService {
 
       const result = await this.absensiManualRepo.save(absensiManual)
       if (result) {
-        const absensiManualDetail = await this.absensiManualDetailService.upsertAbsensiManualId(
+        await this.absensiManualDetailService.upsertAbsensiManualId(
           data.detail,
           user,
           result.absensiManualId,

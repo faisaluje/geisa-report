@@ -1,8 +1,9 @@
-import { getRepository, Between } from 'typeorm'
-import { KoreksiStatusKehadiran } from '../entities/koreksiStatusKehadiran.entity'
-import moment = require('moment')
-import { AbsensiManual } from '../entities/absensiManual.entity'
 import { Logger } from '@nestjs/common'
+import moment = require('moment')
+import { Between, getRepository } from 'typeorm'
+
+import { AbsensiManual } from '../entities/absensiManual.entity'
+import { KoreksiStatusKehadiran } from '../entities/koreksiStatusKehadiran.entity'
 import { JenisUsulan } from '../enums/jenis-usulan.enum'
 
 export async function generateNoUrut(
@@ -16,14 +17,14 @@ export async function generateNoUrut(
       noUrut = await getRepository(KoreksiStatusKehadiran).count({
         tglPengajuan: Between(
           moment().format('YYYY-MM-01'),
-          moment().format(`YYYY-MM-31`),
+          moment().format('YYYY-MM-31'),
         ),
       })
     } else if (jenisUsulan == JenisUsulan.ABSENSI_MANUAL) {
       noUrut = await getRepository(AbsensiManual).count({
         createDate: Between(
-          moment().format('YYYY-MM-01'),
-          moment().format(`YYYY-MM-31`),
+          moment().format('YYYY-MM-01 00:00:00'),
+          moment().format('YYYY-MM-31 23:59:59'),
         ),
       })
     } else {
