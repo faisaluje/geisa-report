@@ -1,20 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { md5 } from 'locutus/php/strings'
+
 import { AuthUserDto } from '../dto/auth-user.dto'
 import { UserDto } from '../dto/user.dto'
+import { MstWilayah } from '../entities/mstWilayah.entity'
 import { Pengguna } from '../entities/pengguna.entity'
-import {
-  validatePasswordMd5,
-  validatePasswordSha1,
-} from '../security/process-password.security'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
 import { RefAnggotaDinas } from '../entities/refAnggotaDinas.entity'
 import { Sekolah } from '../entities/sekolah.entity'
-import { MstWilayah } from '../entities/mstWilayah.entity'
-import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
-import { Peran } from '../enums/peran.enum'
-import { md5 } from 'locutus/php/strings'
-import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
 import { HakAkses } from '../enums/hak-akses.enum'
+import { Peran } from '../enums/peran.enum'
+import { validatePasswordMd5, validatePasswordSha1 } from '../security/process-password.security'
+import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
 
 @Injectable()
 export class AuthService {
