@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common'
-import { AbsensiManualService } from './absensi-manual.service'
-import { AbsensiManualController } from './absensi-manual.controller'
 import { PassportModule } from '@nestjs/passport'
-import { RowsModule } from '../rows/rows.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AbsensiManual } from '../entities/absensiManual.entity'
+import { PengaturanDurasiJenjangModule } from 'src/pengaturan-durasi-jenjang/pengaturan-durasi-jenjang.module'
+import { SekolahModule } from 'src/sekolah/sekolah.module'
+
 import { AbsensiManualDetailModule } from '../absensi-manual-detail/absensi-manual-detail.module'
 import { DokumenPendukungModule } from '../dokumen-pendukung/dokumen-pendukung.module'
+import { AbsensiManual } from '../entities/absensiManual.entity'
+import { RowsModule } from '../rows/rows.module'
+import { AbsensiManualController } from './absensi-manual.controller'
+import { AbsensiManualService } from './absensi-manual.service'
+import { StatusPengajuanService } from './status-pengajuan.service'
 
 @Module({
   imports: [
@@ -15,8 +19,10 @@ import { DokumenPendukungModule } from '../dokumen-pendukung/dokumen-pendukung.m
     RowsModule,
     AbsensiManualDetailModule,
     DokumenPendukungModule,
+    PengaturanDurasiJenjangModule,
+    SekolahModule,
   ],
-  providers: [AbsensiManualService],
+  providers: [AbsensiManualService, StatusPengajuanService],
   controllers: [AbsensiManualController],
 })
 export class AbsensiManualModule {}

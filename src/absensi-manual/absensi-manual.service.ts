@@ -17,6 +17,7 @@ import { RowsService } from '../rows/rows.service'
 import { getMethodName } from '../services/ClassHelpers'
 import getSekolahIdFromPenggunaId from '../utils/get-sekolahId-from-penggunaId.utils'
 import { generateNoUrut } from '../utils/nourut.utils'
+import { StatusPengajuanService } from './status-pengajuan.service'
 
 const logger = new Logger('absensi-manual-service')
 
@@ -27,6 +28,7 @@ export class AbsensiManualService {
     private readonly absensiManualRepo: Repository<AbsensiManual>,
     private readonly absensiManualDetailService: AbsensiManualDetailService,
     private readonly dokumenPendukungService: DokumenPendukungService,
+    private readonly statusPengajuanService: StatusPengajuanService,
   ) {}
 
   async getAbsensiManualOne(
@@ -189,7 +191,11 @@ export class AbsensiManualService {
 
       if (user.peran == Peran.SEKOLAH) {
         absensiManual.userIdPengusul = user.id
-        absensiManual.statusPengajuan = 1
+        absensiManual.statusPengajuan = await this.statusPengajuanService.getStatusPengajuan(
+          data.sekolah,
+          new Date(data.tanggal),
+          data.detail,
+        )
       } else {
         absensiManual.userIdPemeriksa = user.id
         absensiManual.tglDiperiksa = new Date()

@@ -1,14 +1,15 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Sekolah } from '../entities/sekolah.entity'
 import { Repository } from 'typeorm'
-import { RowsService } from '../rows/rows.service'
+
 import { PagingDto } from '../dto/paging.dto'
 import { UserDto } from '../dto/user.dto'
 import { Pengguna } from '../entities/pengguna.entity'
-import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
-import { Peran } from '../enums/peran.enum'
 import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
+import { Sekolah } from '../entities/sekolah.entity'
+import { Peran } from '../enums/peran.enum'
+import { RowsService } from '../rows/rows.service'
+import getBentukPendidikanIdFromPeran from '../utils/get-bentukPendidikanId-from-peran.utils'
 import getCakupanWilayahFromPengguna from '../utils/get-cakupanWilayah-from-pengguna.utils'
 
 const logger = new Logger('sekolah-service')
@@ -124,5 +125,11 @@ export class SekolahService {
       logger.error(e.toString())
       throw new BadRequestException()
     }
+  }
+
+  getKodeWilayahByJenjang(sekolah: Sekolah): string {
+    return ['SMA', 'SMK', 'SLB'].includes(sekolah.bentukPendidikanIdStr)
+      ? sekolah.kodeWilayahProvinsi
+      : sekolah.kodeWilayahKabupatenKota
   }
 }

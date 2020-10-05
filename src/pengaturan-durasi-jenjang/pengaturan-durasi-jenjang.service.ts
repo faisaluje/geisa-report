@@ -1,15 +1,17 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { PengaturanDurasiJenjang } from '../entities/pengaturanDurasiJenjang.entity'
-import { Repository, getConnection } from 'typeorm'
-import { UserDto } from '../dto/user.dto'
-import { Jenjang } from '../enums/jenjang.enum'
-import { Sekolah } from '../entities/sekolah.entity'
-import { Pengguna } from '../entities/pengguna.entity'
+import { SekolahService } from 'src/sekolah/sekolah.service'
+import { getConnection, getRepository, Repository } from 'typeorm'
+
 import mapJenjangData from '../data/mapJenjang.data'
+import { UserDto } from '../dto/user.dto'
+import { PengaturanDurasiJenjang } from '../entities/pengaturanDurasiJenjang.entity'
+import { Pengguna } from '../entities/pengguna.entity'
+import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
+import { Sekolah } from '../entities/sekolah.entity'
+import { Jenjang } from '../enums/jenjang.enum'
 import { Peran } from '../enums/peran.enum'
 import { TipeSubmitDurasi } from '../enums/tipe-submit-durasi.enum'
-import { PenggunaTestGeisa } from '../entities/pengguna.testgeisa.entity'
 
 const logger = new Logger('pengaturan-durasi-jenjang')
 
@@ -20,6 +22,7 @@ export class PengaturanDurasiJenjangService {
     private readonly pengaturanDurasiJenjangRepo: Repository<
       PengaturanDurasiJenjang
     >,
+    private readonly sekolahService: SekolahService,
   ) {}
 
   async initPengaturanDurasiJenjang(
@@ -71,7 +74,7 @@ export class PengaturanDurasiJenjangService {
         const sekolah = await Sekolah.findOneOrFail(pengguna.sekolahId)
 
         const jenjangBySekolah = mapJenjangData.find(
-          val => val.jenisSekolahId === sekolah.bentukPendidikanId,
+          (val) => val.jenisSekolahId === sekolah.bentukPendidikanId,
         )
         pengaturandurasiJenjang = await this.pengaturanDurasiJenjangRepo.find({
           kodeWilayah,
@@ -102,7 +105,7 @@ export class PengaturanDurasiJenjangService {
   ): Promise<PengaturanDurasiJenjang[]> {
     try {
       let shift: number
-      const rows: PengaturanDurasiJenjang[] = data.map(val => {
+      const rows: PengaturanDurasiJenjang[] = data.map((val) => {
         if (tipeSubmitDurasi == TipeSubmitDurasi.WAKTU) {
           delete val.isLibur
         } else if (tipeSubmitDurasi == TipeSubmitDurasi.HARILIBUR) {
@@ -152,5 +155,19 @@ export class PengaturanDurasiJenjangService {
       logger.error(e.toString())
       throw new BadRequestException()
     }
+  }
+
+  async getPengaturanDurasiBySekolah(
+    sekolah: Sekolah,
+    hari: number,
+  ): Promise<PengaturanDurasiJenjang> {
+    const kodeWilayah = this.sekolahService.getKodeWilayahByJenjang(sekolah)
+
+    return getRepository(PengaturanDurasiJenjang).findOne({
+      where: [
+        { kodeWilayah, jenjang: sekolah.bentukPendidikanIdStr, hari, shift: 1 },
+        { kodeWilayah: '000001', jenjang: 'XXX', hari },
+      ],
+    })
   }
 }
