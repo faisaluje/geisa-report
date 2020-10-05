@@ -29,6 +29,7 @@ import { MaintenanceMiddleware } from './middleware/maintenance.middleware'
 import { JwtModule } from '@nestjs/jwt'
 import { RegistrasiModule } from './registrasi/registrasi.module';
 import { CronjobModule } from './cronjob/cronjob.module';
+import { ApprovalOtomatisModule } from './approval-otomatis/approval-otomatis.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { CronjobModule } from './cronjob/cronjob.module';
     JwtModule.register({}),
     RegistrasiModule,
     CronjobModule,
+    ApprovalOtomatisModule,
   ],
 })
 export class AppModule implements NestModule {

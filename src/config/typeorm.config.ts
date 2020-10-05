@@ -1,5 +1,5 @@
-import * as config from 'config'
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+import * as config from 'config'
 
 const dbConfig = config.get('db')
 
@@ -14,4 +14,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   entities: [__dirname + '/../entities/*.entity.{js,ts}'],
   synchronize: dbConfig.synchronize,
   logging: false,
+  connectTimeout: 30000,
 }

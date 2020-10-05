@@ -37,6 +37,7 @@
     "locutus": "^2.0.11",
     "moment": "^2.24.0",
     "mysql": "^2.18.1",
+    "nestjs-typeorm-paginate": "^2.1.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
