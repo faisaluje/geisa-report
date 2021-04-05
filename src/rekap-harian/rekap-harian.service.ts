@@ -1,5 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
-import { getConnection } from 'typeorm'
+import { Dataguru } from 'src/entities/dataguru.entity'
+import { getConnection, getRepository } from 'typeorm'
 import { RekapSummaryDto } from '../dto/rekap-summary.dto'
 
 const logger = new Logger('rekap-harian')
@@ -9,8 +10,16 @@ export class RekapHarianService {
   async getRekapharian(
     monthSelected: string,
     idDapodik: string,
+    hitungUlang?: number,
   ): Promise<any[]> {
     try {
+      if (Number(hitungUlang) === 1) {
+        const gtk = await getRepository(Dataguru).findOneOrFail({ idDapodik })
+        await getConnection().query('call p_calculate_monthly_by_sek(?);', [
+          gtk.sekolahId,
+        ])
+      }
+
       const rekapHarian = await getConnection().query(
         'SELECT * FROM v_rekapharian WHERE id_dapodik = ? AND tahun_bulan = ? ORDER BY tahun_bulan, hari_ke LIMIT 0, 31',
         [idDapodik, monthSelected],

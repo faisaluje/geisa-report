@@ -16,6 +16,7 @@ export class RekapHarianController {
     return this.rekapHarianService.getRekapharian(
       query.monthSelected,
       query.idDapodik,
+      query.hitungUlang,
     )
   }
 
