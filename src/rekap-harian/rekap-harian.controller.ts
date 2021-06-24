@@ -12,12 +12,13 @@ export class RekapHarianController {
   constructor(private readonly rekapHarianService: RekapHarianService) {}
 
   @Get('')
-  async getRekapHarian(@Query() query: any): Promise<any[]> {
-    return this.rekapHarianService.getRekapharian(
-      query.monthSelected,
-      query.idDapodik,
-      query.hitungUlang,
-    )
+  async getRekapHarian(
+    @Query('monthSelected') monthSelected?: string,
+    @Query('idDapodik') idDapodik?: string,
+    @Query('hitungUlang') hitungUlang?: number,
+    @Query('nuptk') nuptk?: string,
+  ): Promise<any[]> {
+    return this.rekapHarianService.getRekapharian({ monthSelected, idDapodik, hitungUlang, nuptk })
   }
 
   @Get('/summary')

@@ -1,29 +1,40 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common'
+import { RekapHarianDto } from 'src/dto/rekap-harian.dto'
 import { Dataguru } from 'src/entities/dataguru.entity'
-import { getConnection, getRepository } from 'typeorm'
+import { FindConditions, getConnection, getRepository } from 'typeorm'
 import { RekapSummaryDto } from '../dto/rekap-summary.dto'
 
 const logger = new Logger('rekap-harian')
 
 @Injectable()
 export class RekapHarianService {
-  async getRekapharian(
-    monthSelected: string,
-    idDapodik: string,
-    hitungUlang?: number,
-  ): Promise<any[]> {
+  async getRekapharian(query?: RekapHarianDto): Promise<any[]> {
     try {
-      if (Number(hitungUlang) === 1) {
-        const gtk = await getRepository(Dataguru).findOneOrFail({ idDapodik })
+      if (Number(query?.hitungUlang) === 1) {
+        const conditions: FindConditions<Dataguru> = {}
+        if (query.idDapodik) {
+          conditions.idDapodik = query.idDapodik
+        } else if (query.nuptk) {
+          conditions.nuptk = query.nuptk
+        }
+        const gtk = await getRepository(Dataguru).findOneOrFail(conditions)
         await getConnection().query('call p_calculate_monthly_by_sek(?);', [
           gtk.sekolahId,
         ])
       }
 
-      const rekapHarian = await getConnection().query(
-        'SELECT * FROM v_rekapharian WHERE id_dapodik = ? AND tahun_bulan = ? ORDER BY tahun_bulan, hari_ke LIMIT 0, 31',
-        [idDapodik, monthSelected],
-      )
+      let rekapHarian = []
+      if (query.idDapodik) {
+        rekapHarian = await getConnection().query(
+          'SELECT * FROM v_rekapharian WHERE id_dapodik = ? AND tahun_bulan = ? ORDER BY tahun_bulan, hari_ke LIMIT 0, 31',
+          [query.idDapodik, query.monthSelected],
+        )
+      } else if (query.nuptk) {
+        rekapHarian = await getConnection().query(
+          'SELECT v_rekapharian.* FROM v_rekapharian INNER JOIN t_ptk ON t_ptk.t_ptk_id = v_rekapharian.id_dapodik WHERE t_ptk.nuptk_link = ? AND tahun_bulan = ? ORDER BY tahun_bulan, hari_ke LIMIT 0, 31',
+          [query.nuptk, query.monthSelected],
+        )
+      }
 
       return rekapHarian
     } catch (e) {
