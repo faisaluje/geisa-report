@@ -31,7 +31,7 @@ export class RekapHarianService {
         )
       } else if (query.nuptk) {
         rekapHarian = await getConnection().query(
-          'SELECT v_rekapharian.* FROM v_rekapharian INNER JOIN t_ptk ON t_ptk.t_ptk_id = v_rekapharian.id_dapodik WHERE t_ptk.nuptk_link = ? AND tahun_bulan = ? ORDER BY tahun_bulan, hari_ke LIMIT 0, 31',
+          'SELECT v_rekapharian.* FROM v_rekapharian INNER JOIN dataguru_unique dataguru ON dataguru.id_dapodik = v_rekapharian.id_dapodik WHERE dataguru.nuptk = ? AND tahun_bulan = ? ORDER BY tahun_bulan, hari_ke LIMIT 0, 31',
           [query.nuptk, query.monthSelected],
         )
       }

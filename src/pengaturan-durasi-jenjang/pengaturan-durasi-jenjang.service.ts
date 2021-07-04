@@ -13,7 +13,7 @@ import { Jenjang } from '../enums/jenjang.enum'
 import { Peran } from '../enums/peran.enum'
 import { TipeSubmitDurasi } from '../enums/tipe-submit-durasi.enum'
 
-const logger = new Logger('pengaturan-durasi-jenjang')
+const logger = new Logger('pengaturxxan-durasi-jenjang')
 
 @Injectable()
 export class PengaturanDurasiJenjangService {
@@ -74,7 +74,7 @@ export class PengaturanDurasiJenjangService {
         const sekolah = await Sekolah.findOneOrFail(pengguna.sekolahId)
 
         const jenjangBySekolah = mapJenjangData.find(
-          (val) => val.jenisSekolahId === sekolah.bentukPendidikanId,
+          val => val.jenisSekolahId === sekolah.bentukPendidikanId,
         )
         pengaturandurasiJenjang = await this.pengaturanDurasiJenjangRepo.find({
           kodeWilayah,
@@ -105,7 +105,7 @@ export class PengaturanDurasiJenjangService {
   ): Promise<PengaturanDurasiJenjang[]> {
     try {
       let shift: number
-      const rows: PengaturanDurasiJenjang[] = data.map((val) => {
+      const rows: PengaturanDurasiJenjang[] = data.map(val => {
         if (tipeSubmitDurasi == TipeSubmitDurasi.WAKTU) {
           delete val.isLibur
         } else if (tipeSubmitDurasi == TipeSubmitDurasi.HARILIBUR) {
