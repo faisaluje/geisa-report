@@ -161,6 +161,7 @@ export class DataGuruService {
     dataGuru.jenisKeluarIdStr = gtk.jenisKeluarIdStr
     dataGuru.tglPtkKeluar = gtk.tglPtkKeluar
     dataGuru.showSptjm = gtk.showSptjm
+    dataGuru.isInduk = gtk.isInduk
 
     try {
       await this.dataGuruRepo.save(dataGuru)

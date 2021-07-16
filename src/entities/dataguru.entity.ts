@@ -56,7 +56,7 @@ export class Dataguru {
   jenisKeluarIdStr: string | null
 
   @Column('date', { name: 'tgl_ptk_keluar', nullable: true })
-  tglPtkKeluar: Date | null
+  tglPtkKeluar: string | null
 
   @Column('datetime', { name: 'last_sync', nullable: true })
   lastSync: Date | null
@@ -80,4 +80,7 @@ export class Dataguru {
     default: () => 1,
   })
   showSptjm: boolean
+
+  @Column('tinyint', { name: 'is_induk', nullable: true, width: 1 })
+  isInduk: boolean | null
 }

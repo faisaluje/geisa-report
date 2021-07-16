@@ -65,7 +65,7 @@ export class StatusPengajuanService {
 
     if (
       absensiManualDetail.find(
-        (detail) => detail.waktuDatang && !detail.waktuPulang,
+        detail => detail.waktuDatang && !detail.waktuPulang,
       )
     ) {
       return false
@@ -73,7 +73,7 @@ export class StatusPengajuanService {
 
     if (
       absensiManualDetail.find(
-        (detail) => !detail.waktuDatang && detail.waktuPulang,
+        detail => !detail.waktuDatang && detail.waktuPulang,
       )
     ) {
       return false
